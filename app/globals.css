@@ -8,8 +8,8 @@
   --vx-text-heading: #ffffff;
   --vx-text-body: rgba(255, 255, 255, 0.7);
   --vx-text-label: rgba(255, 255, 255, 0.4);
-  --vx-card-bg: rgba(255, 255, 255, 0.03);
-  --vx-card-border: rgba(255, 255, 255, 0.1);
+  --vx-card-bg: rgba(12, 12, 14, 0.72);
+  --vx-card-border: rgba(255, 255, 255, 0.14);
   --vx-ease: cubic-bezier(0.32, 0.72, 0, 1);
   --font-display-family: "Clash Display", var(--font-geist-sans), sans-serif;
 }
@@ -17,6 +17,27 @@
 html {
   scroll-behavior: smooth;
   background: var(--vx-black);
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch],
+.lenis [data-lenis-prevent-vertical],
+.lenis [data-lenis-prevent-horizontal] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
 
 body {

@@ -44,8 +44,10 @@ export default function Nav() {
     <>
       <div className="pointer-events-none fixed left-1/2 top-6 z-40 w-full -translate-x-1/2 px-4">
         <motion.nav
-          className={`pointer-events-auto mx-auto flex w-[min(980px,calc(100vw-2rem))] items-center justify-between rounded-full border border-white/10 px-5 py-3 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
-            isSolid ? "bg-black/40" : "bg-white/5"
+          className={`pointer-events-auto mx-auto flex w-[min(980px,calc(100vw-2rem))] items-center justify-between rounded-full border px-5 py-3 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+            isSolid
+              ? "border-white/18 bg-black/78 shadow-[0_12px_45px_rgba(0,0,0,0.45)]"
+              : "border-white/12 bg-black/62"
           }`}
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -80,7 +82,7 @@ export default function Nav() {
           </div>
 
           <button
-            className="relative flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 md:hidden"
+            className="relative flex h-10 w-10 items-center justify-center rounded-full border border-white/14 bg-black/55 md:hidden"
             onClick={() => setMenuOpen((v) => !v)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             data-cursor-hover="true"

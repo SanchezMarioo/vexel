@@ -5,7 +5,7 @@ import EyebrowTag from "@/components/ui/EyebrowTag";
 
 export default function Services() {
   return (
-    <section id="services" className="vx-section px-4 md:px-6">
+    <section id="services" className="vx-section relative z-10 bg-background px-4 md:px-6">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mb-10 text-center">
           <EyebrowTag className="border border-white/10 bg-white/5 text-white/70">

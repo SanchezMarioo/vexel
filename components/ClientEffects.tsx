@@ -10,10 +10,13 @@ export default function ClientEffects() {
   const cursorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    let isDisposed = false;
+
     const lenis = new Lenis({
       lerp: 0.085,
       smoothWheel: true,
       syncTouch: false,
+      allowNestedScroll: true,
     });
 
     const onAnchorClick = (event: MouseEvent) => {
@@ -51,16 +54,33 @@ export default function ClientEffects() {
     lenis.on("scroll", onLenisScroll);
     document.addEventListener("click", onAnchorClick);
 
-    let frame = 0;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      frame = window.requestAnimationFrame(raf);
+    let removeTicker = () => {};
+
+    const initTickerSync = async () => {
+      const gsapModule = await import("gsap");
+
+      if (isDisposed) {
+        return;
+      }
+
+      const gsap = gsapModule.gsap;
+      const tick = (time: number) => {
+        lenis.raf(time * 1000);
+      };
+
+      gsap.ticker.add(tick);
+      gsap.ticker.lagSmoothing(0);
+
+      removeTicker = () => {
+        gsap.ticker.remove(tick);
+      };
     };
 
-    frame = window.requestAnimationFrame(raf);
+    initTickerSync();
 
     return () => {
-      window.cancelAnimationFrame(frame);
+      isDisposed = true;
+      removeTicker();
       document.removeEventListener("click", onAnchorClick);
       lenis.destroy();
     };
