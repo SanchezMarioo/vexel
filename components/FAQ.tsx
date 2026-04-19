@@ -2,34 +2,7 @@
 
 import { useState } from "react";
 import EyebrowTag from "@/components/ui/EyebrowTag";
-
-const faqs = [
-  {
-    question: "Cuanto tarda Vexel en entregar una landing page?",
-    answer:
-      "El plazo medio es de 14 dias desde el kickoff. Si el proyecto requiere integraciones extra, se define al inicio.",
-  },
-  {
-    question: "Que informacion necesito para empezar?",
-    answer:
-      "Necesitamos tu oferta principal, publico objetivo, referencias visuales y objetivo de conversion prioritario.",
-  },
-  {
-    question: "Puedo pedir cambios despues de la entrega?",
-    answer:
-      "Si. Incluimos una ventana de ajustes posterior para pulir detalles de contenido, jerarquia y conversion.",
-  },
-  {
-    question: "Trabajais con negocios fuera de Espana?",
-    answer:
-      "Si, trabajamos en remoto con negocios internacionales siempre que haya una persona de decision activa en el proceso.",
-  },
-  {
-    question: "Que diferencia a Vexel de otras agencias?",
-    answer:
-      "Nos centramos en una sola accion de alto valor por pagina. Menos ruido visual y mas claridad comercial desde el primer scroll.",
-  },
-];
+import { faqs } from "@/lib/content/faqs";
 
 export default function FAQ() {
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
@@ -49,12 +22,18 @@ export default function FAQ() {
         <div>
           {faqs.map((item, index) => {
             const isOpen = activeIndex === index;
+            const buttonId = `faq-button-${index}`;
+            const panelId = `faq-panel-${index}`;
 
             return (
               <div key={item.question} className="border-b border-white/5 py-4">
                 <button
+                  type="button"
                   onClick={() => setActiveIndex(isOpen ? null : index)}
                   className="flex w-full items-center justify-between gap-6 text-left"
+                  id={buttonId}
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
                   data-cursor-hover="true"
                 >
                   <span
@@ -75,6 +54,10 @@ export default function FAQ() {
                 </button>
 
                 <div
+                  id={panelId}
+                  role="region"
+                  aria-labelledby={buttonId}
+                  aria-hidden={!isOpen}
                   className={`overflow-hidden transition-[max-height] duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
                     isOpen ? "max-h-40" : "max-h-0"
                   }`}

@@ -40,7 +40,8 @@ function ArrowIcon() {
       strokeWidth="1.25"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-4 h-4"
+      className="h-4 w-4"
+      aria-hidden="true"
     >
       <path d="M5 12h14m-7-7 7 7-7 7" />
     </svg>
@@ -78,7 +79,7 @@ export default function IslandButton({
   }
 
   return (
-    <button onClick={onClick} className={base} data-cursor-hover="true">
+    <button type="button" onClick={onClick} className={base} data-cursor-hover="true">
       {inner}
     </button>
   );

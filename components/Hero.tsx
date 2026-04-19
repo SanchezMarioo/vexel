@@ -52,6 +52,17 @@ export default function Hero() {
           creativos que quieren crecer.
         </motion.p>
 
+        <motion.a
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4, ease: [0.32, 0.72, 0, 1] }}
+          href="/landing-pages-negocios-locales"
+          className="mt-4 text-sm text-white/70 underline decoration-white/30 underline-offset-4 transition-colors duration-300 hover:text-white"
+          data-cursor-hover="true"
+        >
+          Guia: landing pages para negocios locales que convierten
+        </motion.a>
+
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}

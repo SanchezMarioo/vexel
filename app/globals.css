@@ -63,6 +63,32 @@ body::before {
   background-position: 0 0, 1px 1px;
 }
 
+.skip-link {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 80;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 9999px;
+  padding: 0.5rem 0.9rem;
+  background: rgba(5, 5, 5, 0.95);
+  color: #fff;
+  font-size: 0.8rem;
+  line-height: 1;
+  transform: translateY(-140%);
+  transition: transform 220ms var(--vx-ease);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--vx-violet);
+  outline-offset: 2px;
+}
+
+:where(a, button, input, select, textarea, summary, [tabindex]):focus {
+  scroll-margin-top: 6rem;
+}
+
 .vx-section {
   padding-top: 8rem;
   padding-bottom: 8rem;
@@ -136,5 +162,20 @@ body::before {
 @media (pointer: coarse) {
   .vx-cursor {
     display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

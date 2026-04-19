@@ -10,21 +10,21 @@ const shots = [
   {
     id: "a",
     src: "https://images.unsplash.com/photo-1492724441997-5dc865305da7?auto=format&fit=crop&w=1200&q=80",
-    alt: "Dashboard project",
+    alt: "Diseno de dashboard para negocio local",
     rotation: "md:rotate-2",
     delay: 0,
   },
   {
     id: "b",
     src: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&w=1200&q=80",
-    alt: "Landing project",
+    alt: "Landing page optimizada para conversion",
     rotation: "md:-rotate-1",
     delay: 0.15,
   },
   {
     id: "c",
     src: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1200&q=80",
-    alt: "Brand project",
+    alt: "Proyecto visual de marca digital",
     rotation: "md:rotate-1",
     delay: 0.3,
   },
@@ -32,14 +32,14 @@ const shots = [
 
 export default function About() {
   return (
-    <section id="about" className="vx-section px-4 md:px-6">
+    <section id="about" aria-labelledby="about-title" className="vx-section px-4 md:px-6">
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-10 md:grid-cols-2">
         <div>
           <EyebrowTag className="border border-white/10 bg-white/5 text-white/70">
             Sobre Vexel
           </EyebrowTag>
 
-          <h2 className="mt-4 font-display text-5xl font-semibold leading-tight text-white">
+          <h2 id="about-title" className="mt-4 font-display text-5xl font-semibold leading-tight text-white">
             Precision vectorial.
             <br />
             Obsesion por el pixel.
@@ -50,11 +50,11 @@ export default function About() {
             donde cada bloque tiene un objetivo de conversion claro.
           </p>
 
-          <div className="mt-6 space-y-2 text-sm text-white/70">
-            <p>· Claridad narrativa</p>
-            <p>· Diseno con intencion comercial</p>
-            <p>· Ejecucion tecnica sin ruido</p>
-          </div>
+          <ul className="mt-6 list-disc space-y-2 pl-5 text-sm text-white/70 marker:text-white/45">
+            <li>Claridad narrativa</li>
+            <li>Diseno con intencion comercial</li>
+            <li>Ejecucion tecnica sin ruido</li>
+          </ul>
 
           <div className="mt-8">
             <IslandButton href="#services" variant="ghost">

@@ -217,10 +217,14 @@ export default function Projects() {
     <section
       id="projects"
       ref={sectionRef}
+      aria-labelledby="projects-title"
       className="projects-section relative z-10 bg-[#050505]"
     >
       <div className="relative h-[100svh] overflow-hidden md:h-screen">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(123,97,255,0.1)_0%,transparent_72%)]" />
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(123,97,255,0.1)_0%,transparent_72%)]"
+          aria-hidden="true"
+        />
 
         <div className="absolute inset-x-0 top-24 z-20 bg-[linear-gradient(to_bottom,rgba(5,5,5,0.95),rgba(5,5,5,0.72),transparent)] px-4 pb-5 pt-2 backdrop-blur-xl md:px-[10vw]">
           <div className="mx-auto flex w-full max-w-[1600px] items-end justify-between">
@@ -228,11 +232,19 @@ export default function Projects() {
               <EyebrowTag className="border border-white/14 bg-white/8 text-white/80">
                 Proyectos seleccionados
               </EyebrowTag>
-              <h2 className="mt-4 font-display text-4xl font-semibold text-white md:text-5xl">
+              <h2
+                id="projects-title"
+                className="mt-4 font-display text-4xl font-semibold text-white md:text-5xl"
+              >
                 Trabajo que convierte.
               </h2>
             </div>
-            <span ref={counterRef} className="font-display text-lg text-white/60 md:text-xl">
+            <span
+              ref={counterRef}
+              aria-live="polite"
+              aria-atomic="true"
+              className="font-display text-lg text-white/60 md:text-xl"
+            >
               01 / 04
             </span>
           </div>
@@ -255,6 +267,7 @@ export default function Projects() {
               <div
                 ref={mobileTrackRef}
                 data-lenis-prevent
+                aria-label="Carrusel de proyectos"
                 className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-4"
               >
                 {projects.map((project) => (
@@ -279,6 +292,7 @@ function ProjectCard({
   return (
     <article
       data-project-card="true"
+      aria-label={`${project.name}, ${project.category}, ${project.year}`}
       className={`project-card group shrink-0 snap-start ${
         mobile ? "h-[68vh] w-[85vw]" : "h-[34rem] w-[28rem]"
       }`}

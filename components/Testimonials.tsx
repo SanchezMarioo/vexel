@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import DoubleBezel from "@/components/ui/DoubleBezel";
 import EyebrowTag from "@/components/ui/EyebrowTag";
+import { useInViewOnce } from "@/lib/useInViewOnce";
 
 const testimonials = [
   {
@@ -23,31 +24,7 @@ const testimonials = [
 
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries;
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    observer.observe(section);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  const isVisible = useInViewOnce(sectionRef, 0.3);
 
   return (
     <section id="testimonials" ref={sectionRef} className="vx-section px-4 md:px-6">

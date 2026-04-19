@@ -7,7 +7,7 @@ import IslandButton from "@/components/ui/IslandButton";
 const navLinks = [
   { label: "Proyectos", href: "#projects" },
   { label: "Servicios", href: "#services" },
-  { label: "About", href: "#about" },
+  { label: "Sobre", href: "#about" },
   { label: "Contacto", href: "#contact" },
 ];
 
@@ -16,14 +16,29 @@ export default function Nav() {
   const [isSolid, setIsSolid] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
-      setIsSolid(window.scrollY > 80);
+    let frame = 0;
+
+    const updateSolidState = () => {
+      frame = 0;
+      const next = window.scrollY > 80;
+      setIsSolid((prev) => (prev === next ? prev : next));
     };
 
-    onScroll();
+    const onScroll = () => {
+      if (frame) {
+        return;
+      }
+
+      frame = window.requestAnimationFrame(updateSolidState);
+    };
+
+    updateSolidState();
     window.addEventListener("scroll", onScroll, { passive: true });
 
     return () => {
+      if (frame) {
+        window.cancelAnimationFrame(frame);
+      }
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
@@ -40,10 +55,29 @@ export default function Nav() {
     };
   }, [menuOpen]);
 
+  useEffect(() => {
+    if (!menuOpen) {
+      return;
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
+
   return (
     <>
       <div className="pointer-events-none fixed left-1/2 top-6 z-40 w-full -translate-x-1/2 px-4">
         <motion.nav
+          aria-label="Navegacion principal"
           className={`pointer-events-auto mx-auto flex w-[min(980px,calc(100vw-2rem))] items-center justify-between rounded-full border px-5 py-3 backdrop-blur-2xl transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${
             isSolid
               ? "border-white/18 bg-black/78 shadow-[0_12px_45px_rgba(0,0,0,0.45)]"
@@ -54,9 +88,10 @@ export default function Nav() {
           transition={{ duration: 0.7, ease: [0.32, 0.72, 0, 1], delay: 0.1 }}
         >
           <a
-            href="#"
+            href="#main-content"
             className="shrink-0 font-display text-lg font-semibold tracking-tight text-white"
             data-cursor-hover="true"
+            aria-label="Ir al contenido principal"
           >
             Vexel
           </a>
@@ -82,9 +117,12 @@ export default function Nav() {
           </div>
 
           <button
+            type="button"
             className="relative flex h-10 w-10 items-center justify-center rounded-full border border-white/14 bg-black/55 md:hidden"
             onClick={() => setMenuOpen((v) => !v)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-label={menuOpen ? "Cerrar menu" : "Abrir menu"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
             data-cursor-hover="true"
           >
             <span className="flex flex-col items-center gap-1.25">
@@ -106,6 +144,10 @@ export default function Nav() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
+            id="mobile-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu de navegacion"
             className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-8 bg-black/80 backdrop-blur-3xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

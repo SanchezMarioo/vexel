@@ -1,17 +1,19 @@
-"use client";
-
 import DoubleBezel from "@/components/ui/DoubleBezel";
 import EyebrowTag from "@/components/ui/EyebrowTag";
 
 export default function Services() {
   return (
-    <section id="services" className="vx-section relative z-10 bg-background px-4 md:px-6">
+    <section
+      id="services"
+      aria-labelledby="services-title"
+      className="vx-section relative z-10 bg-background px-4 md:px-6"
+    >
       <div className="mx-auto w-full max-w-6xl">
         <div className="mb-10 text-center">
           <EyebrowTag className="border border-white/10 bg-white/5 text-white/70">
             Servicios y precios
           </EyebrowTag>
-          <h2 className="mt-4 font-display text-5xl font-semibold text-white">
+          <h2 id="services-title" className="mt-4 font-display text-5xl font-semibold text-white">
             Estructura clara. Resultado medible.
           </h2>
         </div>
@@ -88,6 +90,7 @@ export default function Services() {
 
               <a
                 href="#contact"
+                aria-label="Ir a contacto para empezar proyecto"
                 className="inline-flex w-fit items-center rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/70 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:border-white/40 hover:text-white"
                 data-cursor-hover="true"
               >
@@ -122,9 +125,9 @@ function ServiceCard({
       <h3 className="font-display text-2xl font-semibold text-white">{title}</h3>
       <p className="text-sm leading-relaxed text-white/60">{description}</p>
 
-      <ul className="space-y-1.5 text-sm text-white/55">
+      <ul className="list-disc space-y-1.5 pl-5 text-sm text-white/55 marker:text-white/35">
         {deliverables.map((item) => (
-          <li key={item}>· {item}</li>
+          <li key={item}>{item}</li>
         ))}
       </ul>
 
@@ -134,6 +137,7 @@ function ServiceCard({
         </p>
         <a
           href="#contact"
+          aria-label={`Empezar proyecto: ${title}`}
           className="mt-4 inline-flex items-center rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/70 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:border-white/40 hover:text-white"
           data-cursor-hover="true"
         >
