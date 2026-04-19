@@ -1,64 +1,119 @@
+@import url("https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap");
 @import "tailwindcss";
 
-/* ─── Raw color palette ─────────────────────────────── */
 :root {
-  --vx-black:        #050505;
-  --vx-black-soft:   #0d0d0d;
-  --vx-violet:       #7c3aed;
-  --vx-violet-glow:  #a855f7;
-  --vx-emerald:      #10b981;
-  --vx-emerald-glow: #34d399;
-  --vx-cream:        #faf9f6;
-  --vx-text-primary: #f4f4f5;
-  --vx-text-muted:   #71717a;
-  --vx-glass-bg:     rgba(255, 255, 255, 0.04);
-  --vx-glass-border: rgba(255, 255, 255, 0.10);
-  --vx-card-core:    rgba(255, 255, 255, 0.03);
-  --vx-ease:         cubic-bezier(0.32, 0.72, 0, 1);
+  --vx-black: #050505;
+  --vx-violet: #7b61ff;
+  --vx-violet-hover: #6b51ef;
+  --vx-text-heading: #ffffff;
+  --vx-text-body: rgba(255, 255, 255, 0.7);
+  --vx-text-label: rgba(255, 255, 255, 0.4);
+  --vx-card-bg: rgba(255, 255, 255, 0.03);
+  --vx-card-border: rgba(255, 255, 255, 0.1);
+  --vx-ease: cubic-bezier(0.32, 0.72, 0, 1);
+  --font-display-family: "Clash Display", var(--font-geist-sans), sans-serif;
 }
 
-/* ─── Tailwind v4 theme registration ─────────────────── */
-@theme inline {
-  --font-sans:    var(--font-geist-sans);
-  --font-mono:    var(--font-geist-mono);
-  --font-display: var(--font-syne);
-
-  --color-background:   var(--vx-black);
-  --color-foreground:   var(--vx-text-primary);
-  --color-violet:       var(--vx-violet);
-  --color-violet-glow:  var(--vx-violet-glow);
-  --color-emerald:      var(--vx-emerald);
-  --color-emerald-glow: var(--vx-emerald-glow);
-  --color-cream:        var(--vx-cream);
-  --color-glass-bg:     var(--vx-glass-bg);
-  --color-glass-border: var(--vx-glass-border);
-  --color-card-core:    var(--vx-card-core);
-  --color-muted:        var(--vx-text-muted);
-  --color-black-soft:   var(--vx-black-soft);
+html {
+  scroll-behavior: smooth;
+  background: var(--vx-black);
 }
 
-/* ─── Base layer ─────────────────────────────────────── */
 body {
+  min-height: 100%;
   background-color: var(--vx-black);
-  color: var(--vx-text-primary);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  color: var(--vx-text-body);
+  font-family: var(--font-geist-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ─── Radial orb helpers (used in Hero + Services bg) ── */
-.vx-orb-violet {
-  background: radial-gradient(
-    ellipse 60% 50% at 50% 50%,
-    rgba(124, 58, 237, 0.35) 0%,
-    transparent 70%
-  );
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.025;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.08) 0.5px, transparent 0.5px),
+    radial-gradient(rgba(255, 255, 255, 0.06) 0.5px, transparent 0.5px);
+  background-size: 4px 4px, 7px 7px;
+  background-position: 0 0, 1px 1px;
 }
 
-.vx-orb-emerald {
-  background: radial-gradient(
-    ellipse 60% 50% at 50% 50%,
-    rgba(16, 185, 129, 0.25) 0%,
-    transparent 70%
-  );
+.vx-section {
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+.vx-glass-card {
+  border: 1px solid var(--vx-card-border);
+  background: var(--vx-card-bg);
+}
+
+.font-display {
+  font-family: var(--font-display-family);
+}
+
+.bg-background {
+  background-color: var(--vx-black);
+}
+
+.text-foreground {
+  color: var(--vx-text-heading);
+}
+
+.text-body {
+  color: var(--vx-text-body);
+}
+
+.text-muted,
+.text-label {
+  color: var(--vx-text-label);
+}
+
+.bg-card {
+  background-color: var(--vx-card-bg);
+}
+
+.border-card-border {
+  border-color: var(--vx-card-border);
+}
+
+.ring-offset-background {
+  --tw-ring-offset-color: var(--vx-black);
+}
+
+.vx-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  background: #ffffff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  transform: translate3d(-100px, -100px, 0);
+}
+
+.vx-cursor.is-project {
+  background: rgba(123, 97, 255, 0.8);
+}
+
+@media (pointer: fine) {
+  html.has-custom-cursor,
+  html.has-custom-cursor body,
+  html.has-custom-cursor a,
+  html.has-custom-cursor button {
+    cursor: none !important;
+  }
+}
+
+@media (pointer: coarse) {
+  .vx-cursor {
+    display: none;
+  }
 }

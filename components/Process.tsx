@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import DoubleBezel from "@/components/ui/DoubleBezel";
 import EyebrowTag from "@/components/ui/EyebrowTag";
 import { staggerContainerVariants, fadeUpVariants } from "@/lib/motion";
 
@@ -27,15 +28,14 @@ const steps = [
 
 export default function Process() {
   return (
-    <section id="process" className="py-24 px-4">
+    <section id="process" className="px-4 py-24 md:px-6">
       <div className="max-w-5xl mx-auto">
-        {/* Header */}
         <motion.div
           className="flex flex-col items-center text-center mb-16 gap-4"
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ type: "spring", stiffness: 60, damping: 20 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.92, ease: [0.32, 0.72, 0, 1] }}
         >
           <EyebrowTag className="bg-white/10 text-muted">
             How Vexel Works
@@ -45,37 +45,33 @@ export default function Process() {
           </h2>
         </motion.div>
 
-        {/* Steps */}
         <motion.div
-          className="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0"
+          className="grid grid-cols-1 gap-6 md:grid-cols-12"
           variants={staggerContainerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
-          {/* Connecting line (desktop only) */}
-          <div
-            className="hidden md:block absolute top-4 left-[calc(16.67%+1rem)] right-[calc(16.67%+1rem)] h-px bg-white/10"
-            aria-hidden="true"
-          />
-
-          {steps.map((step) => (
+          {steps.map((step, index) => (
             <motion.div
               key={step.number}
               variants={fadeUpVariants}
-              className="flex flex-col items-center md:items-start text-center md:text-left md:px-8 md:first:pl-0 md:last:pr-0 gap-4"
+              className={`md:col-span-4 ${
+                index === 1 ? "md:mt-8" : ""
+              } ${index === 2 ? "md:mt-16" : ""}`}
             >
-              {/* Step badge */}
-              <div className="relative z-10 w-9 h-9 rounded-full bg-violet/20 ring-1 ring-violet/40 font-display font-bold text-sm text-violet-glow flex items-center justify-center flex-shrink-0">
-                {step.number}
-              </div>
+              <DoubleBezel innerClassName="h-full p-7 md:p-8 flex flex-col gap-4">
+                <div className="relative z-10 w-9 h-9 rounded-full bg-violet/20 ring-1 ring-violet/40 font-display font-bold text-sm text-violet-glow flex items-center justify-center shrink-0">
+                  {step.number}
+                </div>
 
-              <h3 className="font-display font-bold text-xl text-foreground">
-                {step.title}
-              </h3>
-              <p className="text-sm text-muted leading-relaxed">
-                {step.description}
-              </p>
+                <h3 className="font-display font-bold text-xl text-foreground">
+                  {step.title}
+                </h3>
+                <p className="text-sm text-muted leading-relaxed">
+                  {step.description}
+                </p>
+              </DoubleBezel>
             </motion.div>
           ))}
         </motion.div>

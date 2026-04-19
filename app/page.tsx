@@ -1,21 +1,29 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Metrics from "@/components/Metrics";
+import Projects from "@/components/Projects";
 import Services from "@/components/Services";
-import Process from "@/components/Process";
+import About from "@/components/About";
 import Testimonials from "@/components/Testimonials";
+import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
+import BackgroundLayers from "@/components/BackgroundLayers";
 
 export default function Home() {
   return (
-    <main className="flex flex-col bg-background overflow-x-hidden">
-      <Nav />
-      <Hero />
-      <Metrics />
-      <Services />
-      <Process />
-      <Testimonials />
-      <FinalCTA />
-    </main>
+    <>
+      <BackgroundLayers />
+      <main className="relative z-10 flex flex-col overflow-x-clip bg-background">
+        <Nav />
+        <Hero />
+        <Metrics />
+        <Projects />
+        <Services />
+        <About />
+        <Testimonials />
+        <FAQ />
+        <FinalCTA />
+      </main>
+    </>
   );
 }

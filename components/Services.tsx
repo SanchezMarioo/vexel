@@ -1,137 +1,145 @@
 "use client";
 
-import { motion } from "framer-motion";
 import DoubleBezel from "@/components/ui/DoubleBezel";
 import EyebrowTag from "@/components/ui/EyebrowTag";
-import { staggerContainerVariants, fadeUpVariants } from "@/lib/motion";
-
-function PenIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
-      <path d="m12 19 7-7 3 3-7 7-3-3z" />
-      <path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" />
-      <path d="m2 2 7.586 7.586" />
-      <circle cx="11" cy="11" r="2" />
-    </svg>
-  );
-}
-
-function LayersIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
-      <path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
-      <path d="m6.08 9.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.81l-3.5-1.6" />
-      <path d="m6.08 14.5-3.5 1.6a1 1 0 0 0 0 1.81l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9a1 1 0 0 0 0-1.81l-3.5-1.6" />
-    </svg>
-  );
-}
-
-function LightningIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8">
-      <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
-    </svg>
-  );
-}
-
-const services = [
-  {
-    id:          "landing",
-    eyebrow:     "Landing Pages",
-    eyebrowClass:"bg-violet/20 text-violet-glow",
-    icon:        <PenIcon />,
-    iconClass:   "text-violet-glow",
-    title:       "Conversion-Engineered Pages",
-    description: "Built in 14 days, every pixel earns its keep. We map the entire conversion funnel before writing a single line of code.",
-    metric:      "↑ 3.2× lead growth, avg.",
-    metricClass: "text-violet-glow",
-    tall:        true,
-  },
-  {
-    id:          "brand",
-    eyebrow:     "Brand Systems",
-    eyebrowClass:"bg-emerald/20 text-emerald-glow",
-    icon:        <LayersIcon />,
-    iconClass:   "text-emerald-glow",
-    title:       "Visual Identity That Signals Premium",
-    description: "From logo mark to full design system. Delivered as Figma tokens and production-ready CSS.",
-    metric:      "Delivered in 5 business days",
-    metricClass: "text-emerald-glow",
-    tall:        false,
-  },
-  {
-    id:          "growth",
-    eyebrow:     "Growth Sprints",
-    eyebrowClass:"bg-amber-500/20 text-amber-400",
-    icon:        <LightningIcon />,
-    iconClass:   "text-amber-400",
-    title:       "Results in Weeks, Not Quarters",
-    description: "A/B tests, copy rewrites, and CRO audits packaged as rapid sprints. You keep the learnings forever.",
-    metric:      "Avg. +40% conversion lift",
-    metricClass: "text-amber-400",
-    tall:        false,
-  },
-];
 
 export default function Services() {
   return (
-    <section id="services" className="py-24 px-4 relative">
-      {/* Subtle mid-section violet orb */}
-      <div
-        className="vx-orb-violet absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[50vw] blur-[160px] opacity-10 pointer-events-none"
-        aria-hidden="true"
-      />
-
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* Section header */}
-        <motion.div
-          className="flex flex-col items-center text-center mb-12 gap-4"
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={{ type: "spring", stiffness: 60, damping: 20 }}
-        >
-          <EyebrowTag className="bg-white/10 text-muted">
-            What We Build
+    <section id="services" className="vx-section px-4 md:px-6">
+      <div className="mx-auto w-full max-w-6xl">
+        <div className="mb-10 text-center">
+          <EyebrowTag className="border border-white/10 bg-white/5 text-white/70">
+            Servicios y precios
           </EyebrowTag>
-          <h2 className="font-display font-extrabold text-[clamp(2rem,5vw,3.5rem)] leading-tight tracking-[-0.02em] text-foreground">
-            Three offerings.
-            <br />
-            <span className="text-muted">One obsession: your growth.</span>
+          <h2 className="mt-4 font-display text-5xl font-semibold text-white">
+            Estructura clara. Resultado medible.
           </h2>
-        </motion.div>
+        </div>
 
-        {/* Bento grid */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-4"
-          variants={staggerContainerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
-        >
-          {services.map((s) => (
-            <motion.div
-              key={s.id}
-              variants={fadeUpVariants}
-              className={s.tall ? "md:row-span-2" : ""}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-6">
+          <div className="md:col-span-7">
+            <DoubleBezel
+              innerClassName="h-full p-8"
+              className="h-full bg-[radial-gradient(ellipse_at_bottom_left,rgba(123,97,255,0.1)_0%,transparent_60%)]"
             >
-              <DoubleBezel innerClassName="p-8 flex flex-col gap-4 h-full">
-                <EyebrowTag className={s.eyebrowClass}>{s.eyebrow}</EyebrowTag>
-                <div className={s.iconClass}>{s.icon}</div>
-                <h3 className="font-display font-bold text-xl text-foreground leading-snug">
-                  {s.title}
+              <ServiceCard
+                eyebrow="Landing Page Completa"
+                title="Mas clientes desde el dia uno"
+                description="Construimos una pagina enfocada en una accion de alto valor para que tu trafico convierta en contactos reales."
+                deliverables={[
+                  "Estrategia de conversion",
+                  "Copy + estructura completa",
+                  "Diseno y desarrollo full",
+                  "Analitica y soporte post-lanzamiento",
+                ]}
+                price="1.200"
+                priceSuffix="a 2.400"
+              />
+            </DoubleBezel>
+          </div>
+
+          <div className="md:col-span-5">
+            <DoubleBezel innerClassName="h-full p-8">
+              <ServiceCard
+                eyebrow="Rediseno Express"
+                title="Mejor conversion en menos tiempo"
+                description="Optimizamos tu landing actual para eliminar friccion y elevar la calidad del lead."
+                deliverables={[
+                  "Auditoria de estructura",
+                  "Rediseno visual",
+                  "Mejoras de CTA y copy",
+                ]}
+                price="790"
+                priceSuffix="a 1.200"
+              />
+            </DoubleBezel>
+          </div>
+
+          <div className="md:col-span-5">
+            <DoubleBezel innerClassName="h-full p-8">
+              <ServiceCard
+                eyebrow="Auditoria UX"
+                title="Detecta que te frena hoy"
+                description="Informe accionable para priorizar cambios que impactan conversion y confianza."
+                deliverables={[
+                  "Mapa de friccion",
+                  "Checklist de mejoras",
+                  "Roadmap de ejecucion",
+                ]}
+                price="390"
+                priceSuffix="desde"
+              />
+            </DoubleBezel>
+          </div>
+
+          <div className="md:col-span-7">
+            <DoubleBezel innerClassName="h-full p-8 flex flex-col justify-between gap-6">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.2em] text-white/50">
+                  Contacto directo
+                </p>
+                <h3 className="mt-3 font-display text-2xl font-semibold text-white">
+                  Si prefieres hablarlo hoy, lo vemos juntos.
                 </h3>
-                <p className="text-sm text-muted leading-relaxed flex-1">
-                  {s.description}
+                <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/60">
+                  Te ayudamos a elegir el formato correcto segun tu momento de negocio.
                 </p>
-                <p className={`text-[13px] font-semibold ${s.metricClass}`}>
-                  {s.metric}
-                </p>
-              </DoubleBezel>
-            </motion.div>
-          ))}
-        </motion.div>
+              </div>
+
+              <a
+                href="#contact"
+                className="inline-flex w-fit items-center rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/70 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:border-white/40 hover:text-white"
+                data-cursor-hover="true"
+              >
+                Empezar este proyecto -&gt;
+              </a>
+            </DoubleBezel>
+          </div>
+        </div>
       </div>
     </section>
+  );
+}
+
+function ServiceCard({
+  eyebrow,
+  title,
+  description,
+  deliverables,
+  price,
+  priceSuffix,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+  deliverables: string[];
+  price: string;
+  priceSuffix: string;
+}) {
+  return (
+    <div className="flex h-full flex-col gap-4">
+      <p className="text-[10px] uppercase tracking-[0.2em] text-white/50">{eyebrow}</p>
+      <h3 className="font-display text-2xl font-semibold text-white">{title}</h3>
+      <p className="text-sm leading-relaxed text-white/60">{description}</p>
+
+      <ul className="space-y-1.5 text-sm text-white/55">
+        {deliverables.map((item) => (
+          <li key={item}>· {item}</li>
+        ))}
+      </ul>
+
+      <div className="mt-auto border-t border-white/10 pt-5">
+        <p className="font-display text-4xl font-semibold text-white">
+          {price}€ <span className="text-white/30">{priceSuffix}</span>
+        </p>
+        <a
+          href="#contact"
+          className="mt-4 inline-flex items-center rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/70 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] hover:border-white/40 hover:text-white"
+          data-cursor-hover="true"
+        >
+          Empezar este proyecto -&gt;
+        </a>
+      </div>
+    </div>
   );
 }

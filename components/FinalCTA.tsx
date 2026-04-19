@@ -3,53 +3,74 @@
 import { motion } from "framer-motion";
 import IslandButton from "@/components/ui/IslandButton";
 import EyebrowTag from "@/components/ui/EyebrowTag";
-import { staggerContainerVariants, fadeUpVariants } from "@/lib/motion";
 
 export default function FinalCTA() {
   return (
-    <section id="contact" className="py-24 px-4 bg-cream">
-      <motion.div
-        className="max-w-3xl mx-auto flex flex-col items-center text-center gap-6"
-        variants={staggerContainerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <motion.div variants={fadeUpVariants}>
-          <EyebrowTag className="bg-black/10 text-black/50">
-            Limited Availability
+    <section id="contact" className="vx-section relative flex min-h-[80vh] items-center justify-center px-4 md:px-6">
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(123,97,255,0.25)_0%,transparent_68%)]"
+        aria-hidden="true"
+      />
+
+      <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
+        >
+          <EyebrowTag className="border border-white/10 bg-white/5 text-white/70">
+            Listo para empezar?
           </EyebrowTag>
         </motion.div>
 
-        <motion.h2
-          variants={fadeUpVariants}
-          className="font-display font-extrabold text-[clamp(2rem,5vw,3.5rem)] leading-tight tracking-[-0.02em] text-[#0a0a0a]"
-        >
-          Ready to Build Something
-          <br />
-          That Actually Converts?
-        </motion.h2>
+        <h2 className="mt-6 font-display text-6xl font-semibold leading-tight text-white">
+          <motion.span
+            className="block"
+            initial={{ clipPath: "inset(0 0 100% 0)" }}
+            whileInView={{ clipPath: "inset(0 0 0% 0)" }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: [0.32, 0.72, 0, 1] }}
+          >
+            Cuentanos tu proyecto.
+          </motion.span>
+        </h2>
 
         <motion.p
-          variants={fadeUpVariants}
-          className="text-sm font-semibold text-red-700/70 uppercase tracking-[0.15em]"
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.32, 0.72, 0, 1] }}
+          className="mt-6 max-w-xl text-base text-white/50"
         >
-          2 project slots open this month
+          Respondemos en menos de 24h. Sin formularios interminables.
         </motion.p>
 
-        <motion.div variants={fadeUpVariants}>
-          <IslandButton href="mailto:hello@vexel.studio" variant="dark">
-            Get My Free Mockup
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
+          className="mt-10 flex flex-col gap-4 sm:flex-row"
+        >
+          <IslandButton href="https://calendly.com" variant="primary" size="lg">
+            Escribenos
+          </IslandButton>
+          <IslandButton href="#projects" variant="ghost">
+            Ver mas proyectos
           </IslandButton>
         </motion.div>
 
         <motion.p
-          variants={fadeUpVariants}
-          className="text-xs text-black/40"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.45, ease: [0.32, 0.72, 0, 1] }}
+          className="mt-12 text-xs text-white/40"
         >
-          No deposit required · First mockup free · Delivered in 14 days
+          © 2025 Vexel · Instagram · LinkedIn
         </motion.p>
-      </motion.div>
+      </div>
     </section>
   );
 }

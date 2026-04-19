@@ -13,10 +13,10 @@ export default function DoubleBezel({
 }: DoubleBezelProps) {
   return (
     <div
-      className={`bg-white/5 ring-1 ring-white/10 p-2 rounded-[2rem] ${className}`}
+      className={`rounded-[2rem] border border-card-border bg-card p-2 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${className}`}
     >
       <div
-        className={`bg-[var(--vx-card-core)] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-1px_0_rgba(0,0,0,0.3)] rounded-[calc(2rem-0.375rem)] h-full ${innerClassName}`}
+        className={`h-full rounded-[calc(2rem-0.5rem)] border border-card-border bg-white/[0.02] ${innerClassName}`}
       >
         {children}
       </div>
