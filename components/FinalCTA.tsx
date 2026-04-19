@@ -24,16 +24,8 @@ export default function FinalCTA() {
           </EyebrowTag>
         </motion.div>
 
-        <h2 className="mt-6 font-display text-6xl font-semibold leading-tight text-white">
-          <motion.span
-            className="block"
-            initial={{ clipPath: "inset(0 0 100% 0)" }}
-            whileInView={{ clipPath: "inset(0 0 0% 0)" }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, delay: 0.1, ease: [0.32, 0.72, 0, 1] }}
-          >
-            Cuentanos tu proyecto.
-          </motion.span>
+        <h2 className="mt-6 font-display text-4xl font-semibold leading-tight text-white sm:text-5xl md:text-6xl">
+          <span className="block">Cuentanos tu proyecto.</span>
         </h2>
 
         <motion.p

@@ -122,10 +122,10 @@ export default function Home() {
         <Nav />
         <Hero />
         <Metrics />
-        <Projects />
-        <Pricing />
-        <About />
-        <Testimonials />
+        {/* <Projects /> */}
+        {/* <Pricing /> */}
+        {/* <About /> */}
+        {/* <Testimonials /> */}
         <FAQ />
         <FinalCTA />
       </main>
