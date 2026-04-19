@@ -90,6 +90,9 @@ export default function Projects() {
         mm.add("(min-width: 768px)", () => {
           setCounter(1);
 
+          const horizontalDurationFactor = 1.22;
+          const horizontalScrubDelay = 0.8;
+
           const getDistance = () => {
             const viewport = desktopTrack.parentElement?.clientWidth ?? window.innerWidth;
             return Math.max(desktopTrack.scrollWidth - viewport, 0);
@@ -116,9 +119,9 @@ export default function Projects() {
               pin: true,
               pinSpacing: true,
               anticipatePin: 1,
-              scrub: true,
+              scrub: horizontalScrubDelay,
               start: "top top",
-              end: () => `+=${Math.max(getDistance(), 1)}`,
+              end: () => `+=${Math.max(getDistance() * horizontalDurationFactor, 1)}`,
               invalidateOnRefresh: true,
               fastScrollEnd: true,
               onUpdate: updateCounterFromX,

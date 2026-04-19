@@ -13,7 +13,8 @@ export default function ClientEffects() {
     let isDisposed = false;
 
     const lenis = new Lenis({
-      lerp: 0.085,
+      lerp: 0.07,
+      wheelMultiplier: 0.92,
       smoothWheel: true,
       syncTouch: false,
       allowNestedScroll: true,
@@ -38,7 +39,7 @@ export default function ClientEffects() {
       }
 
       event.preventDefault();
-      lenis.scrollTo(nextTarget, { offset: -96, duration: 1.1 });
+      lenis.scrollTo(nextTarget, { offset: -96, duration: 1.3 });
     };
 
     const onLenisScroll = () => {
