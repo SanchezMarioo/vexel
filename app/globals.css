@@ -1,26 +1,64 @@
 @import "tailwindcss";
 
+/* ─── Raw color palette ─────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --vx-black:        #050505;
+  --vx-black-soft:   #0d0d0d;
+  --vx-violet:       #7c3aed;
+  --vx-violet-glow:  #a855f7;
+  --vx-emerald:      #10b981;
+  --vx-emerald-glow: #34d399;
+  --vx-cream:        #faf9f6;
+  --vx-text-primary: #f4f4f5;
+  --vx-text-muted:   #71717a;
+  --vx-glass-bg:     rgba(255, 255, 255, 0.04);
+  --vx-glass-border: rgba(255, 255, 255, 0.10);
+  --vx-card-core:    rgba(255, 255, 255, 0.03);
+  --vx-ease:         cubic-bezier(0.32, 0.72, 0, 1);
 }
 
+/* ─── Tailwind v4 theme registration ─────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans:    var(--font-geist-sans);
+  --font-mono:    var(--font-geist-mono);
+  --font-display: var(--font-syne);
+
+  --color-background:   var(--vx-black);
+  --color-foreground:   var(--vx-text-primary);
+  --color-violet:       var(--vx-violet);
+  --color-violet-glow:  var(--vx-violet-glow);
+  --color-emerald:      var(--vx-emerald);
+  --color-emerald-glow: var(--vx-emerald-glow);
+  --color-cream:        var(--vx-cream);
+  --color-glass-bg:     var(--vx-glass-bg);
+  --color-glass-border: var(--vx-glass-border);
+  --color-card-core:    var(--vx-card-core);
+  --color-muted:        var(--vx-text-muted);
+  --color-black-soft:   var(--vx-black-soft);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ─── Base layer ─────────────────────────────────────── */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--vx-black);
+  color: var(--vx-text-primary);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Radial orb helpers (used in Hero + Services bg) ── */
+.vx-orb-violet {
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 50%,
+    rgba(124, 58, 237, 0.35) 0%,
+    transparent 70%
+  );
+}
+
+.vx-orb-emerald {
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 50%,
+    rgba(16, 185, 129, 0.25) 0%,
+    transparent 70%
+  );
 }
