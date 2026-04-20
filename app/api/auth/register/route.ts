@@ -1,8 +1,23 @@
 import { ZodError } from "zod";
 import { authService } from "@/lib/auth/service";
+import { getClientIp, hasTrustedOrigin, isJsonContentType } from "@/lib/security/request";
+import { checkRateLimit } from "@/lib/security/rate-limit";
+import { secureJson } from "@/lib/security/response";
+
+export const runtime = "nodejs";
+
+const TOO_MANY_REQUESTS_MESSAGE = "Demasiados intentos. Intentalo de nuevo en unos minutos.";
+const REGISTER_IP_LIMIT = {
+  limit: 25,
+  windowMs: 15 * 60 * 1000,
+};
+const REGISTER_EMAIL_LIMIT = {
+  limit: 5,
+  windowMs: 15 * 60 * 1000,
+};
 
 function errorResponse(message: string, status: number) {
-  return Response.json({ ok: false, message }, { status });
+  return secureJson({ ok: false, message }, { status });
 }
 
 function mapRegisterError(error: unknown) {
@@ -36,37 +51,6 @@ function mapRegisterError(error: unknown) {
     };
   }
 
-  if (message.includes("Missing SUPABASE_URL") || message.includes("Missing NEXT_PUBLIC_SUPABASE_URL")) {
-    return {
-      status: 500,
-      message: "Falta configurar SUPABASE_URL en el entorno del servidor.",
-    };
-  }
-
-  if (message.includes("Missing SUPABASE_SERVICE_ROLE_KEY")) {
-    return {
-      status: 500,
-      message: "Falta SUPABASE_SERVICE_ROLE_KEY en el entorno del servidor.",
-    };
-  }
-
-  if (
-    message.includes('relation "user_accounts" does not exist') ||
-    message.includes('relation "user_projects" does not exist')
-  ) {
-    return {
-      status: 500,
-      message: "Faltan tablas en Supabase. Ejecuta supabase/schema.sql en SQL Editor.",
-    };
-  }
-
-  if (message.includes("row-level security") || message.includes("permission denied")) {
-    return {
-      status: 500,
-      message: "Permisos insuficientes en Supabase. Revisa RLS y policies de schema.sql.",
-    };
-  }
-
   return {
     status: 500,
     message: "No se pudo completar el registro.",
@@ -74,11 +58,42 @@ function mapRegisterError(error: unknown) {
 }
 
 export async function POST(request: Request) {
+  if (!hasTrustedOrigin(request)) {
+    return errorResponse("Origen no permitido.", 403);
+  }
+
+  if (!isJsonContentType(request.headers.get("content-type"))) {
+    return errorResponse("Content-Type no soportado.", 415);
+  }
+
+  const clientIp = getClientIp(request);
+  const ipRateLimit = checkRateLimit({
+    bucket: "auth:register:ip",
+    key: clientIp,
+    ...REGISTER_IP_LIMIT,
+  });
+
+  if (!ipRateLimit.ok) {
+    return errorResponse(TOO_MANY_REQUESTS_MESSAGE, 429);
+  }
+
   try {
     const payload = await request.json();
+    const email = typeof payload?.email === "string" ? payload.email.trim().toLowerCase() : "unknown";
+
+    const emailRateLimit = checkRateLimit({
+      bucket: "auth:register:email",
+      key: email,
+      ...REGISTER_EMAIL_LIMIT,
+    });
+
+    if (!emailRateLimit.ok) {
+      return errorResponse(TOO_MANY_REQUESTS_MESSAGE, 429);
+    }
+
     const user = await authService.registerWithPassword(payload);
 
-    return Response.json(
+    return secureJson(
       {
         ok: true,
         user: {

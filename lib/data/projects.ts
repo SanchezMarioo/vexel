@@ -1,3 +1,4 @@
+import "server-only";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import type { ProjectStatus, UserProjectRow } from "@/lib/supabase/types";
 

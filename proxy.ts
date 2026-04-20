@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
+import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
 
 function isAuthRoute(pathname: string) {
   return pathname === "/auth/login" || pathname === "/auth/register";
@@ -8,7 +9,7 @@ function isAuthRoute(pathname: string) {
 
 function buildLoginRedirect(request: NextRequest) {
   const loginUrl = new URL("/auth/login", request.url);
-  const callbackUrl = `${request.nextUrl.pathname}${request.nextUrl.search}`;
+  const callbackUrl = sanitizeCallbackUrl(`${request.nextUrl.pathname}${request.nextUrl.search}`, "/cuenta");
   loginUrl.searchParams.set("callbackUrl", callbackUrl);
   return NextResponse.redirect(loginUrl);
 }

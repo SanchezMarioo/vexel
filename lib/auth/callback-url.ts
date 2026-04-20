@@ -1,15 +1,35 @@
 export function sanitizeCallbackUrl(value: string | undefined, fallback = "/cuenta") {
-  if (!value) {
+  const normalizedValue = value?.trim();
+
+  if (!normalizedValue) {
     return fallback;
   }
 
-  if (!value.startsWith("/")) {
+  if (normalizedValue.length > 2048) {
     return fallback;
   }
 
-  if (value.startsWith("//")) {
+  if (!normalizedValue.startsWith("/")) {
     return fallback;
   }
 
-  return value;
+  if (normalizedValue.startsWith("//") || normalizedValue.includes("\\")) {
+    return fallback;
+  }
+
+  if (/[\u0000-\u001F\u007F]/.test(normalizedValue)) {
+    return fallback;
+  }
+
+  try {
+    const parsed = new URL(normalizedValue, "https://vexel.local");
+
+    if (parsed.origin !== "https://vexel.local") {
+      return fallback;
+    }
+
+    return `${parsed.pathname}${parsed.search}${parsed.hash}`;
+  } catch {
+    return fallback;
+  }
 }

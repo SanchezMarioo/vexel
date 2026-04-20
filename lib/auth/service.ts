@@ -1,3 +1,4 @@
+import "server-only";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import type { Session } from "next-auth";
