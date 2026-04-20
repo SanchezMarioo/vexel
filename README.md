@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Seller Landing Page
 
-## Getting Started
+Landing page + authenticated private area built with Next.js 16.
 
-First, run the development server:
+## Stack
+
+- Next.js 16 (App Router)
+- NextAuth (credentials + Google OAuth)
+- Supabase Postgres (users + projects)
+- Tailwind CSS 4
+
+## Auth and Private Area
+
+Implemented routes:
+
+- `/auth/login`
+- `/auth/register`
+- `/cuenta`
+- `/cuenta/proyectos`
+- `/cuenta/proyectos/[projectId]`
+- `/cuenta/perfil`
+
+Protection is handled in `proxy.ts` for Next.js 16.
+
+## Local Setup
+
+1. Install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm.cmd install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Create env file from template:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+copy .env.example .env.local
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Run SQL in Supabase:
 
-## Learn More
+- Open Supabase SQL editor
+- Execute `supabase/schema.sql`
 
-To learn more about Next.js, take a look at the following resources:
+1. Start dev server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm.cmd dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Open <http://localhost:3000>
 
-## Deploy on Vercel
+## Required Environment Variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+See `.env.example`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Minimum required for credentials login + private area:
+
+- `NEXTAUTH_URL`
+- `NEXTAUTH_SECRET`
+- `SUPABASE_URL` (or `NEXT_PUBLIC_SUPABASE_URL`)
+- `SUPABASE_SERVICE_ROLE_KEY`
+
+Optional (Google OAuth):
+
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+
+## Migration Strategy
+
+The implementation is split by contract and adapters to reduce lock-in:
+
+- Contract: `lib/auth/contracts.ts`
+- Service entrypoint: `lib/auth/service.ts`
+- Provider adapter: `lib/auth/options.ts`
+
+Migration guide:
+
+- `docs/auth-migration.md`
+
+## Quality Commands
+
+```bash
+pnpm.cmd lint
+pnpm.cmd build
+```

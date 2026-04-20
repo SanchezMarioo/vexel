@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { getServerSession } from "next-auth";
+import AuthSessionProvider from "@/components/AuthSessionProvider";
 import ClientEffects from "@/components/ClientEffects";
+import { authOptions } from "@/lib/auth/options";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vexel.vercel.app";
@@ -63,22 +66,26 @@ export const metadata: Metadata = {
   category: "business",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authOptions);
+
   return (
     <html
       lang="es"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-body">
-        <a href="#main-content" className="skip-link">
-          Saltar al contenido principal
-        </a>
-        {children}
-        <ClientEffects />
+        <AuthSessionProvider session={session}>
+          <a href="#main-content" className="skip-link">
+            Saltar al contenido principal
+          </a>
+          {children}
+          <ClientEffects />
+        </AuthSessionProvider>
       </body>
     </html>
   );

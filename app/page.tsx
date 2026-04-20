@@ -2,10 +2,6 @@ import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Metrics from "@/components/Metrics";
-import Projects from "@/components/Projects";
-import Pricing from "@/components/Pricing";
-import About from "@/components/About";
-import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import BackgroundLayers from "@/components/BackgroundLayers";
@@ -122,10 +118,6 @@ export default function Home() {
         <Nav />
         <Hero />
         <Metrics />
-        {/* <Projects /> */}
-        {/* <Pricing /> */}
-        {/* <About /> */}
-        {/* <Testimonials /> */}
         <FAQ />
         <FinalCTA />
       </main>
