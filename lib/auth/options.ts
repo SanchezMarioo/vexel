@@ -12,7 +12,7 @@ import { verifyPassword } from "@/lib/security/password";
 const AUTH_SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 const CREDENTIALS_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const CREDENTIALS_RATE_LIMIT_ATTEMPTS = 10;
-const AUTH_REDIRECT_FALLBACK = "/cuenta";
+const AUTH_REDIRECT_FALLBACK = "/";
 
 function readHeaderValue(headers: unknown, headerName: string) {
   const key = headerName.toLowerCase();

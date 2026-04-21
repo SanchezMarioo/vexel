@@ -38,7 +38,7 @@ export default function LoginForm({
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string | null>(initialError ?? null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const safeCallbackUrl = sanitizeCallbackUrl(callbackUrl, "/cuenta");
+  const safeCallbackUrl = sanitizeCallbackUrl(callbackUrl, "/");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

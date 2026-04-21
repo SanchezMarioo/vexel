@@ -1,4 +1,4 @@
-export function sanitizeCallbackUrl(value: string | undefined, fallback = "/cuenta") {
+export function sanitizeCallbackUrl(value: string | undefined, fallback = "/") {
   const normalizedValue = value?.trim();
 
   if (!normalizedValue) {

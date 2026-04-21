@@ -24,7 +24,7 @@ export async function proxy(request: NextRequest) {
   }
 
   if (isAuthRoute(pathname) && isAuthenticated) {
-    return NextResponse.redirect(new URL("/cuenta", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();

@@ -17,7 +17,7 @@ interface RegisterPageProps {
 
 export default async function RegisterPage({ searchParams }: RegisterPageProps) {
   const params = await searchParams;
-  const callbackUrl = sanitizeCallbackUrl(params.callbackUrl, "/cuenta");
+  const callbackUrl = sanitizeCallbackUrl(params.callbackUrl, "/");
   const googleEnabled = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
 
   return <RegisterForm callbackUrl={callbackUrl} googleEnabled={googleEnabled} />;

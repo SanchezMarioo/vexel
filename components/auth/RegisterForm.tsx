@@ -13,7 +13,7 @@ interface RegisterFormProps {
 
 export default function RegisterForm({ callbackUrl, googleEnabled }: RegisterFormProps) {
   const router = useRouter();
-  const safeCallbackUrl = sanitizeCallbackUrl(callbackUrl, "/cuenta");
+  const safeCallbackUrl = sanitizeCallbackUrl(callbackUrl, "/");
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
