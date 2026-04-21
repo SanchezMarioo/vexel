@@ -9,6 +9,21 @@ import { ensureOAuthUser, findUserByEmail } from "@/lib/data/users";
 import { checkRateLimit } from "@/lib/security/rate-limit";
 import { verifyPassword } from "@/lib/security/password";
 
+const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
+
+if (!NEXTAUTH_SECRET || NEXTAUTH_SECRET.length < 32) {
+  throw new Error(
+    "NEXTAUTH_SECRET no está configurado o es demasiado corto. " +
+    'Genera uno con: node -e "console.log(require(\'crypto\').randomBytes(48).toString(\'base64url\'))"',
+  );
+}
+
+if (NEXTAUTH_SECRET === "replace-with-a-long-random-secret") {
+  throw new Error(
+    "NEXTAUTH_SECRET contiene el valor por defecto del .env.example. Reemplázalo por uno seguro.",
+  );
+}
+
 const AUTH_SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 const CREDENTIALS_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const CREDENTIALS_RATE_LIMIT_ATTEMPTS = 10;

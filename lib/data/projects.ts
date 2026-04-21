@@ -1,6 +1,7 @@
 import "server-only";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import type { ProjectStatus, UserProjectRow } from "@/lib/supabase/types";
+import { assertUuid } from "@/lib/security/validation";
 
 export interface AppProject {
   id: string;
@@ -27,6 +28,7 @@ function toAppProject(row: UserProjectRow): AppProject {
 }
 
 export async function listProjectsByUser(userId: string) {
+  assertUuid(userId, "userId");
   const client = getSupabaseAdminClient();
 
   const { data, error } = await client
@@ -43,6 +45,8 @@ export async function listProjectsByUser(userId: string) {
 }
 
 export async function getProjectByIdForUser(userId: string, projectId: string) {
+  assertUuid(userId, "userId");
+  assertUuid(projectId, "projectId");
   const client = getSupabaseAdminClient();
 
   const { data, error } = await client
@@ -64,6 +68,7 @@ export async function getProjectByIdForUser(userId: string, projectId: string) {
 }
 
 export async function ensureStarterProjects(userId: string) {
+  assertUuid(userId, "userId");
   const client = getSupabaseAdminClient();
 
   const { count, error: countError } = await client

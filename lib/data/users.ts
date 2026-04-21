@@ -1,6 +1,7 @@
 import "server-only";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import type { UserAccountRow } from "@/lib/supabase/types";
+import { assertUuid } from "@/lib/security/validation";
 
 export interface AppUser {
   id: string;
@@ -50,6 +51,7 @@ export async function findUserByEmail(email: string) {
 }
 
 export async function findUserById(userId: string) {
+  assertUuid(userId, "userId");
   const client = getSupabaseAdminClient();
 
   const { data, error } = await client
@@ -152,6 +154,7 @@ export async function ensureOAuthUser(input: {
 }
 
 export async function updateUserName(userId: string, name: string) {
+  assertUuid(userId, "userId");
   const client = getSupabaseAdminClient();
 
   const { data, error } = await client

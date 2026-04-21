@@ -62,7 +62,7 @@ export async function PATCH(request: Request) {
 
     const updatedUser = await updateUserName(session.user.id, parsed.name);
 
-    return Response.json({
+    return secureJson({
       ok: true,
       user: {
         id: updatedUser.id,

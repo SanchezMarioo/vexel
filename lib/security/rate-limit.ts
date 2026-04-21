@@ -1,5 +1,19 @@
 import "server-only";
 
+/**
+ * ⚠️  IN-MEMORY RATE LIMITER — DEVELOPMENT / SINGLE-INSTANCE ONLY
+ *
+ * This store lives in the Node.js process memory. It resets on every deploy,
+ * cold start, or server restart, and each serverless function invocation gets
+ * its own empty map.
+ *
+ * **For production on Vercel (serverless) replace with a distributed store:**
+ *   - @upstash/ratelimit + @upstash/redis  (recommended, ~5 min setup)
+ *   - Vercel KV
+ *
+ * @see https://upstash.com/docs/redis/sdks/ratelimit-ts/overview
+ */
+
 type RateLimitEntry = {
   count: number;
   resetAt: number;
