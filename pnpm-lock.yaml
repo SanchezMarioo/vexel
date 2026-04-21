@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  openid-client@5.7.1:
+    hash: fa13c3b54af3fdf153904441daa2ea98bdd6eebe5ced818be4b7e4c724f4b979
+    path: patches/openid-client@5.7.1.patch
+
 importers:
 
   .:
@@ -3803,7 +3808,7 @@ snapshots:
       jose: 4.15.9
       next: 16.2.4(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       oauth: 0.9.15
-      openid-client: 5.7.1
+      openid-client: 5.7.1(patch_hash=fa13c3b54af3fdf153904441daa2ea98bdd6eebe5ced818be4b7e4c724f4b979)
       preact: 10.29.1
       preact-render-to-string: 5.2.6(preact@10.29.1)
       react: 19.2.4
@@ -3891,7 +3896,7 @@ snapshots:
 
   oidc-token-hash@5.2.0: {}
 
-  openid-client@5.7.1:
+  openid-client@5.7.1(patch_hash=fa13c3b54af3fdf153904441daa2ea98bdd6eebe5ced818be4b7e4c724f4b979):
     dependencies:
       jose: 4.15.9
       lru-cache: 6.0.0
