@@ -33,3 +33,20 @@ export function sanitizeCallbackUrl(value: string | undefined, fallback = "/") {
     return fallback;
   }
 }
+
+export function resolveAuthRedirectPath(value: string | null | undefined, fallback = "/") {
+  if (!value) {
+    return fallback;
+  }
+
+  if (value.startsWith("/")) {
+    return sanitizeCallbackUrl(value, fallback);
+  }
+
+  try {
+    const parsed = new URL(value);
+    return sanitizeCallbackUrl(`${parsed.pathname}${parsed.search}${parsed.hash}`, fallback);
+  } catch {
+    return fallback;
+  }
+}

@@ -3,26 +3,14 @@ import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
+import { getAuthSecret, getGoogleAuthConfig } from "@/lib/auth/env";
 import { credentialsSchema } from "@/lib/auth/schemas";
 import { ensureStarterProjects } from "@/lib/data/projects";
-import { ensureOAuthUser, findUserByEmail } from "@/lib/data/users";
+import { ensureOAuthUser, findUserByEmail, findUserById } from "@/lib/data/users";
 import { checkRateLimit } from "@/lib/security/rate-limit";
 import { verifyPassword } from "@/lib/security/password";
 
-const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET;
-
-if (!NEXTAUTH_SECRET || NEXTAUTH_SECRET.length < 32) {
-  throw new Error(
-    "NEXTAUTH_SECRET no está configurado o es demasiado corto. " +
-    'Genera uno con: node -e "console.log(require(\'crypto\').randomBytes(48).toString(\'base64url\'))"',
-  );
-}
-
-if (NEXTAUTH_SECRET === "replace-with-a-long-random-secret") {
-  throw new Error(
-    "NEXTAUTH_SECRET contiene el valor por defecto del .env.example. Reemplázalo por uno seguro.",
-  );
-}
+const AUTH_SECRET = getAuthSecret();
 
 const AUTH_SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 const CREDENTIALS_RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
@@ -118,11 +106,13 @@ const providers: NextAuthOptions["providers"] = [
   }),
 ];
 
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+const googleAuthConfig = getGoogleAuthConfig();
+
+if (googleAuthConfig) {
   providers.push(
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: googleAuthConfig.clientId,
+      clientSecret: googleAuthConfig.clientSecret,
     }),
   );
 }
@@ -136,8 +126,7 @@ export const authOptions: NextAuthOptions = {
   jwt: {
     maxAge: AUTH_SESSION_MAX_AGE_SECONDS,
   },
-  useSecureCookies: process.env.NODE_ENV === "production",
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: AUTH_SECRET,
   pages: {
     signIn: "/auth/login",
   },
@@ -172,17 +161,33 @@ export const authOptions: NextAuthOptions = {
         token.userId = user.id;
       }
 
+      if (!token.userId && typeof token.sub === "string") {
+        token.userId = token.sub;
+      }
+
       if (!token.userId && token.email) {
         const existingUser = await findUserByEmail(token.email);
         token.userId = existingUser?.id;
+        token.role = existingUser?.role ?? "user";
+      }
+
+      if (token.userId && !token.role) {
+        const existingUser = await findUserById(token.userId);
+        token.role = existingUser?.role ?? "user";
       }
 
       return token;
     },
 
     async session({ session, token }) {
-      if (session.user && token.userId) {
-        session.user.id = token.userId;
+      if (session.user) {
+        const resolvedUserId = token.userId ?? (typeof token.sub === "string" ? token.sub : undefined);
+
+        if (resolvedUserId) {
+          session.user.id = resolvedUserId;
+        }
+
+        session.user.role = (token.role === "admin" ? "admin" : "user");
       }
 
       return session;

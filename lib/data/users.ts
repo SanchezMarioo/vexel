@@ -1,6 +1,6 @@
 import "server-only";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
-import type { UserAccountRow } from "@/lib/supabase/types";
+import type { UserAccountRow, UserRole } from "@/lib/supabase/types";
 import { assertUuid } from "@/lib/security/validation";
 
 export interface AppUser {
@@ -10,9 +10,10 @@ export interface AppUser {
   avatarUrl: string | null;
   passwordHash: string | null;
   authSource: "credentials" | "google";
+  role: UserRole;
 }
 
-const USER_SELECT = "id,email,full_name,avatar_url,password_hash,auth_source,created_at,updated_at";
+const USER_SELECT = "id,email,full_name,avatar_url,password_hash,auth_source,role,created_at,updated_at";
 
 function toAppUser(row: UserAccountRow): AppUser {
   return {
@@ -22,6 +23,7 @@ function toAppUser(row: UserAccountRow): AppUser {
     avatarUrl: row.avatar_url,
     passwordHash: row.password_hash,
     authSource: row.auth_source,
+    role: row.role,
   };
 }
 

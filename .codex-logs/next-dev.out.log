@@ -1,0 +1,41 @@
+
+> seller-landing-page@0.1.0 dev
+> next dev --port 3000
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.146:3000
+- Environments: .env.local
+✓ Ready in 1312ms
+⚠ Console Ninja Turbopack support is a PRO feature, [33mcurrently available to community users while in preview[0m
+
+ GET /auth/login?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2F&error=OAuthCallback 200 in 1398ms (next.js: 601ms, proxy.ts: 282ms, application-code: 515ms)
+ GET /api/auth/providers 200 in 1610ms (next.js: 1577ms, application-code: 33ms)
+ GET /api/auth/csrf 200 in 29ms (next.js: 14ms, application-code: 15ms)
+ POST /api/auth/signin/google 200 in 190ms (next.js: 3ms, application-code: 186ms)
+ GET /api/auth/callback/google?state=jKPsxmUSA548OZiXwe5lVWpy1aylJQS3xjgyy2gW0Ao&iss=https%3A%2F%2Faccounts.google.com&code=4%2F0AeoWuM881G_A5sRrC2QFUALBxQbd3glAXu-hZViIeNVcka_F_fBa8NirxPuXa47HF11Zag&scope=email+profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+openid&authuser=0&prompt=none 302 in 792ms (next.js: 16ms, application-code: 775ms)
+ GET / 200 in 334ms (next.js: 72ms, application-code: 262ms)
+ GET /cuenta 200 in 466ms (next.js: 35ms, proxy.ts: 10ms, application-code: 422ms)
+ GET /api/auth/session 200 in 57ms (next.js: 28ms, application-code: 29ms)
+ POST /api/auth/register 403 in 123ms (next.js: 115ms, application-code: 7ms)
+ GET /api/auth/csrf 200 in 45ms (next.js: 21ms, application-code: 25ms)
+ POST /api/auth/callback/credentials 401 in 207ms (next.js: 5ms, application-code: 202ms)
+ GET /api/auth/session 200 in 39ms (next.js: 6ms, application-code: 33ms)
+ GET /auth/login?callbackUrl=%2Fcuenta 200 in 115ms (next.js: 6ms, proxy.ts: 5ms, application-code: 104ms)
+ POST /api/auth/register 201 in 788ms (next.js: 2ms, application-code: 785ms)
+ GET /api/auth/csrf 200 in 32ms (next.js: 20ms, application-code: 12ms)
+ POST /api/auth/callback/credentials 200 in 480ms (next.js: 2ms, application-code: 478ms)
+ GET /api/auth/session 200 in 36ms (next.js: 8ms, application-code: 28ms)
+ GET /cuenta 200 in 263ms (next.js: 5ms, proxy.ts: 6ms, application-code: 252ms)
+✓ Compiled in 295ms
+ GET /cuenta 200 in 1411ms (next.js: 273ms, proxy.ts: 302ms, application-code: 836ms)
+ GET /cuenta 200 in 632ms (next.js: 4ms, proxy.ts: 189ms, application-code: 439ms)
+ GET /cuenta 200 in 484ms (next.js: 40ms, proxy.ts: 58ms, application-code: 386ms)
+ GET /cuenta 200 in 483ms (next.js: 141ms, proxy.ts: 60ms, application-code: 282ms)
+ GET /cuenta 200 in 485ms (next.js: 117ms, proxy.ts: 59ms, application-code: 309ms)
+ GET /cuenta 200 in 484ms (next.js: 154ms, proxy.ts: 70ms, application-code: 260ms)
+ GET /cuenta 200 in 91ms (next.js: 7ms, proxy.ts: 7ms, application-code: 77ms)
+✓ Compiled in 229ms
+ GET /cuenta 200 in 1047ms (next.js: 459ms, proxy.ts: 92ms, application-code: 495ms)
+ GET /cuenta 200 in 585ms (next.js: 6ms, proxy.ts: 107ms, application-code: 472ms)

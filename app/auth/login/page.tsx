@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import LoginForm from "@/components/auth/LoginForm";
 import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
+import { isGoogleAuthConfigured } from "@/lib/auth/env";
 
 export const metadata: Metadata = {
   title: "Iniciar sesion",
@@ -32,7 +33,7 @@ function mapInitialError(errorCode?: string) {
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const params = await searchParams;
   const callbackUrl = sanitizeCallbackUrl(params.callbackUrl, "/");
-  const googleEnabled = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
+  const googleEnabled = isGoogleAuthConfigured();
 
   return (
     <LoginForm

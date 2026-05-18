@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { type FormEvent, useState } from "react";
-import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
+import { resolveAuthRedirectPath, sanitizeCallbackUrl } from "@/lib/auth/callback-url";
 
 interface LoginFormProps {
   callbackUrl: string;
@@ -63,7 +63,7 @@ export default function LoginForm({
     });
 
     if (result?.ok) {
-      router.push(result.url ?? safeCallbackUrl);
+      router.push(resolveAuthRedirectPath(result?.url, safeCallbackUrl));
       router.refresh();
       return;
     }

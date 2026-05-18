@@ -11,15 +11,16 @@ import { createCredentialsUser, findUserByEmail } from "@/lib/data/users";
 import { hashPassword } from "@/lib/security/password";
 
 function mapSessionUser(session: Session | null): SessionUser | null {
-  if (!session?.user?.id || !session.user.email) {
+  if (!session?.user?.email) {
     return null;
   }
 
   return {
-    id: session.user.id,
+    id: session.user.id ?? "",
     email: session.user.email,
     name: session.user.name ?? null,
     image: session.user.image ?? null,
+    role: session.user.role ?? "user",
   };
 }
 
@@ -30,10 +31,24 @@ export const authService: AuthServicePort = {
   },
 
   async requireSessionUser(callbackUrl) {
-    const currentUser = await this.getSessionUser();
+    const session = await getServerSession(authOptions);
+    const currentUser = mapSessionUser(session);
 
     if (currentUser) {
-      return currentUser;
+      if (currentUser.id) {
+        return currentUser;
+      }
+
+      const persistedUser = await findUserByEmail(currentUser.email);
+
+      if (persistedUser) {
+        return {
+          id: persistedUser.id,
+          email: persistedUser.email,
+          name: persistedUser.name ?? currentUser.name,
+          image: persistedUser.avatarUrl ?? currentUser.image,
+        };
+      }
     }
 
     const safeCallbackUrl = sanitizeCallbackUrl(callbackUrl, "/cuenta");
@@ -68,4 +83,12 @@ export async function getSessionUser() {
 
 export async function requireSessionUser(callbackUrl?: string) {
   return authService.requireSessionUser(callbackUrl);
+}
+
+export async function requireAdminUser() {
+  const user = await requireSessionUser("/cuenta");
+  if (user.role !== "admin") {
+    redirect("/");
+  }
+  return user;
 }

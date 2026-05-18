@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import RegisterForm from "@/components/auth/RegisterForm";
 import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
+import { isGoogleAuthConfigured } from "@/lib/auth/env";
 
 export const metadata: Metadata = {
   title: "Crear cuenta",
@@ -18,7 +19,7 @@ interface RegisterPageProps {
 export default async function RegisterPage({ searchParams }: RegisterPageProps) {
   const params = await searchParams;
   const callbackUrl = sanitizeCallbackUrl(params.callbackUrl, "/");
-  const googleEnabled = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
+  const googleEnabled = isGoogleAuthConfigured();
 
   return <RegisterForm callbackUrl={callbackUrl} googleEnabled={googleEnabled} />;
 }

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { type FormEvent, useState } from "react";
-import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
+import { resolveAuthRedirectPath, sanitizeCallbackUrl } from "@/lib/auth/callback-url";
 
 interface RegisterFormProps {
   callbackUrl: string;
@@ -59,7 +59,7 @@ export default function RegisterForm({ callbackUrl, googleEnabled }: RegisterFor
     });
 
     if (loginResult?.ok) {
-      router.push(loginResult.url ?? safeCallbackUrl);
+      router.push(resolveAuthRedirectPath(loginResult?.url, safeCallbackUrl));
       router.refresh();
       return;
     }

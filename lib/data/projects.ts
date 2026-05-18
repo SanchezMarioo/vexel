@@ -9,11 +9,15 @@ export interface AppProject {
   title: string;
   summary: string | null;
   status: ProjectStatus;
+  budgetFinal: number | null;
+  estimatedDays: number | null;
+  adminNotes: string | null;
   createdAt: string;
   updatedAt: string;
 }
 
-const PROJECT_SELECT = "id,user_id,title,summary,status,created_at,updated_at";
+const PROJECT_SELECT =
+  "id,user_id,title,summary,status,budget_final,estimated_days,admin_notes,created_at,updated_at";
 
 function toAppProject(row: UserProjectRow): AppProject {
   return {
@@ -22,6 +26,9 @@ function toAppProject(row: UserProjectRow): AppProject {
     title: row.title,
     summary: row.summary,
     status: row.status,
+    budgetFinal: row.budget_final,
+    estimatedDays: row.estimated_days,
+    adminNotes: row.admin_notes,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -62,6 +69,59 @@ export async function getProjectByIdForUser(userId: string, projectId: string) {
 
   if (!data) {
     return null;
+  }
+
+  return toAppProject(data);
+}
+
+export async function getProjectById(projectId: string) {
+  assertUuid(projectId, "projectId");
+  const client = getSupabaseAdminClient();
+
+  const { data, error } = await client
+    .from("user_projects")
+    .select(PROJECT_SELECT)
+    .eq("id", projectId)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(`Unable to load project: ${error.message}`);
+  }
+
+  return data ? toAppProject(data) : null;
+}
+
+export async function updateProject(
+  projectId: string,
+  input: {
+    title?: string;
+    summary?: string | null;
+    status?: ProjectStatus;
+    budgetFinal?: number | null;
+    estimatedDays?: number | null;
+    adminNotes?: string | null;
+  },
+) {
+  assertUuid(projectId, "projectId");
+  const client = getSupabaseAdminClient();
+
+  const update: Record<string, unknown> = {};
+  if (input.title !== undefined) update.title = input.title;
+  if (input.summary !== undefined) update.summary = input.summary;
+  if (input.status !== undefined) update.status = input.status;
+  if (input.budgetFinal !== undefined) update.budget_final = input.budgetFinal;
+  if (input.estimatedDays !== undefined) update.estimated_days = input.estimatedDays;
+  if (input.adminNotes !== undefined) update.admin_notes = input.adminNotes;
+
+  const { data, error } = await client
+    .from("user_projects")
+    .update(update)
+    .eq("id", projectId)
+    .select(PROJECT_SELECT)
+    .single();
+
+  if (error) {
+    throw new Error(`Unable to update project: ${error.message}`);
   }
 
   return toAppProject(data);

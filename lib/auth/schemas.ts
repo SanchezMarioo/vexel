@@ -39,6 +39,27 @@ export const profileSchema = z.object({
   name: nameSchema,
 });
 
+export const requestSchema = z.object({
+  title: z.string().trim().min(3, "El titulo es demasiado corto.").max(120, "El titulo es demasiado largo."),
+  description: z.string().trim().min(10, "La descripcion es demasiado corta.").max(2000, "La descripcion es demasiado larga."),
+  projectType: z.enum(["landing_page", "local_campaign", "ecommerce", "other"], {
+    errorMap: () => ({ message: "Tipo de proyecto no valido." }),
+  }),
+  budget: z.string().trim().max(100, "El presupuesto es demasiado largo.").optional(),
+  referenceUrl: z
+    .string()
+    .trim()
+    .max(500)
+    .refine((v) => !v || v === "" || /^https?:\/\/.+/.test(v), "Introduce una URL valida.")
+    .optional(),
+});
+
+export const messageSchema = z.object({
+  content: z.string().trim().min(1, "El mensaje no puede estar vacio.").max(4000, "El mensaje es demasiado largo."),
+});
+
 export type CredentialsInput = z.infer<typeof credentialsSchema>;
 export type RegisterInput = z.infer<typeof registerSchema>;
 export type ProfileInput = z.infer<typeof profileSchema>;
+export type RequestInput = z.infer<typeof requestSchema>;
+export type MessageInput = z.infer<typeof messageSchema>;

@@ -1,0 +1,19 @@
+
+> seller-landing-page@0.1.0 dev
+> next dev --port 3000
+
+[32m✔[0m [33mConsole Ninja[0m extension is connected to [33mNext.js[0m, see [36mhttps://tinyurl.com/2vt8jxzw[0m
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.146:3000
+- Environments: .env.local
+✓ Ready in 1577ms
+⚠ Console Ninja Turbopack support is a PRO feature, [33mcurrently available to community users while in preview[0m
+
+ GET /auth/login?callbackUrl=http%3A%2F%2Flocalhost%3A3000%2F&error=OAuthCallback 200 in 1403ms (next.js: 614ms, proxy.ts: 352ms, application-code: 436ms)
+ POST /api/auth/register 201 in 1817ms (next.js: 338ms, application-code: 1480ms)
+ GET /api/auth/csrf 200 in 1422ms (next.js: 1390ms, application-code: 32ms)
+ POST /api/auth/callback/credentials 200 in 506ms (next.js: 17ms, application-code: 489ms)
+ GET /api/auth/session 200 in 14ms (next.js: 2ms, application-code: 12ms)
+ GET /cuenta 200 in 1296ms (next.js: 25ms, proxy.ts: 6ms, application-code: 1265ms)
+ GET /api/auth/signin/google?callbackUrl=%2Fcuenta 302 in 47ms (next.js: 14ms, application-code: 33ms)
