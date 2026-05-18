@@ -71,7 +71,7 @@ export default function MessageThread({ projectId, messages, currentUserRole, cu
 
       <div
         ref={scrollRef}
-        className="h-80 overflow-y-auto rounded-2xl border border-white/10 bg-black/20 p-4"
+        className="h-80 overflow-y-auto rounded-2xl border border-white/10 bg-black/20 p-4 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-white/5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb:hover]:bg-white/40"
       >
         {messages.length === 0 ? (
           <p className="flex h-full items-center justify-center text-sm text-white/40">
