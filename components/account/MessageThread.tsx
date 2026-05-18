@@ -171,31 +171,7 @@ export default function MessageThread({ projectId, messages, currentUserRole, cu
         </p>
       )}
 
-      <form onSubmit={handleSend} className="space-y-3">
-        {/* Previews de imágenes seleccionadas */}
-        {previews.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {previews.map((src, i) => (
-              <div key={src} className="relative">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={src}
-                  alt={`Preview ${i + 1}`}
-                  className="h-16 w-16 rounded-xl border border-white/15 object-cover"
-                />
-                <button
-                  type="button"
-                  onClick={() => removeFile(i)}
-                  className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full border border-white/20 bg-black/70 text-xs text-white/80 hover:bg-red-900/70"
-                  aria-label="Quitar imagen"
-                >
-                  ×
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-
+      <form onSubmit={handleSend} className="rounded-2xl border border-white/20 bg-black/45 focus-within:ring-2 focus-within:ring-[#7B61FF]">
         <input
           ref={fileInputRef}
           type="file"
@@ -205,41 +181,67 @@ export default function MessageThread({ projectId, messages, currentUserRole, cu
           onChange={handleFileChange}
         />
 
-        <div className="flex gap-3">
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={2}
-            maxLength={4000}
-            placeholder="Escribe un mensaje..."
-            className="flex-1 resize-none rounded-2xl border border-white/20 bg-black/45 px-4 py-3 text-sm text-white placeholder:text-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7B61FF]"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                e.currentTarget.form?.requestSubmit();
-              }
-            }}
-          />
-          <div className="flex flex-col gap-2 self-end">
-            <button
-              type="button"
-              onClick={() => fileInputRef.current?.click()}
-              disabled={isSending || selectedFiles.length >= 3}
-              title="Adjuntar imagen"
-              className="rounded-2xl border border-white/20 bg-black/30 p-3 text-white/55 transition hover:border-white/35 hover:text-white/85 disabled:cursor-not-allowed disabled:opacity-40"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fillRule="evenodd" d="M8 4a3 3 0 00-3 3v4.5a4.5 4.5 0 009 0V7a1 1 0 112 0v4.5a6.5 6.5 0 01-13 0V7a5 5 0 0110 0v4.5a2.5 2.5 0 01-5 0V7a1 1 0 012 0v4.5a.5.5 0 001 0V7a3 3 0 00-3-3z" clipRule="evenodd" />
-              </svg>
-            </button>
-            <button
-              type="submit"
-              disabled={isSending || (!content.trim() && selectedFiles.length === 0)}
-              className="rounded-2xl border border-[#8f7aff] bg-[#7B61FF] px-5 py-3 text-sm font-medium text-white transition hover:bg-[#6B51EF] disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isSending ? "..." : "Enviar"}
-            </button>
+        {/* Previews de imágenes seleccionadas */}
+        {previews.length > 0 && (
+          <div className="flex flex-wrap gap-2 border-b border-white/10 px-3 pt-3 pb-2">
+            {previews.map((src, i) => (
+              <div key={src} className="relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={src}
+                  alt={`Preview ${i + 1}`}
+                  className="h-14 w-14 rounded-xl border border-white/15 object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeFile(i)}
+                  className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full border border-white/20 bg-black/80 text-xs text-white/70 hover:bg-red-900/80"
+                  aria-label="Quitar imagen"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
           </div>
+        )}
+
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          rows={2}
+          maxLength={4000}
+          placeholder="Escribe un mensaje..."
+          className="w-full resize-none bg-transparent px-4 pt-3 pb-2 text-sm text-white placeholder:text-white/35 focus:outline-none"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              e.currentTarget.form?.requestSubmit();
+            }
+          }}
+        />
+
+        {/* Barra inferior */}
+        <div className="flex items-center justify-between border-t border-white/10 px-3 py-2">
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={isSending || selectedFiles.length >= 3}
+            title="Adjuntar imagen (máx. 3)"
+            className="flex items-center gap-1.5 rounded-xl px-2 py-1.5 text-xs text-white/45 transition hover:bg-white/8 hover:text-white/75 disabled:cursor-not-allowed disabled:opacity-30"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48" />
+            </svg>
+            <span>Imagen{selectedFiles.length > 0 ? ` (${selectedFiles.length}/3)` : ""}</span>
+          </button>
+
+          <button
+            type="submit"
+            disabled={isSending || (!content.trim() && selectedFiles.length === 0)}
+            className="rounded-xl border border-[#8f7aff]/70 bg-[#7B61FF] px-4 py-1.5 text-sm font-medium text-white transition hover:bg-[#6B51EF] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {isSending ? "Enviando..." : "Enviar"}
+          </button>
         </div>
       </form>
     </section>
