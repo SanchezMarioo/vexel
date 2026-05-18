@@ -299,3 +299,7 @@ begin
   end if;
 end
 $$;
+
+-- Image attachments for project messages
+alter table public.project_messages
+  add column if not exists image_urls text[] not null default '{}';

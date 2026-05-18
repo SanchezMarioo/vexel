@@ -160,6 +160,7 @@ export interface Database {
           sender_id: string;
           sender_role: MessageSenderRole;
           content: string;
+          image_urls: string[];
           created_at: string;
         };
         Insert: {
@@ -168,6 +169,7 @@ export interface Database {
           sender_id: string;
           sender_role: MessageSenderRole;
           content: string;
+          image_urls?: string[];
           created_at?: string;
         };
         Update: {
@@ -176,6 +178,7 @@ export interface Database {
           sender_id?: string;
           sender_role?: MessageSenderRole;
           content?: string;
+          image_urls?: string[];
           created_at?: string;
         };
         Relationships: [

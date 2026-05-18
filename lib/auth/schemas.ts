@@ -54,9 +54,15 @@ export const requestSchema = z.object({
     .optional(),
 });
 
-export const messageSchema = z.object({
-  content: z.string().trim().min(1, "El mensaje no puede estar vacio.").max(4000, "El mensaje es demasiado largo."),
-});
+export const messageSchema = z
+  .object({
+    content: z.string().trim().max(4000, "El mensaje es demasiado largo."),
+    imageUrls: z.array(z.string().url("URL de imagen no valida.")).max(3, "Maximo 3 imagenes por mensaje.").default([]),
+  })
+  .refine(
+    (data) => data.content.length > 0 || data.imageUrls.length > 0,
+    { error: "El mensaje no puede estar vacio." },
+  );
 
 export type CredentialsInput = z.infer<typeof credentialsSchema>;
 export type RegisterInput = z.infer<typeof registerSchema>;

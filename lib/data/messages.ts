@@ -3,7 +3,7 @@ import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import type { MessageSenderRole, ProjectMessageRow } from "@/lib/supabase/types";
 import { assertUuid } from "@/lib/security/validation";
 
-const MESSAGE_SELECT = "id,project_id,sender_id,sender_role,content,created_at";
+const MESSAGE_SELECT = "id,project_id,sender_id,sender_role,content,image_urls,created_at";
 
 export interface AppMessage {
   id: string;
@@ -11,6 +11,7 @@ export interface AppMessage {
   senderId: string;
   senderRole: MessageSenderRole;
   content: string;
+  imageUrls: string[];
   createdAt: string;
 }
 
@@ -21,6 +22,7 @@ function toAppMessage(row: ProjectMessageRow): AppMessage {
     senderId: row.sender_id,
     senderRole: row.sender_role,
     content: row.content,
+    imageUrls: row.image_urls ?? [],
     createdAt: row.created_at,
   };
 }
@@ -47,6 +49,7 @@ export async function createMessage(
   senderId: string,
   senderRole: MessageSenderRole,
   content: string,
+  imageUrls: string[] = [],
 ): Promise<AppMessage> {
   assertUuid(projectId, "projectId");
   assertUuid(senderId, "senderId");
@@ -54,7 +57,7 @@ export async function createMessage(
 
   const { data, error } = await client
     .from("project_messages")
-    .insert({ project_id: projectId, sender_id: senderId, sender_role: senderRole, content })
+    .insert({ project_id: projectId, sender_id: senderId, sender_role: senderRole, content, image_urls: imageUrls })
     .select(MESSAGE_SELECT)
     .single();
 

@@ -104,13 +104,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ pro
 
   try {
     const payload = await request.json();
-    const { content } = messageSchema.parse(payload);
+    const { content, imageUrls } = messageSchema.parse(payload);
 
     const message = await createMessage(
       projectId,
       session.user.id,
       isAdmin ? "admin" : "user",
       content,
+      imageUrls,
     );
 
     return secureJson({ ok: true, message }, { status: 201 });
