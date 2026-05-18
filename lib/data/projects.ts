@@ -17,7 +17,7 @@ export interface AppProject {
 }
 
 const PROJECT_SELECT =
-  "id,user_id,title,summary,status,budget_final,estimated_days,admin_notes,created_at,updated_at";
+  "id,user_id,title,summary,status,request_id,budget_final,estimated_days,admin_notes,created_at,updated_at";
 
 function toAppProject(row: UserProjectRow): AppProject {
   return {

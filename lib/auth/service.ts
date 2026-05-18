@@ -47,6 +47,7 @@ export const authService: AuthServicePort = {
           email: persistedUser.email,
           name: persistedUser.name ?? currentUser.name,
           image: persistedUser.avatarUrl ?? currentUser.image,
+          role: persistedUser.role ?? "user",
         };
       }
     }

@@ -171,6 +171,9 @@ export async function acceptRequest(
     title: projectData.title,
     summary: projectData.summary,
     status: projectData.status,
+    budgetFinal: null,
+    estimatedDays: null,
+    adminNotes: null,
     createdAt: projectData.created_at,
     updatedAt: projectData.updated_at,
   };

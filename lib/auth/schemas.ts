@@ -43,7 +43,7 @@ export const requestSchema = z.object({
   title: z.string().trim().min(3, "El titulo es demasiado corto.").max(120, "El titulo es demasiado largo."),
   description: z.string().trim().min(10, "La descripcion es demasiado corta.").max(2000, "La descripcion es demasiado larga."),
   projectType: z.enum(["landing_page", "local_campaign", "ecommerce", "other"], {
-    errorMap: () => ({ message: "Tipo de proyecto no valido." }),
+    error: "Tipo de proyecto no valido.",
   }),
   budget: z.string().trim().max(100, "El presupuesto es demasiado largo.").optional(),
   referenceUrl: z
