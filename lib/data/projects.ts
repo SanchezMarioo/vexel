@@ -127,6 +127,17 @@ export async function updateProject(
   return toAppProject(data);
 }
 
+export async function deleteProject(projectId: string): Promise<void> {
+  assertUuid(projectId, "projectId");
+  const client = getSupabaseAdminClient();
+
+  const { error } = await client.from("user_projects").delete().eq("id", projectId);
+
+  if (error) {
+    throw new Error(`Unable to delete project: ${error.message}`);
+  }
+}
+
 export async function ensureStarterProjects(userId: string) {
   assertUuid(userId, "userId");
   const client = getSupabaseAdminClient();

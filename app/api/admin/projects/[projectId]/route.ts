@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { ZodError, z } from "zod";
 import { authOptions } from "@/lib/auth/options";
-import { updateProject } from "@/lib/data/projects";
+import { updateProject, deleteProject } from "@/lib/data/projects";
 import { hasTrustedOrigin, isJsonContentType } from "@/lib/security/request";
 import { secureJson } from "@/lib/security/response";
 
@@ -18,6 +18,30 @@ const updateProjectSchema = z.object({
 
 function errorResponse(message: string, status: number) {
   return secureJson({ ok: false, message }, { status });
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ projectId: string }> },
+) {
+  if (!hasTrustedOrigin(request)) {
+    return errorResponse("Origen no permitido.", 403);
+  }
+
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user?.id || session.user.role !== "admin") {
+    return errorResponse("No autorizado.", 403);
+  }
+
+  const { projectId } = await params;
+
+  try {
+    await deleteProject(projectId);
+    return secureJson({ ok: true });
+  } catch {
+    return errorResponse("No se pudo eliminar el proyecto.", 500);
+  }
 }
 
 export async function PATCH(
