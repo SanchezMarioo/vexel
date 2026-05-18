@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import type { ProjectStatus } from "@/lib/supabase/types";
+import CreateProjectForm from "@/components/admin/CreateProjectForm";
 
 export const metadata: Metadata = { title: "Proyectos" };
 
@@ -34,9 +35,12 @@ export default async function AdminProyectosPage() {
 
   return (
     <article className="space-y-6">
-      <header>
-        <p className="text-xs uppercase tracking-[0.18em] text-white/50">Administracion</p>
-        <h2 className="mt-2 font-display text-3xl text-white">Proyectos</h2>
+      <header className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-white/50">Administracion</p>
+          <h2 className="mt-2 font-display text-3xl text-white">Proyectos</h2>
+        </div>
+        <CreateProjectForm />
       </header>
 
       {!data || data.length === 0 ? (

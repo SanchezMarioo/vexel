@@ -127,6 +127,33 @@ export async function updateProject(
   return toAppProject(data);
 }
 
+export async function createProject(input: {
+  userId: string;
+  title: string;
+  summary?: string | null;
+  status?: ProjectStatus;
+}): Promise<AppProject> {
+  assertUuid(input.userId, "userId");
+  const client = getSupabaseAdminClient();
+
+  const { data, error } = await client
+    .from("user_projects")
+    .insert({
+      user_id: input.userId,
+      title: input.title,
+      summary: input.summary ?? null,
+      status: input.status ?? "draft",
+    })
+    .select(PROJECT_SELECT)
+    .single();
+
+  if (error) {
+    throw new Error(`Unable to create project: ${error.message}`);
+  }
+
+  return toAppProject(data);
+}
+
 export async function deleteProject(projectId: string): Promise<void> {
   assertUuid(projectId, "projectId");
   const client = getSupabaseAdminClient();

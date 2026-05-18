@@ -78,10 +78,11 @@ export default function PaymentsManager({ projectId, payments: initialPayments }
 
   async function handleAddPayment(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const form = event.currentTarget;
     setIsAdding(true);
     setErrorMessage(null);
 
-    const formData = new FormData(event.currentTarget);
+    const formData = new FormData(form);
     const payload = {
       description: String(formData.get("description") ?? "").trim(),
       amount: parseFloat(String(formData.get("amount") ?? "0")),
@@ -104,7 +105,7 @@ export default function PaymentsManager({ projectId, payments: initialPayments }
       }
 
       setPayments((prev) => [...prev, data.payment]);
-      event.currentTarget.reset();
+      form.reset();
       router.refresh();
     } catch {
       setErrorMessage("Error de conexion.");
