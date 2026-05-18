@@ -5,7 +5,6 @@ import GoogleProvider from "next-auth/providers/google";
 import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
 import { getAuthSecret, getGoogleAuthConfig } from "@/lib/auth/env";
 import { credentialsSchema } from "@/lib/auth/schemas";
-import { ensureStarterProjects } from "@/lib/data/projects";
 import { ensureOAuthUser, findUserByEmail, findUserById } from "@/lib/data/users";
 import { checkRateLimit } from "@/lib/security/rate-limit";
 import { verifyPassword } from "@/lib/security/password";
@@ -150,8 +149,6 @@ export const authOptions: NextAuthOptions = {
       user.id = accountUser.id;
       user.name = accountUser.name;
       user.image = accountUser.avatarUrl;
-
-      await ensureStarterProjects(accountUser.id);
 
       return true;
     },

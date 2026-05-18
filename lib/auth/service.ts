@@ -6,7 +6,6 @@ import { authOptions } from "@/lib/auth/options";
 import { sanitizeCallbackUrl } from "@/lib/auth/callback-url";
 import type { AuthServicePort, RegisterUserInput, SessionUser } from "@/lib/auth/contracts";
 import { registerSchema } from "@/lib/auth/schemas";
-import { ensureStarterProjects } from "@/lib/data/projects";
 import { createCredentialsUser, findUserByEmail } from "@/lib/data/users";
 import { hashPassword } from "@/lib/security/password";
 
@@ -71,8 +70,6 @@ export const authService: AuthServicePort = {
       name: parsedInput.name,
       passwordHash,
     });
-
-    await ensureStarterProjects(user.id);
 
     return user;
   },
