@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useEffect, useRef, useState } from "react";
 import type { AppMessage } from "@/lib/data/messages";
 
 interface MessageThreadProps {
@@ -24,6 +24,13 @@ export default function MessageThread({ projectId, messages, currentUserRole, cu
   const [content, setContent] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   async function handleSend(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -62,33 +69,38 @@ export default function MessageThread({ projectId, messages, currentUserRole, cu
     <section className="space-y-4">
       <h3 className="font-display text-xl text-white">Mensajes</h3>
 
-      {messages.length === 0 ? (
-        <p className="rounded-2xl border border-dashed border-white/15 p-5 text-sm text-white/50">
-          Aun no hay mensajes. Inicia la conversacion con el equipo.
-        </p>
-      ) : (
-        <div className="space-y-3">
-          {messages.map((msg) => {
-            const isOwn = msg.senderRole === currentUserRole;
-            return (
-              <div key={msg.id} className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[75%] space-y-1 rounded-2xl px-4 py-3 ${
-                    isOwn
-                      ? "border border-[#8f7aff]/40 bg-[#7B61FF]/20"
-                      : "border border-white/12 bg-white/5"
-                  }`}
-                >
-                  <p className="text-xs text-white/45">
-                    {isOwn ? currentUserName : otherPartyName} · {formatTime(msg.createdAt)}
-                  </p>
-                  <p className="whitespace-pre-wrap text-sm text-white/90">{msg.content}</p>
+      <div
+        ref={scrollRef}
+        className="h-80 overflow-y-auto rounded-2xl border border-white/10 bg-black/20 p-4"
+      >
+        {messages.length === 0 ? (
+          <p className="flex h-full items-center justify-center text-sm text-white/40">
+            Aun no hay mensajes. Inicia la conversacion.
+          </p>
+        ) : (
+          <div className="space-y-3">
+            {messages.map((msg) => {
+              const isOwn = msg.senderRole === currentUserRole;
+              return (
+                <div key={msg.id} className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
+                  <div
+                    className={`max-w-[75%] space-y-1 rounded-2xl px-4 py-3 ${
+                      isOwn
+                        ? "border border-[#8f7aff]/40 bg-[#7B61FF]/20"
+                        : "border border-white/12 bg-white/5"
+                    }`}
+                  >
+                    <p className="text-xs text-white/45">
+                      {isOwn ? currentUserName : otherPartyName} · {formatTime(msg.createdAt)}
+                    </p>
+                    <p className="whitespace-pre-wrap text-sm text-white/90">{msg.content}</p>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        )}
+      </div>
 
       {errorMessage && (
         <p className="rounded-2xl border border-red-300/30 bg-red-400/10 px-4 py-3 text-sm text-red-100" role="alert">
