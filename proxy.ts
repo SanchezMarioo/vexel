@@ -7,6 +7,16 @@ const PROTECTED_PATHS = ["/cuenta", "/api/account"];
 const ADMIN_PATHS = ["/admin", "/api/admin"];
 const AUTH_PATHS = ["/auth/login", "/auth/register"];
 
+const isDev = process.env.NODE_ENV !== "production";
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL ?? "";
+const supabaseOrigin = (() => {
+  try {
+    return supabaseUrl ? new URL(supabaseUrl).origin : "https://*.supabase.co";
+  } catch {
+    return "https://*.supabase.co";
+  }
+})();
+
 function isProtectedPath(pathname: string) {
   return PROTECTED_PATHS.some((prefix) => pathname.startsWith(prefix));
 }
@@ -17,6 +27,26 @@ function isAdminPath(pathname: string) {
 
 function isAuthPath(pathname: string) {
   return AUTH_PATHS.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+}
+
+function isHtmlPath(pathname: string) {
+  return !pathname.startsWith("/api/");
+}
+
+function buildCsp(nonce: string) {
+  return [
+    "default-src 'self'",
+    `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
+    "style-src 'self' 'unsafe-inline'",
+    `img-src 'self' data: blob: https://images.unsplash.com https://lh3.googleusercontent.com ${supabaseOrigin}`,
+    "font-src 'self' data:",
+    `connect-src 'self'${isDev ? " ws: wss: http://localhost:* http://127.0.0.1:*" : ""}`,
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    ...(isDev ? [] : ["upgrade-insecure-requests"]),
+  ].join("; ");
 }
 
 export async function proxy(request: NextRequest) {
@@ -80,7 +110,21 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  if (!isHtmlPath(pathname)) {
+    return NextResponse.next();
+  }
+
+  const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+  const csp = buildCsp(nonce);
+
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-nonce", nonce);
+  requestHeaders.set("Content-Security-Policy", csp);
+
+  const response = NextResponse.next({ request: { headers: requestHeaders } });
+  response.headers.set("Content-Security-Policy", csp);
+
+  return response;
 }
 
 export const config = {

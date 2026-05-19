@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isAllowedImageUrl } from "@/lib/security/image-url";
 
 const emailSchema = z
   .string()
@@ -57,7 +58,10 @@ export const requestSchema = z.object({
 export const messageSchema = z
   .object({
     content: z.string().trim().max(4000, "El mensaje es demasiado largo."),
-    imageUrls: z.array(z.string().url("URL de imagen no valida.")).max(3, "Maximo 3 imagenes por mensaje.").default([]),
+    imageUrls: z
+      .array(z.string().refine(isAllowedImageUrl, "URL de imagen no valida."))
+      .max(3, "Maximo 3 imagenes por mensaje.")
+      .default([]),
   })
   .refine(
     (data) => data.content.length > 0 || data.imageUrls.length > 0,

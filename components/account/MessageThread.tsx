@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { type ChangeEvent, type FormEvent, useEffect, useRef, useState } from "react";
 import type { AppMessage } from "@/lib/data/messages";
+import { isAllowedImageUrl } from "@/lib/security/image-url";
 
 interface MessageThreadProps {
   projectId: string;
@@ -145,16 +146,25 @@ export default function MessageThread({ projectId, messages, currentUserRole, cu
                     )}
                     {msg.imageUrls.length > 0 && (
                       <div className="flex flex-wrap gap-1.5 pt-1">
-                        {msg.imageUrls.map((url, i) => (
-                          <a key={url} href={url} target="_blank" rel="noopener noreferrer">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={url}
-                              alt={`Imagen adjunta ${i + 1}`}
-                              className="h-24 w-24 rounded-xl border border-white/10 object-cover transition hover:opacity-80"
-                            />
-                          </a>
-                        ))}
+                        {msg.imageUrls.map((url, i) =>
+                          isAllowedImageUrl(url) ? (
+                            <a key={url} href={url} target="_blank" rel="noopener noreferrer">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={url}
+                                alt={`Imagen adjunta ${i + 1}`}
+                                className="h-24 w-24 rounded-xl border border-white/10 object-cover transition hover:opacity-80"
+                              />
+                            </a>
+                          ) : (
+                            <div
+                              key={`invalid-${i}`}
+                              className="flex h-24 w-24 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-[10px] text-white/40"
+                            >
+                              Imagen no disponible
+                            </div>
+                          ),
+                        )}
                       </div>
                     )}
                   </div>
