@@ -7,7 +7,7 @@ const supabaseOrigin = supabaseUrl ? new URL(supabaseUrl).origin : "https://*.su
 
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval' http://localhost:8400" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data: blob: https://images.unsplash.com https://lh3.googleusercontent.com ${supabaseOrigin}`,
   "font-src 'self' data:",
