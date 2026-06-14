@@ -4,6 +4,7 @@ importers:
 
   .:
     specifiers:
+      '@hookform/resolvers': ^5.4.0
       '@supabase/ssr': ^0.10.2
       '@supabase/supabase-js': ^2.103.3
       '@tailwindcss/postcss': ^4
@@ -20,11 +21,13 @@ importers:
       next-auth: ^4.24.14
       react: 19.2.4
       react-dom: 19.2.4
+      react-hook-form: ^7.79.0
       server-only: ^0.0.1
       tailwindcss: ^4
       typescript: ^5
       zod: ^4.3.6
     dependencies:
+      '@hookform/resolvers': 5.4.0_react-hook-form@7.79.0
       '@supabase/ssr': 0.10.3_hhd5itxo4d3xc5cqwiyoqnuhse
       '@supabase/supabase-js': 2.108.1
       bcryptjs: 3.0.3
@@ -35,6 +38,7 @@ importers:
       next-auth: 4.24.14_ykfvxd55dzcecavyyrb4vtlfo4
       react: 19.2.4
       react-dom: 19.2.4_react@19.2.4
+      react-hook-form: 7.79.0_react@19.2.4
       server-only: 0.0.1
       zod: 4.4.3
     devDependencies:
@@ -317,6 +321,15 @@ packages:
       '@eslint/core': 0.17.0
       levn: 0.4.1
     dev: true
+
+  /@hookform/resolvers/5.4.0_react-hook-form@7.79.0:
+    resolution: {integrity: sha512-EIsqr/t/qbinPIhGjMdtvutIN1Kk4uwbROE9/UQ93CAVGR7GkA7Y92+fX80OzXi/OB67jVFYwKGO1WzkxmkFZw==}
+    peerDependencies:
+      react-hook-form: ^7.55.0
+    dependencies:
+      '@standard-schema/utils': 0.3.0
+      react-hook-form: 7.79.0_react@19.2.4
+    dev: false
 
   /@humanfs/core/0.19.2:
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -740,6 +753,10 @@ packages:
   /@rtsao/scc/1.1.0:
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
     dev: true
+
+  /@standard-schema/utils/0.3.0:
+    resolution: {integrity: sha512-e7Mew686owMaPJVNNLs55PUvgz371nKgwsc4vxE49zsODpJEnxgxRo2y/OKrqueavXgZNMDVj3DdHFlaSAeU8g==}
+    dev: false
 
   /@supabase/auth-js/2.108.1:
     resolution: {integrity: sha512-Lle5rKU8f9LF3K5dDd8Or8mkkG+ptzRZZWKPVMm9B9UuovH65Ss2+iFnQqRsCqaGouvJEcTWyl0cj2riNrrDLQ==}
@@ -3325,6 +3342,15 @@ packages:
     dependencies:
       react: 19.2.4
       scheduler: 0.27.0
+    dev: false
+
+  /react-hook-form/7.79.0_react@19.2.4:
+    resolution: {integrity: sha512-mhYp/MTmXvzYX6AJcJVko0rktoIhhmRnEouObj4wF5i/tCttgJvnp1+9wRkpITZjDTqpo4IOSJqu0dBlPlV/Lw==}
+    engines: {node: '>=18.0.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18 || ^19
+    dependencies:
+      react: 19.2.4
     dev: false
 
   /react-is/16.13.1:

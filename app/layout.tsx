@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Bricolage_Grotesque } from "next/font/google";
 import { getServerSession } from "next-auth";
 import AuthSessionProvider from "@/components/AuthSessionProvider";
 import ClientEffects from "@/components/ClientEffects";
@@ -16,6 +16,15 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+// Display family for the portfolio surface (scoped via .pf-display).
+// Distinctive grotesque, self-hosted by next/font (served from 'self', so it
+// loads under the project CSP — unlike the external Fontshare @import).
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-pf-display",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -76,7 +85,7 @@ export default async function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${bricolage.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-body">
         <AuthSessionProvider session={session}>

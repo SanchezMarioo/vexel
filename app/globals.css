@@ -4,7 +4,7 @@
 :root {
   --vx-black: #050505;
   --vx-violet: #7b61ff;
-  --vx-violet-hover: #6b51ef;
+  --vx-violet-hover: #  ;
   --vx-text-heading: #ffffff;
   --vx-text-body: rgba(255, 255, 255, 0.7);
   --vx-text-label: rgba(255, 255, 255, 0.4);
@@ -177,5 +177,147 @@ body::before {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ===========================================================================
+   Portfolio surface (pf-*)
+   Swiss-industrial, light base, committed/drenched violet. Brand anchor
+   #7b61ff / #6b51ef expressed in OKLCH. Everything is scoped to .pf-root so
+   the dark Vexel landing and the client portal keep their own theme intact.
+   =========================================================================== */
+
+@theme {
+  --color-pf-bg: oklch(0.971 0.003 285);
+  --color-pf-surface: oklch(1 0 0);
+  --color-pf-subtle: oklch(0.949 0.004 285);
+  --color-pf-ink: oklch(0.17 0.013 285);
+  --color-pf-ink-soft: oklch(0.4 0.016 285);
+  --color-pf-muted: oklch(0.52 0.02 285);
+  --color-pf-line: oklch(0.872 0.006 285);
+  --color-pf-line-strong: oklch(0.8 0.011 285);
+  --color-pf-violet: oklch(0.6057 0.224 285);
+  --color-pf-violet-700: oklch(0.5562 0.2253 284);
+  --color-pf-violet-900: oklch(0.34 0.155 285);
+  --color-pf-violet-tint: oklch(0.95 0.03 286);
+}
+
+/* Repaint the document only when the portfolio surface is mounted, so the
+   light base owns overscroll/gutters without touching the dark routes. */
+html:has(.pf-root) {
+  background: var(--color-pf-bg);
+  color-scheme: light;
+}
+
+html:has(.pf-root) body {
+  background: var(--color-pf-bg);
+  color: var(--color-pf-ink);
+}
+
+html:has(.pf-root) body::before {
+  display: none;
+}
+
+.pf-root {
+  --pf-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pf-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --pf-radius: 0.375rem;
+  --pf-radius-sm: 0.25rem;
+  --pf-radius-lg: 0.75rem;
+  background: var(--color-pf-bg);
+  color: var(--color-pf-ink-soft);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.pf-root ::selection {
+  background: var(--color-pf-violet);
+  color: #fff;
+}
+
+.pf-root :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-pf-violet);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.pf-display {
+  font-family: var(--font-pf-display), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.pf-mono {
+  font-family: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+  font-feature-settings: "ss01", "zero";
+}
+
+.pf-prose {
+  max-width: 68ch;
+  text-wrap: pretty;
+}
+
+.pf-container {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .pf-container {
+    padding-inline: 2.5rem;
+  }
+}
+
+/* Hairline swiss grid used as a structural backdrop in a few sections. */
+.pf-rule-grid {
+  background-image:
+    linear-gradient(to right, var(--color-pf-line) 1px, transparent 1px);
+  background-size: calc(100% / 6) 100%;
+}
+
+@media (max-width: 767px) {
+  .pf-rule-grid {
+    background-size: calc(100% / 2) 100%;
+  }
+}
+
+/* Marquee for the stack ticker; pauses under reduced-motion. */
+@keyframes pf-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.pf-marquee-track {
+  animation: pf-marquee 38s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-marquee-track {
+    animation: none;
+    transform: none;
+  }
+
+  /* MotionConfig snaps transforms, but clip-path reveals would still play.
+     Force them to their revealed end state. */
+  .pf-root [style*="clip-path"] {
+    clip-path: none !important;
+  }
+}
+
+/* Safety net: without scripting (no-JS, some crawlers), framer-motion's
+   initial hidden state would persist and reveal sections would ship blank.
+   Force the content visible so it never depends on JS to be readable. */
+@media (scripting: none) {
+  .pf-root [style*="opacity"] {
+    opacity: 1 !important;
+  }
+  .pf-root [style*="clip-path"] {
+    clip-path: none !important;
   }
 }
