@@ -69,12 +69,12 @@ export default function Hero() {
               <span className="h-2.5 w-2.5 rounded-full bg-pf-line-strong" />
               <span className="h-2.5 w-2.5 rounded-full bg-pf-line-strong" />
               <span className="pf-mono ml-3 truncate rounded-[var(--pf-radius-sm)] bg-pf-subtle px-3 py-1 text-xs text-pf-muted">
-                tunegocio.com
+                grieta.com
               </span>
             </div>
             <ImageSlot
               image={{
-                src: "/portfolio/hero.jpg",
+                src: "/portfolio/hero-image.webp",
                 alt: "Vista de un producto entregado",
                 width: 1200,
                 height: 820,
