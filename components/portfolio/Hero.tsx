@@ -87,18 +87,7 @@ export default function Hero() {
             className="absolute -bottom-4 -left-2 flex items-center gap-2.5 rounded-[var(--pf-radius)] border border-pf-line bg-pf-surface px-4 py-3 shadow-[0_8px_24px_-12px_oklch(0.17_0.013_285_/_0.25)] sm:-left-5"
           >
             <span className="grid h-7 w-7 place-items-center rounded-full bg-pf-violet text-white">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-                className="h-4 w-4"
-              >
-                <path d="m5 13 4 4L19 7" />
-              </svg>
+              <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg>
             </span>
             <span className="text-sm font-medium text-pf-ink">
               Precio y plazo cerrados antes de empezar

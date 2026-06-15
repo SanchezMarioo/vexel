@@ -4,8 +4,7 @@ Esta landing es la **home** del sitio (`/`), orientada a **clientes no técnicos
 (fundadores, PMs, dueños de negocio). Cada sección responde, en orden, a:
 ¿puede resolver mi problema? → ¿puedo confiar? → ¿cómo lo contrato?
 
-La landing anterior de Vexel se movió a [`/vexel`](app/vexel/page.tsx) y el portal
-de clientes (`/cuenta`, `/admin`, `/auth`) sigue funcionando igual.
+El portal de clientes (`/cuenta`, `/admin`, `/auth`) sigue funcionando igual.
 
 Diseño: base clara, color de marca violeta `#7b61ff` (en OKLCH), estrategia
 *committed-restrained* (el violeta solo como acento con propósito). Tipografía
