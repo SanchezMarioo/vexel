@@ -79,21 +79,22 @@ export interface Identity {
   availability: string;
   responseTime: string;
   email: string;
-  calendlyUrl: string;
+  /** Cal.com link slug: "usuario/30min" — sin dominio. */
+  calUrl: string;
   socials: SocialLink[];
 }
 
 export const identity: Identity = {
-  name: "[TU NOMBRE]",
+  name: "Vexel",
   headline: "Desarrollo la web y el producto digital que tu negocio necesita para crecer.",
   subhead:
     "¿Tu web va lenta, no convierte o se quedó a medias? La dejo rápida, clara y lista para vender — con plazos cerrados que se cumplen.",
-  availability: "Disponible para nuevos proyectos · [mes 2026]",
+  availability: "Disponible para nuevos proyectos · Junio 2026",
   responseTime: "Respondo en menos de 24 h",
-  email: "[tu@email.com]",
-  calendlyUrl: "https://calendly.com/[usuario]/30min",
+  email: "vexel2k26@gmail.com ",
+  calUrl: "vexel-va8ijl/hablamos-15-minutos",
   socials: [
-    { label: "LinkedIn", href: "https://linkedin.com/in/[usuario]" },
+    { label: "Discord", href: "https://discord.gg/aENy8Sb4rS" },
     { label: "GitHub", href: "https://github.com/[usuario]" },
   ],
 };

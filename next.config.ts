@@ -7,14 +7,15 @@ const supabaseOrigin = supabaseUrl ? new URL(supabaseUrl).origin : "https://*.su
 
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval' http://localhost:8400" : ""}`,
+  `script-src 'self' 'unsafe-inline' https://app.cal.com${isDev ? " 'unsafe-eval' http://localhost:8400" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   `img-src 'self' data: blob: https://images.unsplash.com https://lh3.googleusercontent.com ${supabaseOrigin}`,
   "font-src 'self' data:",
-  `connect-src 'self'${isDev ? " ws: wss: http://localhost:* http://127.0.0.1:*" : ""}`,
+  `connect-src 'self' https://app.cal.com${isDev ? " ws: wss: http://localhost:* http://127.0.0.1:*" : ""}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
+  "frame-src https://app.cal.com",
   "frame-ancestors 'none'",
   ...(isDev ? [] : ["upgrade-insecure-requests"]),
 ].join("; ");

@@ -8,6 +8,7 @@ import { identity } from "@/lib/portfolio/content";
 import { type ContactInput, contactSchema } from "@/lib/portfolio/contact-schema";
 import { fadeUp, pfViewport, stagger } from "@/lib/portfolio/motion";
 import Button from "./ui/Button";
+import CalButton from "./ui/CalButton";
 import Field from "./ui/Field";
 
 export default function Contact() {
@@ -72,9 +73,9 @@ export default function Contact() {
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-3">
-            <Button href={identity.calendlyUrl} variant="ink" withArrow>
+            <CalButton calLink={identity.calUrl} variant="ink" withArrow>
               Agendar una llamada
-            </Button>
+            </CalButton>
             <Button href={`mailto:${identity.email}`} variant="outline">
               Escríbeme un email
             </Button>

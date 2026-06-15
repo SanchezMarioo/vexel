@@ -41,15 +41,46 @@ export async function POST(request: Request) {
       return secureJson({ ok: true }, { status: 200 });
     }
 
-    // TODO (ver PORTFOLIO.md): conectar la entrega real del mensaje, p.ej.
-    //   - Email transaccional con Resend (https://resend.com), o
-    //   - Insertar en una tabla `contact_messages` de Supabase.
-    // Hasta entonces se registra en el servidor para no perder ningún mensaje.
-    console.info("[contact] nuevo mensaje", {
-      name: data.name,
-      email: data.email,
-      length: data.message.length,
-    });
+    const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+
+    // Sin webhook configurado (otro entorno): registrar para no perder el mensaje.
+    if (!webhookUrl) {
+      console.info("[contact] mensaje recibido (sin webhook configurado)", {
+        name: data.name,
+        email: data.email,
+        length: data.message.length,
+      });
+      return secureJson({ ok: true }, { status: 201 });
+    }
+
+    // Entrega en Google Sheets vía Apps Script (server→server, sin CORS). El
+    // Apps Script espera las claves nombre / email / descripcion.
+    try {
+      const sheetRes = await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nombre: data.name,
+          email: data.email,
+          descripcion: data.message,
+        }),
+        signal: AbortSignal.timeout(10000),
+      });
+
+      if (!sheetRes.ok) {
+        console.error("[contact] Apps Script respondió con", sheetRes.status);
+        return errorResponse(
+          "No se pudo enviar el mensaje. Inténtalo de nuevo o escríbeme por email.",
+          502,
+        );
+      }
+    } catch (deliveryError) {
+      console.error("[contact] fallo al entregar en Sheets", deliveryError);
+      return errorResponse(
+        "No se pudo enviar el mensaje. Inténtalo de nuevo o escríbeme por email.",
+        502,
+      );
+    }
 
     return secureJson({ ok: true }, { status: 201 });
   } catch (error) {

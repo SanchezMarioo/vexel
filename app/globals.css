@@ -132,39 +132,6 @@ body::before {
   --tw-ring-offset-color: var(--vx-black);
 }
 
-.vx-cursor {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 60;
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 9999px;
-  background: #ffffff;
-  mix-blend-mode: difference;
-  pointer-events: none;
-  transform: translate3d(-100px, -100px, 0);
-}
-
-.vx-cursor.is-project {
-  background: rgba(123, 97, 255, 0.8);
-}
-
-@media (pointer: fine) {
-  html.has-custom-cursor,
-  html.has-custom-cursor body,
-  html.has-custom-cursor a,
-  html.has-custom-cursor button {
-    cursor: none !important;
-  }
-}
-
-@media (pointer: coarse) {
-  .vx-cursor {
-    display: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

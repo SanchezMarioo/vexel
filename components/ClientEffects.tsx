@@ -1,14 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Lenis from "lenis";
 
-const interactiveSelector =
-  "a,button,[role='button'],input,textarea,select,[data-cursor-hover='true']";
-
 export default function ClientEffects() {
-  const cursorRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     let isDisposed = false;
 
@@ -87,72 +82,5 @@ export default function ClientEffects() {
     };
   }, []);
 
-  useEffect(() => {
-    if (window.matchMedia("(pointer: coarse)").matches) {
-      return;
-    }
-
-    const html = document.documentElement;
-    const cursor = cursorRef.current;
-
-    if (!cursor) {
-      return;
-    }
-
-    html.classList.add("has-custom-cursor");
-
-    let currentX = window.innerWidth / 2;
-    let currentY = window.innerHeight / 2;
-    let targetX = currentX;
-    let targetY = currentY;
-
-    let currentScale = 1;
-    let targetScale = 1;
-
-    let frame = 0;
-
-    const moveCursor = () => {
-      currentX += (targetX - currentX) * 0.18;
-      currentY += (targetY - currentY) * 0.18;
-      currentScale += (targetScale - currentScale) * 0.2;
-
-      cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) translate(-50%, -50%) scale(${currentScale})`;
-      frame = window.requestAnimationFrame(moveCursor);
-    };
-
-    const onPointerMove = (event: PointerEvent) => {
-      targetX = event.clientX;
-      targetY = event.clientY;
-
-      const target = event.target as HTMLElement | null;
-      const inProjects = Boolean(target?.closest(".projects-section"));
-      const onInteractive = Boolean(target?.closest(interactiveSelector));
-
-      targetScale = inProjects || onInteractive ? 5.33 : 1;
-      cursor.classList.toggle("is-project", inProjects);
-    };
-
-    const onPointerLeave = () => {
-      targetScale = 0;
-    };
-
-    const onPointerEnter = () => {
-      targetScale = 1;
-    };
-
-    frame = window.requestAnimationFrame(moveCursor);
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
-    window.addEventListener("pointerleave", onPointerLeave);
-    window.addEventListener("pointerenter", onPointerEnter);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerleave", onPointerLeave);
-      window.removeEventListener("pointerenter", onPointerEnter);
-      html.classList.remove("has-custom-cursor");
-    };
-  }, []);
-
-  return <div ref={cursorRef} className="vx-cursor" aria-hidden="true" />;
+  return null;
 }
