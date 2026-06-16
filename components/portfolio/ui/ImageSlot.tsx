@@ -30,6 +30,7 @@ export default function ImageSlot({ image, className = "", priority = false }: I
           sizes="(min-width: 1024px) 50vw, 100vw"
           className="object-cover"
           priority={priority}
+          loading="eager"
           fetchPriority={priority ? "high" : "auto"}
           onError={() => setHasError(true)}
         />

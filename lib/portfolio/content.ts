@@ -103,7 +103,8 @@ export function isRealUrl(url?: string): url is string {
 
 export const identity: Identity = {
   name: "Vexel",
-  headline: "Desarrollo la web y el producto digital que tu negocio necesita para crecer.",
+  headline:
+    "Desarrollo la web y el producto digital que tu negocio necesita para crecer.",
   subhead:
     "¿Tu web va lenta, no convierte o se quedó a medias? La dejo rápida, clara y lista para vender — con plazos cerrados que se cumplen.",
   availability: "Disponible para nuevos proyectos · Junio 2026",
@@ -136,7 +137,8 @@ export const services: Service[] = [
     title: "Tu web actual, arreglada y puesta a punto",
     description:
       "Reparo lo que va lento, falla o frena las ventas, y dejo tu web mantenible para que no vuelva a romperse cada dos por tres.",
-    result: "Menos errores, más velocidad y más clientes que terminan comprando.",
+    result:
+      "Menos errores, más velocidad y más clientes que terminan comprando.",
     audience: "Para negocios con una web que se quedó corta.",
   },
   {
@@ -179,47 +181,54 @@ export const processSteps: ProcessStep[] = [
 export const projects: Project[] = [
   {
     id: "proyecto-1",
-    title: "[PROYECTO 1 — Nombre]",
-    sector: "[Sector — p.ej. tienda de moda online]",
+    title: "PROYECTO 1 — Grieta",
+    sector: "Ecommerce online",
     problem:
-      "[El problema de negocio: p.ej. la web cargaba lenta y perdían ventas en el móvil.]",
+      "Vendían en marketplaces de terceros pagando comisiones altas y sin visibilidad propia en Google. Cada venta dependía de la plataforma, no de ellos.",
     built:
-      "[Qué construiste: p.ej. una tienda nueva, optimizada para móvil y fácil de gestionar.]",
-    result: "[Resultado medible: p.ej. +38% de ventas online en 3 meses.]",
-    liveUrl: "https://[enlace-en-vivo.com]",
+      "Tienda propia con Medusa.js — rápida, con cada producto optimizado para aparecer en buscadores y sin intermediarios que se lleven parte de cada venta.",
+    result:
+      "Más ventas directas, menos comisiones y clientes que llegan solos desde Google.",
+    liveUrl: "https://store-example-1.vercel.app/",
     image: {
-      src: "/portfolio/proyecto-1.jpg",
-      alt: "[Captura del proyecto 1 para lectores de pantalla]",
+      src: "/portfolio/hero-image.webp",
+      alt: "Tienda online Grieta",
       width: 1600,
       height: 1000,
     },
   },
   {
     id: "proyecto-2",
-    title: "[PROYECTO 2 — Nombre]",
-    sector: "[Sector — p.ej. plataforma de reservas]",
-    problem: "[Qué frenaba al negocio antes de empezar.]",
-    built: "[Qué se construyó o se mejoró, en lenguaje de cliente.]",
-    result: "[El resultado o cambio que notó el cliente.]",
-    liveUrl: "https://[enlace-en-vivo.com]",
+    title: "PROYECTO 2 — The Byte",
+    sector: "Periódico digital",
+    problem:
+      "Publicaban buen contenido que nadie leía. No aparecían en Google y cada artículo nuevo requería ayuda técnica para subirse.",
+    built:
+      "Periódico digital donde la redacción publica de forma autónoma y cada artículo está construido para posicionarse y atraer lectores desde el primer día.",
+    result:
+      "Más lectores mes a mes sin pagar publicidad, solo con contenido que Google encuentra y recomienda.",
+    liveUrl: "https://the-byte-newspaper.vercel.app",
     image: {
-      src: "/portfolio/proyecto-2.jpg",
-      alt: "[Captura del proyecto 2]",
+      src: "/portfolio/proyecto-2.webp",
+      alt: "Periódico digital The Byte",
       width: 1600,
       height: 1000,
     },
   },
   {
     id: "proyecto-3",
-    title: "[PROYECTO 3 — Nombre]",
-    sector: "[Sector]",
-    problem: "[El problema. Si tienes pocos casos, prioriza el mejor contado.]",
-    built: "[Qué entregaste.]",
-    result: "[El impacto.]",
-    liveUrl: "https://[enlace-en-vivo.com]",
+    title: "PROYECTO 3 — Lumière",
+    sector: "Restaurante",
+    problem:
+      "Llenos los fines de semana pero vacíos entre semana. No aparecían cuando alguien buscaba en Google dónde comer cerca.",
+    built:
+      "Web con carta dinámica que el restaurante actualiza solo, optimizada para aparecer en búsquedas locales y mostrar la carta directamente en Google.",
+    result:
+      "Más reservas entre semana y nuevos clientes que llegan directamente desde el buscador.",
+    liveUrl: "https://restaurant-landing-demo.vercel.app",
     image: {
-      src: "/portfolio/proyecto-3.jpg",
-      alt: "[Captura del proyecto 3]",
+      src: "/portfolio/proyecto-3.webp",
+      alt: "Web del restaurante Lumière con carta dinámica",
       width: 1600,
       height: 1000,
     },
