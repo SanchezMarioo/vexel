@@ -16,7 +16,6 @@ importers:
       eslint: ^9
       eslint-config-next: 16.2.4
       framer-motion: ^12.38.0
-      gsap: ^3.15.0
       lenis: ^1.3.23
       next: 16.2.4
       next-auth: ^4.24.14
@@ -34,7 +33,6 @@ importers:
       '@supabase/supabase-js': 2.108.1
       bcryptjs: 3.0.3
       framer-motion: 12.40.0_ju5i5k46jjvnblsfiwqzrn6cj4
-      gsap: 3.15.0
       lenis: 1.3.23_react@19.2.4
       next: 16.2.4_ju5i5k46jjvnblsfiwqzrn6cj4
       next-auth: 4.24.14_ykfvxd55dzcecavyyrb4vtlfo4
@@ -2420,10 +2418,6 @@ packages:
   /graceful-fs/4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
     dev: true
-
-  /gsap/3.15.0:
-    resolution: {integrity: sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==}
-    dev: false
 
   /has-bigints/1.1.0:
     resolution: {integrity: sha512-R3pbpkcIqv2Pm3dUwgjclDRVmWpTJW2DcMzcIhEXEx1oh/CEMObMm3KLmRJOdvhM7o4uQBnwr8pzRK2sJWIqfg==}
