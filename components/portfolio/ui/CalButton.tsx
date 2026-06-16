@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
-import { getCalApi } from "@calcom/embed-react";
+import { useEffect, useRef } from "react";
 
 type Variant = "primary" | "ink" | "outline" | "ghost";
 type Size = "sm" | "md" | "lg";
@@ -48,6 +47,21 @@ interface CalButtonProps {
 
 const NAMESPACE = "book";
 
+// El embed de Cal.com (~40 KB) se carga de forma diferida: solo se importa y se
+// inicializa la primera vez que el usuario interactúa con un botón (o, como
+// respaldo, tras un breve idle). Así no penaliza el JS inicial de la página.
+let calApiPromise: Promise<void> | null = null;
+
+function initCalApi() {
+  if (calApiPromise) return calApiPromise;
+  calApiPromise = import("@calcom/embed-react")
+    .then(({ getCalApi }) => getCalApi({ namespace: NAMESPACE }))
+    .then((cal) => {
+      cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
+    });
+  return calApiPromise;
+}
+
 export default function CalButton({
   calLink,
   children,
@@ -56,16 +70,35 @@ export default function CalButton({
   withArrow = false,
   className = "",
 }: CalButtonProps) {
+  const ref = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
-    void getCalApi({ namespace: NAMESPACE }).then((cal) => {
-      cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
-    });
+    const el = ref.current;
+    if (!el) return;
+
+    const warm = () => {
+      void initCalApi();
+    };
+
+    const events: Array<keyof HTMLElementEventMap> = ["pointerenter", "focus", "touchstart"];
+    events.forEach((event) =>
+      el.addEventListener(event, warm, { once: true, passive: true }),
+    );
+
+    // Respaldo: precalienta tras un idle por si se llega al botón por teclado.
+    const fallback = window.setTimeout(warm, 2500);
+
+    return () => {
+      events.forEach((event) => el.removeEventListener(event, warm));
+      window.clearTimeout(fallback);
+    };
   }, []);
 
   const classes = `group inline-flex select-none items-center justify-center gap-2.5 rounded-[var(--pf-radius)] font-medium leading-none transition-colors duration-200 ease-[var(--pf-ease)] ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
 
   return (
     <button
+      ref={ref}
       type="button"
       data-cal-namespace={NAMESPACE}
       data-cal-link={calLink}

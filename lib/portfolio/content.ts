@@ -84,6 +84,23 @@ export interface Identity {
   socials: SocialLink[];
 }
 
+/**
+ * Comprueba que una URL es real y no un placeholder a rellenar (los del tipo
+ * `https://[enlace-en-vivo.com]`). Evita renderizar enlaces rotos o exponer
+ * URLs inválidas en los datos estructurados (JSON-LD) mientras el contenido
+ * definitivo aún no está cargado.
+ */
+export function isRealUrl(url?: string): url is string {
+  if (!url) return false;
+  if (url.includes("[") || url.includes("]")) return false;
+  try {
+    const { protocol } = new URL(url);
+    return protocol === "https:" || protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
 export const identity: Identity = {
   name: "Vexel",
   headline: "Desarrollo la web y el producto digital que tu negocio necesita para crecer.",
@@ -91,7 +108,7 @@ export const identity: Identity = {
     "¿Tu web va lenta, no convierte o se quedó a medias? La dejo rápida, clara y lista para vender — con plazos cerrados que se cumplen.",
   availability: "Disponible para nuevos proyectos · Junio 2026",
   responseTime: "Respondo en menos de 24 h",
-  email: "vexel2k26@gmail.com ",
+  email: "vexel2k26@gmail.com",
   calUrl: "vexel-va8ijl/hablamos-15-minutos",
   socials: [
     { label: "Discord", href: "https://discord.gg/aENy8Sb4rS" },

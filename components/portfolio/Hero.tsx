@@ -73,6 +73,7 @@ export default function Hero() {
               </span>
             </div>
             <ImageSlot
+              priority
               image={{
                 src: "/portfolio/hero-image.webp",
                 alt: "Vista de un producto entregado",

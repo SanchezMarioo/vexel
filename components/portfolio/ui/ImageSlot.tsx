@@ -7,9 +7,11 @@ import type { ProjectImage } from "@/lib/portfolio/content";
 interface ImageSlotProps {
   image: ProjectImage;
   className?: string;
+  /** Marca la imagen como LCP: carga con prioridad y sin lazy (úsalo solo en el Hero). */
+  priority?: boolean;
 }
 
-export default function ImageSlot({ image, className = "" }: ImageSlotProps) {
+export default function ImageSlot({ image, className = "", priority = false }: ImageSlotProps) {
   const [hasError, setHasError] = useState(false);
   const showPlaceholder = hasError || !image.src;
 
@@ -27,6 +29,8 @@ export default function ImageSlot({ image, className = "" }: ImageSlotProps) {
           fill
           sizes="(min-width: 1024px) 50vw, 100vw"
           className="object-cover"
+          priority={priority}
+          fetchPriority={priority ? "high" : "auto"}
           onError={() => setHasError(true)}
         />
       ) : null}

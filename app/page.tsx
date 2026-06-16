@@ -9,7 +9,7 @@ import Process from "@/components/portfolio/Process";
 import Projects from "@/components/portfolio/Projects";
 import Services from "@/components/portfolio/Services";
 import Testimonials from "@/components/portfolio/Testimonials";
-import { identity } from "@/lib/portfolio/content";
+import { identity, isRealUrl } from "@/lib/portfolio/content";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vexel.vercel.app";
 
@@ -35,6 +35,10 @@ export const metadata: Metadata = {
   },
 };
 
+const sameAs = identity.socials
+  .map((social) => social.href)
+  .filter((href) => isRealUrl(href));
+
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -42,7 +46,8 @@ const personJsonLd = {
   jobTitle: "Desarrollador web freelance",
   url: siteUrl,
   email: identity.email,
-  sameAs: identity.socials.map((social) => social.href),
+  image: `${siteUrl}/opengraph-image`,
+  ...(sameAs.length > 0 ? { sameAs } : {}),
 };
 
 const serviceJsonLd = {
@@ -51,6 +56,7 @@ const serviceJsonLd = {
   name: `${identity.name} — Desarrollo web freelance`,
   url: siteUrl,
   email: identity.email,
+  image: `${siteUrl}/opengraph-image`,
   areaServed: "ES",
   serviceType: "Desarrollo web y de producto digital",
   inLanguage: "es",

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Bricolage_Grotesque } from "next/font/google";
 import { getServerSession } from "next-auth";
 import AuthSessionProvider from "@/components/AuthSessionProvider";
@@ -11,11 +11,13 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vexel.vercel.app";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 // Display family for the portfolio surface (scoped via .pf-display).
@@ -27,19 +29,30 @@ const bricolage = Bricolage_Grotesque({
   display: "swap",
 });
 
+const defaultTitle = "Vexel | Webs de conversión para negocios ambiciosos";
+const defaultDescription =
+  "Vexel diseña y desarrolla landing pages ultramodernas para negocios locales y creativos que quieren vender más.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Vexel | Webs de conversion para negocios ambiciosos",
+    default: defaultTitle,
     template: "%s | Vexel",
   },
-  description:
-    "Vexel disena y desarrolla landing pages ultramodernas para negocios locales y creativos que quieren vender mas.",
+  description: defaultDescription,
   applicationName: "Vexel",
+  authors: [{ name: "Vexel" }],
+  creator: "Vexel",
+  publisher: "Vexel",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   keywords: [
-    "diseno web",
+    "diseño web",
     "landing page",
-    "conversion",
+    "conversión",
     "agencia digital",
     "web para negocios locales",
   ],
@@ -62,17 +75,22 @@ export const metadata: Metadata = {
     locale: "es_ES",
     url: siteUrl,
     siteName: "Vexel",
-    title: "Vexel | Webs de conversion para negocios ambiciosos",
-    description:
-      "Vexel disena y desarrolla landing pages ultramodernas para negocios locales y creativos que quieren vender mas.",
+    title: defaultTitle,
+    description: defaultDescription,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vexel | Webs de conversion para negocios ambiciosos",
-    description:
-      "Vexel disena y desarrolla landing pages ultramodernas para negocios locales y creativos que quieren vender mas.",
+    title: defaultTitle,
+    description: defaultDescription,
   },
   category: "business",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#050505",
+  colorScheme: "dark",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default async function RootLayout({

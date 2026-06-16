@@ -1,7 +1,8 @@
-import { identity, navLinks } from "@/lib/portfolio/content";
+import { identity, isRealUrl, navLinks } from "@/lib/portfolio/content";
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const socials = identity.socials.filter((social) => isRealUrl(social.href));
 
   return (
     <footer className="bg-pf-ink text-pf-bg">
@@ -37,23 +38,25 @@ export default function Footer() {
             </ul>
           </nav>
 
-          <div className="md:col-span-3">
-            <p className="pf-mono text-xs uppercase tracking-wide text-pf-bg/45">Sígueme</p>
-            <ul className="mt-4 flex flex-col gap-2.5">
-              {identity.socials.map((social) => (
-                <li key={social.label}>
-                  <a
-                    href={social.href}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="text-pf-bg/75 transition-colors hover:text-pf-bg"
-                  >
-                    {social.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {socials.length > 0 ? (
+            <div className="md:col-span-3">
+              <p className="pf-mono text-xs uppercase tracking-wide text-pf-bg/45">Sígueme</p>
+              <ul className="mt-4 flex flex-col gap-2.5">
+                {socials.map((social) => (
+                  <li key={social.label}>
+                    <a
+                      href={social.href}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="text-pf-bg/75 transition-colors hover:text-pf-bg"
+                    >
+                      {social.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
         </div>
 
         <div className="mt-14 flex flex-col gap-3 border-t border-pf-bg/15 pt-6 text-sm text-pf-bg/50 sm:flex-row sm:items-center sm:justify-between">

@@ -5,8 +5,6 @@ import Lenis from "lenis";
 
 export default function ClientEffects() {
   useEffect(() => {
-    let isDisposed = false;
-
     const lenis = new Lenis({
       lerp: 0.07,
       wheelMultiplier: 0.92,
@@ -37,46 +35,18 @@ export default function ClientEffects() {
       lenis.scrollTo(nextTarget, { offset: -96, duration: 1.3 });
     };
 
-    const onLenisScroll = () => {
-      const w = window as Window & {
-        ScrollTrigger?: { update: () => void };
-      };
-
-      if (w.ScrollTrigger) {
-        w.ScrollTrigger.update();
-      }
-    };
-
-    lenis.on("scroll", onLenisScroll);
     document.addEventListener("click", onAnchorClick);
 
-    let removeTicker = () => {};
-
-    const initTickerSync = async () => {
-      const gsapModule = await import("gsap");
-
-      if (isDisposed) {
-        return;
-      }
-
-      const gsap = gsapModule.gsap;
-      const tick = (time: number) => {
-        lenis.raf(time * 1000);
-      };
-
-      gsap.ticker.add(tick);
-      gsap.ticker.lagSmoothing(0);
-
-      removeTicker = () => {
-        gsap.ticker.remove(tick);
-      };
+    // Bucle de animación nativo para Lenis (sin GSAP).
+    let rafId = 0;
+    const raf = (time: number) => {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
     };
-
-    initTickerSync();
+    rafId = requestAnimationFrame(raf);
 
     return () => {
-      isDisposed = true;
-      removeTicker();
+      cancelAnimationFrame(rafId);
       document.removeEventListener("click", onAnchorClick);
       lenis.destroy();
     };

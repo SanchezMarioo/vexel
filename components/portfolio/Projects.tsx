@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { Project } from "@/lib/portfolio/content";
-import { projects } from "@/lib/portfolio/content";
+import { isRealUrl, projects } from "@/lib/portfolio/content";
 import { fadeUp, maskReveal, pfViewport, stagger } from "@/lib/portfolio/motion";
 import ImageSlot from "./ui/ImageSlot";
 import Tag from "./ui/Tag";
@@ -29,7 +29,7 @@ function Narrative({ project, dense = false }: { project: Project; dense?: boole
 }
 
 function LiveLink({ project }: { project: Project }) {
-  if (!project.liveUrl) return null;
+  if (!isRealUrl(project.liveUrl)) return null;
   return (
     <a
       href={project.liveUrl}
@@ -87,9 +87,9 @@ export default function Projects() {
           >
             <motion.a
               variants={maskReveal}
-              href={featured.liveUrl ?? "#proyectos"}
-              target={featured.liveUrl ? "_blank" : undefined}
-              rel={featured.liveUrl ? "noreferrer noopener" : undefined}
+              href={isRealUrl(featured.liveUrl) ? featured.liveUrl : "#proyectos"}
+              target={isRealUrl(featured.liveUrl) ? "_blank" : undefined}
+              rel={isRealUrl(featured.liveUrl) ? "noreferrer noopener" : undefined}
               className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line lg:col-span-7"
             >
               <ImageSlot image={featured.image} />
@@ -118,9 +118,9 @@ export default function Projects() {
             {rest.map((project) => (
               <motion.article key={project.id} variants={fadeUp} className="flex flex-col">
                 <a
-                  href={project.liveUrl ?? "#proyectos"}
-                  target={project.liveUrl ? "_blank" : undefined}
-                  rel={project.liveUrl ? "noreferrer noopener" : undefined}
+                  href={isRealUrl(project.liveUrl) ? project.liveUrl : "#proyectos"}
+                  target={isRealUrl(project.liveUrl) ? "_blank" : undefined}
+                  rel={isRealUrl(project.liveUrl) ? "noreferrer noopener" : undefined}
                   className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line"
                 >
                   <ImageSlot image={project.image} />
