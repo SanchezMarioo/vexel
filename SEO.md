@@ -1,4 +1,4 @@
-# Landing Pages para Negocios Locales que Convierten | Vexel
+# Landing Pages para Negocios Locales que Convierten | Xync
 
 **Meta description:** Diseñamos landing pages para negocios locales orientadas a captar más contactos y ventas. Estrategia, copy, diseño y desarrollo en 14 días.
 
@@ -15,7 +15,7 @@
 Tu negocio no necesita más ruido.  
 Necesita una página clara que guíe a la persona correcta hacia una sola acción de valor: pedir información, agendar una llamada o reservar una cita.
 
-En Vexel diseñamos y desarrollamos landing pages enfocadas en conversión para negocios locales que quieren crecer con una web que sí trabaja para ventas.
+En Xync diseñamos y desarrollamos landing pages enfocadas en conversión para negocios locales que quieren crecer con una web que sí trabaja para ventas.
 
 Quiero una landing que convierta
 
@@ -152,7 +152,7 @@ Si buscas resultados rápidos en una oferta concreta, una landing de conversión
 
 ---
 
-## Por qué Vexel
+## Por qué Xync
 
 No hacemos páginas para rellenar secciones.  
 Construimos una página con una misión concreta: convertir tráfico en oportunidades reales.

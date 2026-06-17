@@ -5,7 +5,7 @@ import { isGoogleAuthConfigured } from "@/lib/auth/env";
 
 export const metadata: Metadata = {
   title: "Iniciar sesion",
-  description: "Acceso privado a tu area personal de proyectos en Vexel.",
+  description: "Acceso privado a tu area personal de proyectos en Xync.",
 };
 
 type LoginPageSearchParams = {

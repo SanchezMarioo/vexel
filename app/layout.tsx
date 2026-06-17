@@ -6,7 +6,7 @@ import ClientEffects from "@/components/ClientEffects";
 import { authOptions } from "@/lib/auth/options";
 import "./globals.css";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vexel.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.xync.es";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,21 +29,21 @@ const bricolage = Bricolage_Grotesque({
   display: "swap",
 });
 
-const defaultTitle = "Vexel | Webs de conversión para negocios ambiciosos";
+const defaultTitle = "Xync | Webs de conversión para negocios ambiciosos";
 const defaultDescription =
-  "Vexel diseña y desarrolla landing pages ultramodernas para negocios locales y creativos que quieren vender más.";
+  "Xync diseña y desarrolla landing pages ultramodernas para negocios locales y creativos que quieren vender más.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: defaultTitle,
-    template: "%s | Vexel",
+    template: "%s | Xync",
   },
   description: defaultDescription,
-  applicationName: "Vexel",
-  authors: [{ name: "Vexel" }],
-  creator: "Vexel",
-  publisher: "Vexel",
+  applicationName: "Xync",
+  authors: [{ name: "Xync" }],
+  creator: "Xync",
+  publisher: "Xync",
   formatDetection: {
     email: false,
     address: false,
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     url: siteUrl,
-    siteName: "Vexel",
+    siteName: "Xync",
     title: defaultTitle,
     description: defaultDescription,
   },

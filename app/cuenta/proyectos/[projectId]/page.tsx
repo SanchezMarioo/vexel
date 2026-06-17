@@ -148,7 +148,7 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
           messages={messages}
           currentUserRole="user"
           currentUserName={currentUser.name ?? currentUser.email}
-          otherPartyName="Equipo Vexel"
+          otherPartyName="Equipo Xync"
         />
       </section>
     </article>

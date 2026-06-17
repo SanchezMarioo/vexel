@@ -22,22 +22,22 @@ type RateLimitEntry = {
 type RateLimitStore = Map<string, RateLimitEntry>;
 
 const globalForRateLimit = globalThis as typeof globalThis & {
-  __vexelRateLimitStore?: RateLimitStore;
-  __vexelRateLimitLastSweep?: number;
+  __xyncRateLimitStore?: RateLimitStore;
+  __xyncRateLimitLastSweep?: number;
 };
 
 const SWEEP_INTERVAL_MS = 60_000;
 
 function getStore() {
-  if (!globalForRateLimit.__vexelRateLimitStore) {
-    globalForRateLimit.__vexelRateLimitStore = new Map();
+  if (!globalForRateLimit.__xyncRateLimitStore) {
+    globalForRateLimit.__xyncRateLimitStore = new Map();
   }
 
-  return globalForRateLimit.__vexelRateLimitStore;
+  return globalForRateLimit.__xyncRateLimitStore;
 }
 
 function sweepExpiredEntries(store: RateLimitStore, now: number) {
-  const lastSweep = globalForRateLimit.__vexelRateLimitLastSweep ?? 0;
+  const lastSweep = globalForRateLimit.__xyncRateLimitLastSweep ?? 0;
 
   if (now - lastSweep < SWEEP_INTERVAL_MS) {
     return;
@@ -49,7 +49,7 @@ function sweepExpiredEntries(store: RateLimitStore, now: number) {
     }
   }
 
-  globalForRateLimit.__vexelRateLimitLastSweep = now;
+  globalForRateLimit.__xyncRateLimitLastSweep = now;
 }
 
 export interface RateLimitInput {

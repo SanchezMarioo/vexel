@@ -80,7 +80,7 @@ export default function RegisterForm({ callbackUrl, googleEnabled }: RegisterFor
         <p className="text-xs uppercase tracking-[0.22em] text-white/50">Nueva cuenta</p>
         <h1 className="font-display text-3xl text-white sm:text-4xl">Crea tu acceso</h1>
         <p className="text-sm text-white/70">
-          Abre tu area personal para gestionar tus proyectos de Vexel desde un solo lugar.
+          Abre tu area personal para gestionar tus proyectos de Xync desde un solo lugar.
         </p>
       </div>
 

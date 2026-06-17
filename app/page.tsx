@@ -11,7 +11,7 @@ import Services from "@/components/portfolio/Services";
 import Testimonials from "@/components/portfolio/Testimonials";
 import { identity, isRealUrl } from "@/lib/portfolio/content";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vexel.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.xync.es";
 
 const title = `${identity.name} · Desarrollador web freelance`;
 const description =

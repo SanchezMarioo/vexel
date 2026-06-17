@@ -7,23 +7,23 @@ export const faqs: FAQItem[] = [
   {
     question: "¿Cuánto cuesta una landing page profesional en España?",
     answer:
-      "El precio de una landing page profesional en Vexel parte desde 1.200€, dependiendo del número de secciones, integraciones y nivel de personalización. Incluye diseño, desarrollo, copy de conversión y optimización para móvil.",
+      "El precio de una landing page profesional en Xync parte desde 1.200€, dependiendo del número de secciones, integraciones y nivel de personalización. Incluye diseño, desarrollo, copy de conversión y optimización para móvil.",
   },
   {
     question: "¿Cuánto tiempo se tarda en hacer una landing page?",
     answer:
-      "El plazo medio de entrega de una landing page en Vexel es de 14 días desde el kickoff. Proyectos con integraciones o ecommerce pueden requerir hasta 21 días, siempre definidos antes de empezar.",
+      "El plazo medio de entrega de una landing page en Xync es de 14 días desde el kickoff. Proyectos con integraciones o ecommerce pueden requerir hasta 21 días, siempre definidos antes de empezar.",
   },
   {
     question: "¿Qué incluye el diseño de una landing page de conversión?",
     answer:
-      "Una landing page de conversión de Vexel incluye estrategia de mensaje, diseño UI, desarrollo front-end, copy orientado a acción, optimización de velocidad y una ronda de ajustes posterior a la entrega.",
+      "Una landing page de conversión de Xync incluye estrategia de mensaje, diseño UI, desarrollo front-end, copy orientado a acción, optimización de velocidad y una ronda de ajustes posterior a la entrega.",
   },
   {
     question:
       "¿Qué diferencia a una agencia de diseño web especializada en conversión?",
     answer:
-      "Una agencia de diseño web especializada en conversión como Vexel diseña cada sección con un único objetivo: que el visitante actúe. Menos elementos decorativos, más jerarquía de mensaje y CTAs con intención clara desde el primer scroll.",
+      "Una agencia de diseño web especializada en conversión como Xync diseña cada sección con un único objetivo: que el visitante actúe. Menos elementos decorativos, más jerarquía de mensaje y CTAs con intención clara desde el primer scroll.",
   },
   {
     question:

@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Vexel — Desarrollador web freelance",
-    short_name: "Vexel",
+    name: "Xync — Desarrollador web freelance",
+    short_name: "Xync",
     description:
       "Desarrollo y mejoro la web y el producto digital de tu negocio: rápido, sin fallos y con plazos cerrados.",
     start_url: "/",

@@ -22,9 +22,9 @@ export function sanitizeCallbackUrl(value: string | undefined, fallback = "/") {
   }
 
   try {
-    const parsed = new URL(normalizedValue, "https://vexel.local");
+    const parsed = new URL(normalizedValue, "https://xync.local");
 
-    if (parsed.origin !== "https://vexel.local") {
+    if (parsed.origin !== "https://xync.local") {
       return fallback;
     }
 

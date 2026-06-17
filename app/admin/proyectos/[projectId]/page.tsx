@@ -51,7 +51,7 @@ export default async function AdminProjectDetailPage({ params }: Props) {
           projectId={project.id}
           messages={messages}
           currentUserRole="admin"
-          currentUserName="Equipo Vexel"
+          currentUserName="Equipo Xync"
           otherPartyName={clientName}
         />
       </section>

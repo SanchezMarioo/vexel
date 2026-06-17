@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 import { identity } from "@/lib/portfolio/content";
 
-export const alt = "Vexel — Desarrollador web freelance";
+export const alt = "Xync — Desarrollador web freelance";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -37,7 +37,7 @@ export default function OpengraphImage() {
           >
             V
           </div>
-          <div style={{ color: "#ffffff", fontSize: 40, fontWeight: 700 }}>Vexel</div>
+          <div style={{ color: "#ffffff", fontSize: 40, fontWeight: 700 }}>Xync</div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>

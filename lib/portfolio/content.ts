@@ -102,15 +102,15 @@ export function isRealUrl(url?: string): url is string {
 }
 
 export const identity: Identity = {
-  name: "Vexel",
+  name: "Xync",
   headline:
     "Desarrollo la web y el producto digital que tu negocio necesita para crecer.",
   subhead:
     "¿Tu web va lenta, no convierte o se quedó a medias? La dejo rápida, clara y lista para vender — con plazos cerrados que se cumplen.",
   availability: "Disponible para nuevos proyectos · Junio 2026",
   responseTime: "Respondo en menos de 24 h",
-  email: "vexel2k26@gmail.com",
-  calUrl: "vexel-va8ijl/hablamos-15-minutos",
+  email: "xyncdev@gmail.com",
+  calUrl: "xync-ulzw2t/15min",
   socials: [
     { label: "Discord", href: "https://discord.gg/aENy8Sb4rS" },
     { label: "GitHub", href: "https://github.com/[usuario]" },

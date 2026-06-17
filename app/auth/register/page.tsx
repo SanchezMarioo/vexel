@@ -5,7 +5,7 @@ import { isGoogleAuthConfigured } from "@/lib/auth/env";
 
 export const metadata: Metadata = {
   title: "Crear cuenta",
-  description: "Registro para acceder a tu area personal de proyectos en Vexel.",
+  description: "Registro para acceder a tu area personal de proyectos en Xync.",
 };
 
 type RegisterPageSearchParams = {

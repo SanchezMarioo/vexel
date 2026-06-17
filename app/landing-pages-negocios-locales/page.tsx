@@ -3,10 +3,10 @@ import EyebrowTag from "@/components/ui/EyebrowTag";
 import IslandButton from "@/components/ui/IslandButton";
 import { faqs } from "@/lib/content/faqs";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://vexel.vercel.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.xync.es";
 const pagePath = "/landing-pages-negocios-locales";
 
-const pageTitle = "Landing Pages para Negocios Locales que Convierten | Vexel";
+const pageTitle = "Landing Pages para Negocios Locales que Convierten | Xync";
 const pageDescription =
   "Disenamos landing pages para negocios locales orientadas a captar mas contactos y ventas. Estrategia, copy, diseno y desarrollo en 14 dias.";
 
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     url: `${siteUrl}${pagePath}`,
     type: "article",
     locale: "es_ES",
-    siteName: "Vexel",
+    siteName: "Xync",
   },
   twitter: {
     card: "summary_large_image",
@@ -168,7 +168,7 @@ export default function LandingPagesNegociosLocalesPage() {
             </p>
             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <IslandButton href="/#contact" variant="primary">
-                Hablar con Vexel
+                Hablar con Xync
               </IslandButton>
               <IslandButton href="/" variant="ghost">
                 Volver a la home
