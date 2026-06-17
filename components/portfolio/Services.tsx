@@ -16,7 +16,7 @@ export default function Services() {
           className="max-w-3xl"
         >
           <h2
-            className="pf-display text-pf-ink"
+            className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.4rem)" }}
           >
             ¿Qué necesitas resolver?
@@ -41,7 +41,7 @@ export default function Services() {
               className="group grid gap-5 border-b border-pf-line py-9 md:grid-cols-12 md:gap-8"
             >
               <div className="md:col-span-5">
-                <h3 className="pf-display text-2xl leading-tight text-pf-ink transition-colors duration-300 group-hover:text-pf-violet-700 md:text-[1.7rem]">
+                <h3 className="pf-display text-2xl leading-tight text-pf-ink md:text-[1.7rem]">
                   {service.title}
                 </h3>
                 <p className="pf-mono mt-3 text-xs uppercase tracking-wide text-pf-muted">
@@ -54,7 +54,7 @@ export default function Services() {
                 <p className="mt-5 flex items-start gap-3 text-pf-ink">
                   <span
                     aria-hidden="true"
-                    className="mt-2 h-1.5 w-1.5 flex-shrink-0 bg-pf-violet-700"
+                    className="mt-2 h-1.5 w-1.5 flex-shrink-0 bg-pf-ink"
                   />
                   <span>
                     <span className="pf-mono text-xs uppercase tracking-wide text-pf-muted">

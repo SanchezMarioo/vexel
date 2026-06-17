@@ -15,7 +15,7 @@ export default function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#050505",
+          background: "#000000",
           padding: 80,
           fontFamily: "sans-serif",
         }}
@@ -29,13 +29,13 @@ export default function OpengraphImage() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              background: "#7b61ff",
-              color: "#ffffff",
+              background: "#ffffff",
+              color: "#000000",
               fontSize: 40,
               fontWeight: 800,
             }}
           >
-            V
+            X
           </div>
           <div style={{ color: "#ffffff", fontSize: 40, fontWeight: 700 }}>Xync</div>
         </div>

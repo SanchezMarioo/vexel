@@ -2,15 +2,28 @@
 
 import { useEffect, useRef } from "react";
 
-type Variant = "primary" | "ink" | "outline" | "ghost";
+type Variant =
+  | "primary"
+  | "ink"
+  | "outline"
+  | "ghost"
+  | "inverse-primary"
+  | "inverse-outline";
 type Size = "sm" | "md" | "lg";
 
+// Mirrors Button.tsx — black & white only, instant colour swap, scale(0.98) press.
 const variantStyles: Record<Variant, string> = {
-  primary: "bg-pf-violet-700 text-white hover:bg-pf-violet-900",
-  ink: "bg-pf-ink text-pf-bg hover:bg-pf-violet-700",
+  primary:
+    "border border-pf-ink bg-pf-ink text-pf-bg hover:bg-pf-bg hover:text-pf-ink",
+  ink: "border border-pf-ink bg-pf-ink text-pf-bg hover:bg-pf-bg hover:text-pf-ink",
   outline:
-    "border border-pf-line-strong text-pf-ink hover:border-pf-ink hover:bg-pf-ink hover:text-pf-bg",
-  ghost: "text-pf-ink hover:text-pf-violet-700",
+    "border border-pf-ink bg-transparent text-pf-ink hover:bg-pf-ink hover:text-pf-bg",
+  ghost:
+    "border border-transparent bg-transparent text-pf-ink underline-offset-4 hover:underline",
+  "inverse-primary":
+    "border border-pf-inverse-ink bg-pf-inverse-ink text-pf-inverse-bg hover:bg-transparent hover:text-pf-inverse-ink",
+  "inverse-outline":
+    "border border-pf-inverse-ink bg-transparent text-pf-inverse-ink hover:bg-pf-inverse-ink hover:text-pf-inverse-bg",
 };
 
 const sizeStyles: Record<Size, string> = {
@@ -94,7 +107,7 @@ export default function CalButton({
     };
   }, []);
 
-  const classes = `group inline-flex select-none items-center justify-center gap-2.5 rounded-[var(--pf-radius)] font-medium leading-none transition-colors duration-200 ease-[var(--pf-ease)] ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
+  const classes = `group inline-flex select-none items-center justify-center gap-2.5 rounded-[var(--pf-radius)] font-medium leading-none transition-[transform,background-color,border-color,color] duration-150 ease-[var(--pf-ease-quart)] active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100 ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
 
   return (
     <button

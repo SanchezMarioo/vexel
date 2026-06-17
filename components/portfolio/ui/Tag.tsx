@@ -1,11 +1,10 @@
 import type { ReactNode } from "react";
 
-type Variant = "line" | "solid" | "violet";
+type Variant = "line" | "solid";
 
 const variantStyles: Record<Variant, string> = {
   line: "border border-pf-line text-pf-ink-soft",
   solid: "bg-pf-ink text-pf-bg",
-  violet: "bg-pf-violet-tint text-pf-violet-900",
 };
 
 interface TagProps {

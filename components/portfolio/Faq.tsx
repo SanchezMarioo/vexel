@@ -14,7 +14,7 @@ export default function Faq() {
       <div className="pf-container grid gap-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
           <h2
-            className="pf-display text-pf-ink"
+            className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.4rem)" }}
           >
             Preguntas frecuentes
@@ -42,8 +42,8 @@ export default function Faq() {
                       className="flex w-full items-center justify-between gap-6 py-5 text-left"
                     >
                       <span
-                        className={`text-lg transition-colors duration-200 ${
-                          isOpen ? "text-pf-violet-700" : "text-pf-ink"
+                        className={`text-lg text-pf-ink ${
+                          isOpen ? "font-medium" : ""
                         }`}
                       >
                         {faq.question}

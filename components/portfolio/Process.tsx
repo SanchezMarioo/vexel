@@ -16,7 +16,7 @@ export default function Process() {
           className="max-w-3xl"
         >
           <h2
-            className="pf-display text-pf-ink"
+            className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.4rem)" }}
           >
             Cómo trabajamos juntos
@@ -45,14 +45,14 @@ export default function Process() {
 
           {processSteps.map((step, index) => (
             <motion.li key={step.title} variants={fadeUp} className="relative">
-              <span className="pf-mono relative z-10 grid h-10 w-10 place-items-center rounded-full bg-pf-violet-700 text-sm font-medium text-white">
+              <span className="pf-mono relative z-10 grid h-10 w-10 place-items-center rounded-full bg-pf-ink text-sm font-medium text-pf-bg">
                 {index + 1}
               </span>
               <h3 className="pf-display mt-5 text-xl text-pf-ink">{step.title}</h3>
 
               <dl className="mt-4 space-y-3 text-sm">
                 <div>
-                  <dt className="pf-mono text-xs uppercase tracking-wide text-pf-violet-700">Tú</dt>
+                  <dt className="pf-mono text-xs uppercase tracking-wide text-pf-ink">Tú</dt>
                   <dd className="mt-1 text-pf-ink-soft">{step.you}</dd>
                 </div>
                 <div>

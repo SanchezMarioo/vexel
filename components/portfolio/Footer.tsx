@@ -5,18 +5,18 @@ export default function Footer() {
   const socials = identity.socials.filter((social) => isRealUrl(social.href));
 
   return (
-    <footer className="bg-pf-ink text-pf-bg">
+    <footer className="pf-invert">
       <div className="pf-container py-16 md:py-20">
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-5">
             <p className="pf-display text-2xl">
               {identity.name}
-              <span className="text-pf-violet">.</span>
+              <span className="text-pf-inverse-ink">.</span>
             </p>
-            <p className="mt-3 max-w-sm text-pf-bg/60">{identity.headline}</p>
+            <p className="mt-3 max-w-sm text-pf-inverse-ink/60">{identity.headline}</p>
             <a
               href={`mailto:${identity.email}`}
-              className="mt-6 inline-block text-lg text-pf-bg underline-offset-4 hover:text-[oklch(0.8_0.12_290)] hover:underline"
+              className="mt-6 inline-block text-lg text-pf-inverse-ink underline-offset-4 hover:underline"
             >
               {identity.email}
             </a>

@@ -21,7 +21,7 @@ function Narrative({ project, dense = false }: { project: Project; dense?: boole
         <dd className="mt-1 text-pf-ink-soft">{project.built}</dd>
       </div>
       <div>
-        <dt className="pf-mono text-xs uppercase tracking-wide text-pf-violet-700">Resultado</dt>
+        <dt className="pf-mono text-xs uppercase tracking-wide text-pf-ink">Resultado</dt>
         <dd className="mt-1 font-medium text-pf-ink">{project.result}</dd>
       </div>
     </dl>
@@ -35,7 +35,7 @@ function LiveLink({ project }: { project: Project }) {
       href={project.liveUrl}
       target="_blank"
       rel="noreferrer noopener"
-      className="group/link mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-pf-violet-700 hover:text-pf-violet-900"
+      className="group/link mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-pf-ink underline-offset-4 hover:underline"
     >
       Ver en vivo
       <svg
@@ -66,7 +66,7 @@ export default function Projects() {
           className="max-w-3xl"
         >
           <h2
-            className="pf-display text-pf-ink"
+            className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.4rem)" }}
           >
             Casos reales, no solo capturas
@@ -97,7 +97,7 @@ export default function Projects() {
             </motion.a>
 
             <motion.div variants={fadeUp} className="lg:col-span-5">
-              <Tag variant="violet">{featured.sector}</Tag>
+              <Tag variant="solid">{featured.sector}</Tag>
               <h3 className="pf-display mt-4 text-3xl leading-tight text-pf-ink md:text-4xl">
                 {featured.title}
               </h3>
@@ -127,7 +127,7 @@ export default function Projects() {
                   <span className="absolute inset-0 bg-pf-ink/0 transition-colors duration-300 group-hover:bg-pf-ink/5" />
                 </a>
                 <div className="mt-5">
-                  <Tag variant="violet">{project.sector}</Tag>
+                  <Tag variant="line">{project.sector}</Tag>
                   <h3 className="pf-display mt-3 text-2xl leading-tight text-pf-ink">
                     {project.title}
                   </h3>

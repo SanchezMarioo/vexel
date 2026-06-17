@@ -60,7 +60,7 @@ export default function Nav() {
       >
         <a href="#inicio" className="pf-display text-lg leading-none text-pf-ink">
           {identity.name}
-          <span className="text-pf-violet-700">.</span>
+          <span className="text-pf-ink">.</span>
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">
@@ -79,7 +79,7 @@ export default function Nav() {
                   {link.label}
                   <span
                     aria-hidden="true"
-                    className={`absolute inset-x-3 -bottom-px h-px origin-left bg-pf-violet-700 transition-transform duration-300 ease-[var(--pf-ease-out)] ${
+                    className={`absolute inset-x-3 -bottom-px h-px origin-left bg-pf-ink transition-transform duration-300 ease-[var(--pf-ease-out)] ${
                       isActive ? "scale-x-100" : "scale-x-0"
                     }`}
                   />

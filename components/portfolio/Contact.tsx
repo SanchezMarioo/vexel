@@ -62,7 +62,7 @@ export default function Contact() {
         >
           <motion.h2
             variants={fadeUp}
-            className="pf-display text-pf-ink"
+            className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2.2rem, 5vw, 4rem)" }}
           >
             Cuéntame qué quieres construir.
@@ -85,7 +85,7 @@ export default function Contact() {
             ¿Prefieres el correo directo?{" "}
             <a
               href={`mailto:${identity.email}`}
-              className="text-pf-violet-700 underline-offset-4 hover:underline"
+              className="text-pf-ink underline-offset-4 hover:underline"
             >
               {identity.email}
             </a>
@@ -105,7 +105,7 @@ export default function Contact() {
               role="status"
               className="flex h-full min-h-[20rem] flex-col items-start justify-center rounded-[var(--pf-radius-lg)] border border-pf-line bg-pf-surface p-8"
             >
-              <span className="grid h-12 w-12 place-items-center rounded-full bg-pf-violet text-white">
+              <span className="grid h-12 w-12 place-items-center rounded-full bg-pf-ink text-pf-bg">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -126,7 +126,7 @@ export default function Contact() {
               <button
                 type="button"
                 onClick={() => setStatus("idle")}
-                className="mt-6 text-sm font-medium text-pf-violet-700 hover:text-pf-violet-900"
+                className="mt-6 text-sm font-medium text-pf-ink underline-offset-4 hover:underline"
               >
                 Enviar otro mensaje
               </button>
@@ -140,7 +140,7 @@ export default function Contact() {
               {serverError ? (
                 <p
                   role="alert"
-                  className="mb-6 rounded-[var(--pf-radius)] border border-[oklch(0.6_0.2_27)] bg-[oklch(0.96_0.04_27)] px-4 py-3 text-sm text-[oklch(0.42_0.2_27)]"
+                  className="mb-6 rounded-[var(--pf-radius)] border border-pf-danger bg-pf-surface px-4 py-3 text-sm text-pf-danger"
                 >
                   {serverError}
                 </p>

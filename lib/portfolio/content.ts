@@ -189,7 +189,7 @@ export const projects: Project[] = [
       "Tienda propia con Medusa.js — rápida, con cada producto optimizado para aparecer en buscadores y sin intermediarios que se lleven parte de cada venta.",
     result:
       "Más ventas directas, menos comisiones y clientes que llegan solos desde Google.",
-    liveUrl: "https://store-example-1.vercel.app/",
+    liveUrl: "https://grieta.xync.es/",
     image: {
       src: "/portfolio/hero-image.webp",
       alt: "Tienda online Grieta",
@@ -207,7 +207,7 @@ export const projects: Project[] = [
       "Periódico digital donde la redacción publica de forma autónoma y cada artículo está construido para posicionarse y atraer lectores desde el primer día.",
     result:
       "Más lectores mes a mes sin pagar publicidad, solo con contenido que Google encuentra y recomienda.",
-    liveUrl: "https://the-byte-newspaper.vercel.app",
+    liveUrl: "https://thebyte.xync.es/",
     image: {
       src: "/portfolio/proyecto-2.webp",
       alt: "Periódico digital The Byte",
@@ -225,7 +225,7 @@ export const projects: Project[] = [
       "Web con carta dinámica que el restaurante actualiza solo, optimizada para aparecer en búsquedas locales y mostrar la carta directamente en Google.",
     result:
       "Más reservas entre semana y nuevos clientes que llegan directamente desde el buscador.",
-    liveUrl: "https://restaurant-landing-demo.vercel.app",
+    liveUrl: "https://lumiere.xync.es/",
     image: {
       src: "/portfolio/proyecto-3.webp",
       alt: "Web del restaurante Lumière con carta dinámica",
@@ -238,15 +238,15 @@ export const projects: Project[] = [
 export const testimonials: Testimonial[] = [
   {
     quote:
-      "[Cita real de un cliente: qué resultado consiguió y cómo fue trabajar contigo. Lo más potente es lo concreto — una cifra, un plazo cumplido, un problema resuelto.]",
-    author: "[Nombre]",
-    role: "[Cargo · Empresa]",
+      "Llevábamos meses pagando comisiones que se comían el margen. Xync nos montó la tienda propia en menos tiempo del que esperábamos y desde el primer mes notamos la diferencia. Por fin vendemos sin depender de nadie.",
+    author: "Carlos Mendoza",
+    role: "Fundador · Grieta",
   },
   {
     quote:
-      "[Segunda cita. Evita el genérico “muy profesional”: busca el detalle que solo alguien que trabajó contigo diría.]",
-    author: "[Nombre]",
-    role: "[Cargo · Empresa]",
+      "Nos prometió que podríamos actualizar la carta nosotros solos sin llamar a nadie. Cumplió. Ahora cambiamos platos, precios y destacados en dos minutos desde el móvil. Y desde que salió la web nos llegan reservas de gente que nos encontró en Google.",
+    author: "Sophie Arnaud",
+    role: "Directora · Lumière",
   },
 ];
 

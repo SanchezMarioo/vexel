@@ -148,24 +148,26 @@ body::before {
 
 /* ===========================================================================
    Portfolio surface (pf-*)
-   Swiss-industrial, light base, committed/drenched violet. Brand anchor
-   #7b61ff / #6b51ef expressed in OKLCH. Everything is scoped to .pf-root so
-   the dark Xync landing and the client portal keep their own theme intact.
+   Swiss-industrial, total black & white. Chroma 0 across every neutral — no
+   warm or cool tint, no accent colour. The contrast IS the palette; emphasis
+   comes from weight and size, never hue. The X logo (pure black on white)
+   dictates the whole system. Scoped to .pf-root so the dark client portal
+   keeps its own theme intact.
    =========================================================================== */
 
 @theme {
-  --color-pf-bg: oklch(0.971 0.003 285);
-  --color-pf-surface: oklch(1 0 0);
-  --color-pf-subtle: oklch(0.949 0.004 285);
-  --color-pf-ink: oklch(0.17 0.013 285);
-  --color-pf-ink-soft: oklch(0.4 0.016 285);
-  --color-pf-muted: oklch(0.52 0.02 285);
-  --color-pf-line: oklch(0.872 0.006 285);
-  --color-pf-line-strong: oklch(0.8 0.011 285);
-  --color-pf-violet: oklch(0.6057 0.224 285);
-  --color-pf-violet-700: oklch(0.5562 0.2253 284);
-  --color-pf-violet-900: oklch(0.34 0.155 285);
-  --color-pf-violet-tint: oklch(0.95 0.03 286);
+  --color-pf-bg: oklch(1 0 0);
+  --color-pf-surface: oklch(0.97 0 0);
+  --color-pf-subtle: oklch(0.95 0 0);
+  --color-pf-ink: oklch(0.12 0 0);
+  --color-pf-ink-strong: oklch(0 0 0);
+  --color-pf-ink-soft: oklch(0.3 0 0);
+  --color-pf-muted: oklch(0.53 0 0);
+  --color-pf-line: oklch(0.9 0 0);
+  --color-pf-line-strong: oklch(0.8 0 0);
+  --color-pf-inverse-bg: oklch(0.08 0 0);
+  --color-pf-inverse-ink: oklch(1 0 0);
+  --color-pf-danger: oklch(0.45 0.18 25);
 }
 
 /* Repaint the document only when the portfolio surface is mounted, so the
@@ -187,9 +189,11 @@ html:has(.pf-root) body::before {
 .pf-root {
   --pf-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --pf-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --pf-ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
   --pf-radius: 0.375rem;
   --pf-radius-sm: 0.25rem;
   --pf-radius-lg: 0.75rem;
+  --pf-focus: var(--color-pf-ink);
   background: var(--color-pf-bg);
   color: var(--color-pf-ink-soft);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
@@ -198,14 +202,28 @@ html:has(.pf-root) body::before {
 }
 
 .pf-root ::selection {
-  background: var(--color-pf-violet);
-  color: #fff;
+  background: var(--color-pf-ink);
+  color: var(--color-pf-bg);
 }
 
 .pf-root :where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
-  outline: 2px solid var(--color-pf-violet);
+  outline: 2px solid var(--pf-focus);
   outline-offset: 2px;
   border-radius: 2px;
+}
+
+/* Total inversion for Hero / Footer bookends. Pure black ground, white ink,
+   white focus ring and an inverted selection so nested elements read correctly
+   without per-element overrides. */
+.pf-invert {
+  --pf-focus: var(--color-pf-inverse-ink);
+  background: var(--color-pf-inverse-bg);
+  color: var(--color-pf-inverse-ink);
+}
+
+.pf-invert ::selection {
+  background: var(--color-pf-inverse-ink);
+  color: var(--color-pf-inverse-bg);
 }
 
 .pf-display {
