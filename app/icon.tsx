@@ -14,15 +14,15 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#7b61ff",
-          color: "#ffffff",
+          background: "#ffffff",
+          color: "#050505",
           fontSize: 22,
-          fontWeight: 700,
+          fontWeight: 800,
           fontFamily: "sans-serif",
           borderRadius: 7,
         }}
       >
-        V
+        X
       </div>
     ),
     { ...size },
