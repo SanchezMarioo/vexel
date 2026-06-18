@@ -78,6 +78,8 @@ export interface Identity {
   subhead: string;
   availability: string;
   responseTime: string;
+  /** Base local para el SEO de Salamanca (NAP consistente en web/GBP/redes). */
+  location: string;
   email: string;
   /** Cal.com link slug: "usuario/30min" — sin dominio. */
   calUrl: string;
@@ -109,11 +111,12 @@ export const identity: Identity = {
     "¿Tu web va lenta, no convierte o se quedó a medias? La dejo rápida, clara y lista para vender — con plazos cerrados que se cumplen.",
   availability: "Disponible para nuevos proyectos · Junio 2026",
   responseTime: "Respondo en menos de 24 h",
+  location: "Salamanca, Castilla y León",
   email: "xyncdev@gmail.com",
   calUrl: "xync-ulzw2t/15min",
   socials: [
     { label: "Discord", href: "https://discord.gg/aENy8Sb4rS" },
-    { label: "GitHub", href: "https://github.com/[usuario]" },
+    { label: "TikTok", href: "https://www.tiktok.com/@xyncdev" },
   ],
 };
 
@@ -279,6 +282,6 @@ export const faqs: Faq[] = [
   {
     question: "¿Trabajas en remoto?",
     answer:
-      "Sí, con clientes de [España y LATAM]. La distancia nunca ha sido un problema: lo que de verdad importa es la comunicación clara y los plazos cumplidos.",
+      "Sí. Trabajo desde Salamanca con clientes de toda España y de Latinoamérica en remoto. La distancia nunca ha sido un problema: lo que de verdad importa es la comunicación clara y los plazos cumplidos.",
   },
 ];

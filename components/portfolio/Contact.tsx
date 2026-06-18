@@ -19,7 +19,7 @@ export default function Contact() {
     formState: { errors, isSubmitting },
   } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { name: "", email: "", message: "", company: "" },
+    defaultValues: { name: "", email: "", message: "", company: "", consent: false },
   });
 
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
@@ -187,6 +187,36 @@ export default function Contact() {
                     {...register("company")}
                   />
                 </div>
+              </div>
+
+              <div className="mt-5">
+                <label
+                  htmlFor="contact-consent"
+                  className="flex items-start gap-3 text-sm text-pf-ink-soft"
+                >
+                  <input
+                    id="contact-consent"
+                    type="checkbox"
+                    aria-invalid={errors.consent ? true : undefined}
+                    className="mt-0.5 h-4 w-4 flex-shrink-0 accent-pf-ink"
+                    {...register("consent")}
+                  />
+                  <span>
+                    He leído y acepto la{" "}
+                    <a
+                      href="/privacidad"
+                      className="text-pf-ink underline underline-offset-4 hover:no-underline"
+                    >
+                      política de privacidad
+                    </a>
+                    .
+                  </span>
+                </label>
+                {errors.consent ? (
+                  <p role="alert" className="mt-2 text-sm text-pf-danger">
+                    {errors.consent.message}
+                  </p>
+                ) : null}
               </div>
 
               <div className="mt-7">

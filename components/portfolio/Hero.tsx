@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { identity } from "@/lib/portfolio/content";
-import { clipUp, fadeUp, popIn, stagger } from "@/lib/portfolio/motion";
+import { fadeUp, heroLcpSafe, popIn, stagger } from "@/lib/portfolio/motion";
 import Button from "./ui/Button";
 import ImageSlot from "./ui/ImageSlot";
 
@@ -17,7 +17,7 @@ export default function Hero() {
           className="lg:col-span-6"
         >
           <motion.h1
-            variants={clipUp}
+            variants={heroLcpSafe}
             className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2.4rem, 5.2vw, 4.4rem)" }}
           >
@@ -29,6 +29,11 @@ export default function Hero() {
             className="pf-prose mt-6 text-lg leading-relaxed text-pf-ink"
           >
             {identity.subhead}
+          </motion.p>
+
+          <motion.p variants={fadeUp} className="mt-4 text-base text-pf-ink-soft">
+            Desarrollador web freelance con base en {identity.location} · trabajo
+            para toda España y Latinoamérica en remoto.
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-3">
@@ -57,11 +62,11 @@ export default function Hero() {
         <motion.div
           initial="hidden"
           animate="visible"
-          variants={stagger(0.12, 0.35)}
+          variants={stagger(0.12, 0.1)}
           className="relative lg:col-span-6"
         >
           <motion.div
-            variants={fadeUp}
+            variants={heroLcpSafe}
             className="overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line bg-pf-surface"
           >
             <div className="flex items-center gap-2 border-b border-pf-line bg-[oklch(0.93_0_0)] px-4 py-3">

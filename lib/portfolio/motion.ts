@@ -40,6 +40,18 @@ export const clipUp: Variants = {
   },
 };
 
+/**
+ * Entrada LCP-safe para el contenido above-the-fold del hero. NO usa `opacity`
+ * ni `clip-path`: el elemento pinta a opacidad plena en el primer frame, así el
+ * LCP no queda gateado por la hidratación de JS. Solo un leve desplazamiento.
+ * Úsalo en el <h1> y la imagen del hero (el resto de secciones, que entran con
+ * `whileInView` bajo el pliegue, sí pueden usar fadeUp/clipUp con opacidad).
+ */
+export const heroLcpSafe: Variants = {
+  hidden: { y: 16 },
+  visible: { y: 0, transition: { duration: pfDurations.reveal, ease: pfEaseOut } },
+};
+
 /** Stagger parent — children animate in sequence. */
 export const stagger = (staggerChildren = 0.08, delayChildren = 0): Variants => ({
   hidden: {},

@@ -21,6 +21,10 @@ export const contactSchema = z.object({
     .trim()
     .min(10, "Cuéntame algo más (mínimo 10 caracteres).")
     .max(2000, "El mensaje es demasiado largo."),
+  // RGPD: consentimiento explícito obligatorio para tratar los datos del lead.
+  consent: z
+    .boolean()
+    .refine((v) => v === true, "Debes aceptar la política de privacidad para enviar."),
   // Honeypot: humans leave it empty; bots tend to fill every field. It is
   // validated leniently here and inspected in the route so a filled value can
   // be dropped silently instead of surfacing a confusing error.

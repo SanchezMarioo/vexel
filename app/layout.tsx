@@ -3,10 +3,10 @@ import { Geist, Geist_Mono, Bricolage_Grotesque } from "next/font/google";
 import { getServerSession } from "next-auth";
 import AuthSessionProvider from "@/components/AuthSessionProvider";
 import ClientEffects from "@/components/ClientEffects";
+import StructuredData from "@/components/StructuredData";
 import { authOptions } from "@/lib/auth/options";
+import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.xync.es";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,9 +29,9 @@ const bricolage = Bricolage_Grotesque({
   display: "swap",
 });
 
-const defaultTitle = "Xync | Webs de conversión para negocios ambiciosos";
+const defaultTitle = "Xync · Desarrollo y diseño web en Salamanca";
 const defaultDescription =
-  "Xync diseña y desarrolla landing pages ultramodernas para negocios locales y creativos que quieren vender más.";
+  "Estudio freelance de diseño y desarrollo web en Salamanca: webs, tiendas online y landing pages rápidas y orientadas a conversión, con precio y plazo cerrados.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -106,6 +106,7 @@ export default async function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${bricolage.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-body">
+        <StructuredData />
         <AuthSessionProvider session={session}>
           <a href="#main-content" className="skip-link">
             Saltar al contenido principal

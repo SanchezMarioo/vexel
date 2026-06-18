@@ -11,12 +11,22 @@ export default function Testimonials() {
       className="scroll-mt-20 border-t border-pf-line bg-pf-bg py-24 md:py-32"
     >
       <div className="pf-container">
+        <motion.h2
+          initial="hidden"
+          whileInView="visible"
+          viewport={pfViewport}
+          variants={fadeUp}
+          className="pf-display max-w-3xl text-pf-ink-strong"
+          style={{ fontSize: "clamp(2rem, 4.5vw, 3.4rem)" }}
+        >
+          ¿Qué dicen los negocios con los que he trabajado?
+        </motion.h2>
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={pfViewport}
           variants={stagger(0.18)}
-          className="grid gap-x-8 gap-y-14 md:grid-cols-2"
+          className="mt-14 grid gap-x-8 gap-y-14 md:grid-cols-2"
         >
           {testimonials.map((testimonial, index) => (
             <motion.figure

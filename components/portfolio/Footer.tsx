@@ -20,6 +20,9 @@ export default function Footer() {
             >
               {identity.email}
             </a>
+            <p className="mt-4 text-sm text-pf-inverse-ink/55">
+              {identity.location} · España
+            </p>
           </div>
 
           <nav aria-label="Pie de página" className="md:col-span-3 md:col-start-7">
@@ -63,7 +66,17 @@ export default function Footer() {
           <p>
             © {year} {identity.name}. Todos los derechos reservados.
           </p>
-          <p>{identity.availability}</p>
+          <nav aria-label="Enlaces legales" className="flex flex-wrap gap-x-4 gap-y-1">
+            <a href="/aviso-legal" className="transition-colors hover:text-pf-bg">
+              Aviso legal
+            </a>
+            <a href="/privacidad" className="transition-colors hover:text-pf-bg">
+              Privacidad
+            </a>
+            <a href="/cookies" className="transition-colors hover:text-pf-bg">
+              Cookies
+            </a>
+          </nav>
         </div>
       </div>
     </footer>

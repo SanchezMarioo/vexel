@@ -3,16 +3,16 @@ import EyebrowTag from "@/components/ui/EyebrowTag";
 import Button from "@/components/portfolio/ui/Button";
 import PortfolioShell from "@/components/portfolio/PortfolioShell";
 import { faqs } from "@/lib/content/faqs";
+import { siteUrl } from "@/lib/site-url";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.xync.es";
 const pagePath = "/landing-pages-negocios-locales";
 
 const pageTitle = "Landing Pages para Negocios Locales que Convierten | Xync";
 const pageDescription =
-  "Disenamos landing pages para negocios locales orientadas a captar mas contactos y ventas. Estrategia, copy, diseno y desarrollo en 14 dias.";
+  "Diseñamos landing pages para negocios locales orientadas a captar más contactos y ventas. Estrategia, copy, diseño y desarrollo en 14 días.";
 
 export const metadata: Metadata = {
-  title: pageTitle,
+  title: { absolute: pageTitle },
   description: pageDescription,
   alternates: {
     canonical: pagePath,
@@ -32,6 +32,10 @@ export const metadata: Metadata = {
   },
 };
 
+// FAQPage: Google retiró el rich result de FAQ en may-2026, así que esto ya no
+// genera estrella/acordeón en el SERP. Se mantiene porque sigue ayudando a la
+// CITACIÓN en buscadores de IA (AI Overviews, ChatGPT, Perplexity). No añadir
+// más FAQPage esperando rich result; no usar HowTo (retirado sep-2023).
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -81,13 +85,13 @@ export default function LandingPagesNegociosLocalesPage() {
           <article className="mx-auto w-full max-w-4xl">
             <header className="text-center">
               <EyebrowTag className="border border-pf-line text-pf-muted">
-                Guia SEO para servicios locales
+                Guía SEO para servicios locales
               </EyebrowTag>
               <h1 className="mt-6 pf-display text-5xl leading-tight text-pf-ink-strong md:text-6xl">
                 Landing pages para negocios locales que convierten visitas en clientes
               </h1>
               <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-pf-ink-soft md:text-lg">
-                Esta guia explica como estructuramos una landing de conversion para captar mas
+                Esta guía explica cómo estructuramos una landing de conversión para captar más
                 contactos cualificados sin ruido visual ni mensajes ambiguos.
               </p>
 
@@ -103,47 +107,47 @@ export default function LandingPagesNegociosLocalesPage() {
 
             <section className="mt-18 border-t border-pf-line pt-12">
               <h2 className="pf-display text-3xl text-pf-ink-strong md:text-4xl">
-                Que incluye una landing page completa
+                Qué incluye una landing page completa
               </h2>
               <ul className="mt-6 list-disc space-y-2 pl-6 text-pf-ink-soft marker:text-pf-muted">
-                <li>Estrategia de conversion y definicion de objetivo principal.</li>
+                <li>Estrategia de conversión y definición del objetivo principal.</li>
                 <li>Copy orientado a ventas con estructura de alto impacto.</li>
-                <li>Diseno visual con jerarquia clara para mejorar decisiones.</li>
-                <li>Desarrollo responsive optimizado para SEO tecnico.</li>
-                <li>Integracion de CTA y flujo de contacto sin friccion.</li>
+                <li>Diseño visual con jerarquía clara para mejorar decisiones.</li>
+                <li>Desarrollo responsive optimizado para SEO técnico.</li>
+                <li>Integración de CTA y flujo de contacto sin fricción.</li>
               </ul>
             </section>
 
             <section className="mt-16 border-t border-pf-line pt-12">
               <h2 className="pf-display text-3xl text-pf-ink-strong md:text-4xl">
-                Para quien esta pensado
+                Para quién está pensado
               </h2>
               <p className="mt-6 text-base leading-relaxed text-pf-ink-soft">
                 Negocios locales de servicios que quieren aumentar citas, llamadas o formularios.
-                Funciona especialmente bien para clinicas, estudios de belleza, hoteles boutique y
-                marcas que invierten en trafico de pago.
+                Funciona especialmente bien para clínicas, estudios de belleza, hoteles boutique y
+                marcas que invierten en tráfico de pago.
               </p>
             </section>
 
             <section className="mt-16 border-t border-pf-line pt-12">
               <h2 className="pf-display text-3xl text-pf-ink-strong md:text-4xl">
-                Inversion orientativa
+                Inversión orientativa
               </h2>
               <div className="mt-6 grid gap-4 md:grid-cols-3">
                 <PriceCard
                   title="Landing Page Completa"
                   price="1.200€ - 2.400€"
-                  description="Proyecto integral con estrategia, copy, diseno y desarrollo."
+                  description="Proyecto integral con estrategia, copy, diseño y desarrollo."
                 />
                 <PriceCard
-                  title="Rediseno Express"
+                  title="Rediseño Express"
                   price="790€ - 1.200€"
-                  description="Optimizacion de una landing existente con mejoras de conversion."
+                  description="Optimización de una landing existente con mejoras de conversión."
                 />
                 <PriceCard
-                  title="Auditoria UX"
+                  title="Auditoría UX"
                   price="Desde 390€"
-                  description="Analisis accionable para detectar bloqueos y priorizar cambios."
+                  description="Análisis accionable para detectar bloqueos y priorizar cambios."
                 />
               </div>
             </section>
@@ -163,7 +167,7 @@ export default function LandingPagesNegociosLocalesPage() {
             </section>
 
             <section className="mt-16 border-t border-pf-line pt-12 text-center" id="cta-final">
-              <h2 className="pf-display text-4xl text-pf-ink-strong">Listo para empezar?</h2>
+              <h2 className="pf-display text-4xl text-pf-ink-strong">¿Listo para empezar?</h2>
               <p className="mx-auto mt-4 max-w-2xl text-pf-ink-soft">
                 Si quieres una landing enfocada en resultados, te proponemos una estructura clara y
                 accionable en menos de 24h.
