@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import LegalLayout, { LegalSection } from "@/components/legal/LegalLayout";
-import { identity } from "@/lib/portfolio/content";
+import { identity, legalEntity } from "@/lib/portfolio/content";
 
-// NOTA PARA EL TITULAR: completa los datos entre [CORCHETES] (nombre fiscal,
-// NIF y domicilio) y revisa este texto con un asesor antes de considerarlo
-// definitivo. La estructura cumple el art. 10 de la LSSI-CE.
+// Los datos del titular (nombre, NIF, domicilio) viven en `legalEntity`
+// (lib/portfolio/content.ts) como fuente única. Revisa este texto con un asesor
+// antes de considerarlo definitivo. La estructura cumple el art. 10 de la LSSI-CE.
 
 export const metadata: Metadata = {
   title: "Aviso legal",
@@ -24,12 +24,15 @@ export default function AvisoLegalPage() {
         </p>
         <ul>
           <li>
-            Titular: Alejandro Martín Herrero, que opera bajo la marca «Xync».
+            Titular: {legalEntity.legalName}, que opera bajo la marca «
+            {identity.name}».
           </li>
-          <li>NIF: 70912847-L.</li>
+          <li>NIF: {legalEntity.nif}.</li>
           <li>
-            Domicilio: Calle Pizarrales, 38, 3º A, Salamanca, Castilla y León
-            (España).
+            Domicilio: {legalEntity.street}
+            {legalEntity.postalCode ? `, ${legalEntity.postalCode}` : ""},{" "}
+            {legalEntity.locality}, {legalEntity.region} (
+            {legalEntity.countryName}).
           </li>
           <li>
             Correo electrónico:{" "}

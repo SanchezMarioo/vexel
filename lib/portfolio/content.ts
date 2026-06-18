@@ -120,6 +120,38 @@ export const identity: Identity = {
   ],
 };
 
+/**
+ * Datos fiscales/legales del titular (autónomo). FUENTE ÚNICA para el aviso
+ * legal, la política de privacidad y los datos estructurados (NAP consistente).
+ * El nombre REAL se usa como `Person` en el schema (señal E-E-A-T); la marca
+ * pública sigue siendo `identity.name` ("Xync").
+ */
+export interface LegalEntity {
+  /** Nombre y apellidos del titular. */
+  legalName: string;
+  nif: string;
+  /** Vía, número y piso. */
+  street: string;
+  /** Código postal (déjalo vacío si aún no lo añades; se omite del schema). */
+  postalCode: string;
+  locality: string;
+  region: string;
+  /** Código ISO 3166-1 alpha-2. */
+  countryCode: string;
+  countryName: string;
+}
+
+export const legalEntity: LegalEntity = {
+  legalName: "Alejandro Martín Herrero",
+  nif: "70912847-L",
+  street: "Calle Pizarrales, 38, 3º A",
+  postalCode: "37003", // ← añade tu código postal de Salamanca
+  locality: "Salamanca",
+  region: "Castilla y León",
+  countryCode: "ES",
+  countryName: "España",
+};
+
 export const navLinks: NavLink[] = [
   { label: "Servicios", href: "#servicios" },
   { label: "Cómo trabajo", href: "#proceso" },

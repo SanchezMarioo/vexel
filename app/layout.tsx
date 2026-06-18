@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Bricolage_Grotesque } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { getServerSession } from "next-auth";
 import AuthSessionProvider from "@/components/AuthSessionProvider";
 import ClientEffects from "@/components/ClientEffects";
@@ -108,12 +109,10 @@ export default async function RootLayout({
       <body className="min-h-full flex flex-col bg-background text-body">
         <StructuredData />
         <AuthSessionProvider session={session}>
-          <a href="#main-content" className="skip-link">
-            Saltar al contenido principal
-          </a>
           {children}
           <ClientEffects />
         </AuthSessionProvider>
+        <Analytics />
       </body>
     </html>
   );

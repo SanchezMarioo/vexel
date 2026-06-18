@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import LegalLayout, { LegalSection } from "@/components/legal/LegalLayout";
-import { identity } from "@/lib/portfolio/content";
+import { identity, legalEntity } from "@/lib/portfolio/content";
 
-// NOTA PARA EL TITULAR: completa los datos entre [CORCHETES] y revisa el texto
-// con un asesor. Estructura conforme al RGPD (UE 2016/679) y la LOPDGDD 3/2018.
-// Ajusta la lista de "encargados del tratamiento" a los proveedores que uses
-// realmente (alojamiento, hoja de cálculo, base de datos, agenda).
+// Los datos del responsable vienen de `legalEntity` (fuente única). Revisa el
+// texto con un asesor. Estructura conforme al RGPD (UE 2016/679) y la LOPDGDD
+// 3/2018. Ajusta la lista de "encargados del tratamiento" a los proveedores que
+// uses realmente (alojamiento, hoja de cálculo, base de datos, agenda).
 
 export const metadata: Metadata = {
   title: "Política de privacidad",
@@ -19,8 +19,9 @@ export default function PrivacidadPage() {
     <LegalLayout title="Política de privacidad" updated="18 de junio de 2026">
       <LegalSection title="1. Responsable del tratamiento">
         <p>
-          El responsable del tratamiento de tus datos es [NOMBRE Y APELLIDOS DEL TITULAR] («Xync»),
-          con domicilio en Salamanca, Castilla y León (España) y correo electrónico de contacto{" "}
+          El responsable del tratamiento de tus datos es {legalEntity.legalName} («{identity.name}
+          »), con domicilio en {legalEntity.locality}, {legalEntity.region} (
+          {legalEntity.countryName}) y correo electrónico de contacto{" "}
           <a href={`mailto:${identity.email}`}>{identity.email}</a>.
         </p>
       </LegalSection>

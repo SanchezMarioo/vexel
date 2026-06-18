@@ -1,4 +1,4 @@
-import { identity, isRealUrl } from "@/lib/portfolio/content";
+import { identity, isRealUrl, legalEntity } from "@/lib/portfolio/content";
 import { siteUrl } from "@/lib/site-url";
 
 /**
@@ -16,13 +16,24 @@ import { siteUrl } from "@/lib/site-url";
 export default function StructuredData() {
   const sameAs = identity.socials.map((s) => s.href).filter(isRealUrl);
 
+  // NAP único compartido por Person y ProfessionalService (postalCode opcional).
+  const postalAddress = {
+    "@type": "PostalAddress",
+    streetAddress: legalEntity.street,
+    addressLocality: legalEntity.locality,
+    addressRegion: legalEntity.region,
+    ...(legalEntity.postalCode ? { postalCode: legalEntity.postalCode } : {}),
+    addressCountry: legalEntity.countryCode,
+  };
+
   const graph = {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Person",
         "@id": `${siteUrl}/#person`,
-        name: identity.name,
+        name: legalEntity.legalName,
+        alternateName: identity.name,
         jobTitle: "Desarrollador web freelance",
         description:
           "Desarrollador web freelance en Salamanca. Diseño y desarrollo webs, tiendas online y productos digitales rápidos y orientados a conversión.",
@@ -39,12 +50,7 @@ export default function StructuredData() {
         ],
         knowsLanguage: ["es"],
         worksFor: { "@id": `${siteUrl}/#business` },
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: "Salamanca",
-          addressRegion: "Castilla y León",
-          addressCountry: "ES",
-        },
+        address: postalAddress,
         ...(sameAs.length > 0 ? { sameAs } : {}),
       },
       {
@@ -68,12 +74,7 @@ export default function StructuredData() {
         ],
         knowsAbout: ["Next.js", "React", "SEO técnico", "Ecommerce", "Diseño de conversión"],
         inLanguage: "es",
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: "Salamanca",
-          addressRegion: "Castilla y León",
-          addressCountry: "ES",
-        },
+        address: postalAddress,
         // Centroide de Salamanca capital (negocio de área de servicio, sin
         // dirección de calle pública). Cámbialo si tu base es otro municipio.
         geo: { "@type": "GeoCoordinates", latitude: 40.9701, longitude: -5.6635 },
