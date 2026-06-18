@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 export const metadata: Metadata = {
   robots: {
@@ -7,7 +8,13 @@ export const metadata: Metadata = {
   },
 };
 
+// Portal privado deshabilitado: login/registro no se usan. Para reactivarlos,
+// elimina el `notFound()` de abajo (y reactiva el bloqueo de API en proxy.ts).
+const PORTAL_DISABLED = true;
+
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
+  if (PORTAL_DISABLED) notFound();
+
   return (
     <main
       id="main-content"

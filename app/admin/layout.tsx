@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { requireAdminUser } from "@/lib/auth/service";
 import LogoutButton from "@/components/auth/LogoutButton";
+
+// Portal privado deshabilitado: estas páginas no se usan. Para reactivarlas,
+// elimina el `notFound()` de abajo (y reactiva el bloqueo de API en proxy.ts).
+const PORTAL_DISABLED = true;
 
 export const metadata: Metadata = {
   title: {
@@ -21,6 +26,8 @@ const adminNavItems = [
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  if (PORTAL_DISABLED) notFound();
+
   const currentUser = await requireAdminUser();
 
   return (

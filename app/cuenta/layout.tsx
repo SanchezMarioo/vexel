@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import AccountNav from "@/components/account/AccountNav";
 import LogoutButton from "@/components/auth/LogoutButton";
 import { requireSessionUser } from "@/lib/auth/service";
 import { findUserById } from "@/lib/data/users";
+
+// Portal privado deshabilitado: estas páginas no se usan. Para reactivarlas,
+// elimina el `notFound()` de abajo (y reactiva el bloqueo de API en proxy.ts).
+const PORTAL_DISABLED = true;
 
 export const metadata: Metadata = {
   title: {
@@ -16,6 +21,8 @@ export const metadata: Metadata = {
 };
 
 export default async function AccountLayout({ children }: { children: React.ReactNode }) {
+  if (PORTAL_DISABLED) notFound();
+
   const currentUser = await requireSessionUser("/cuenta");
   const persistedUser = await findUserById(currentUser.id);
   const displayName = persistedUser?.name ?? currentUser.name ?? "usuario";

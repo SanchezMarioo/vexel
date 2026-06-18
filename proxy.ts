@@ -7,6 +7,25 @@ const PROTECTED_PATHS = ["/cuenta", "/api/account"];
 const ADMIN_PATHS = ["/admin", "/api/admin"];
 const AUTH_PATHS = ["/auth/login", "/auth/register"];
 
+// Portal privado (cuenta/admin/auth) deshabilitado: no se usa. Sus páginas HTML
+// devuelven 404 vía notFound() en sus layouts; aquí bloqueamos sus rutas API.
+// Para reactivarlo: pon PORTAL_DISABLED en false y quita los notFound() de los layouts.
+const PORTAL_DISABLED = true;
+const DISABLED_PORTAL_PATHS = [
+  "/cuenta",
+  "/admin",
+  "/auth",
+  "/api/account",
+  "/api/admin",
+  "/api/auth",
+];
+
+function isDisabledPortalPath(pathname: string) {
+  return DISABLED_PORTAL_PATHS.some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}
+
 const isDev = process.env.NODE_ENV !== "production";
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL ?? "";
 const supabaseOrigin = (() => {
@@ -51,6 +70,16 @@ function buildCsp(nonce: string) {
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Portal deshabilitado: corta antes de tocar la sesión.
+  if (PORTAL_DISABLED && isDisabledPortalPath(pathname)) {
+    if (pathname.startsWith("/api/")) {
+      return NextResponse.json({ ok: false, message: "No disponible." }, { status: 404 });
+    }
+    // Deja que el layout de la sección renderice el 404 real de Next.
+    return NextResponse.next();
+  }
+
   const secret = getAuthSecret();
   let token = await getToken({ req: request, secret });
 
@@ -133,7 +162,7 @@ export const config = {
     "/api/account/:path*",
     "/admin/:path*",
     "/api/admin/:path*",
-    "/auth/login",
-    "/auth/register",
+    "/auth/:path*",
+    "/api/auth/:path*",
   ],
 };
