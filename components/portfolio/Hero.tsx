@@ -32,8 +32,9 @@ export default function Hero() {
           </motion.p>
 
           <motion.p variants={fadeUp} className="mt-4 text-base text-pf-ink-soft">
-            Desarrollador web freelance con base en {identity.location} · trabajo
-            para toda España y Latinoamérica en remoto.
+            Xync es un estudio de desarrollo y diseño web freelance en{" "}
+            {identity.location}. Trabajamos para toda España y Latinoamérica en
+            remoto.
           </motion.p>
 
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-3">
@@ -81,7 +82,7 @@ export default function Hero() {
               priority
               image={{
                 src: "/portfolio/hero-image.webp",
-                alt: "Vista de un producto entregado",
+                alt: "Tienda online Grieta desarrollada por Xync",
                 width: 1200,
                 height: 820,
               }}

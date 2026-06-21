@@ -69,7 +69,7 @@ export default function Projects() {
             className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.4rem)" }}
           >
-            Casos reales, no solo capturas
+            Casos reales de webs y tiendas online que ya venden
           </h2>
           <p className="pf-prose mt-5 text-lg text-pf-ink-soft">
             Qué problema tenía cada negocio, qué construí y qué cambió después. Eso es lo

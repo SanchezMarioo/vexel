@@ -106,7 +106,7 @@ export function isRealUrl(url?: string): url is string {
 export const identity: Identity = {
   name: "Xync",
   headline:
-    "Desarrollamos la web y el producto digital que tu negocio necesita para crecer.",
+    "Desarrollamos webs, tiendas online y productos digitales en Salamanca para hacer crecer tu negocio.",
   subhead:
     "¿Tu web va lenta, no convierte o se quedó a medias? La dejamos rápida, clara y lista para vender — con plazos cerrados que se cumplen.",
   availability: "Disponibles para nuevos proyectos · Junio 2026",
@@ -160,7 +160,7 @@ export const navLinks: NavLink[] = [
 export const services: Service[] = [
   {
     id: "construir",
-    title: "Tu producto en internet, rápido y sin fallos",
+    title: "Tu web o tienda online, rápida y sin fallos",
     description:
       "Construimos desde cero la web o la aplicación de tu negocio: fácil de usar, que carga al instante en el móvil y lista para empezar a vender.",
     result: "Un producto en marcha, medible y preparado para crecer.",
@@ -177,7 +177,7 @@ export const services: Service[] = [
   },
   {
     id: "rediseñar",
-    title: "Una imagen a la altura de tu producto",
+    title: "Rediseño web a la altura de tu producto",
     description:
       "Rediseñamos la interfaz para que tu producto se vea profesional y se entienda en segundos, sin perder a nadie por el camino.",
     result: "Una experiencia clara que genera confianza y convierte mejor.",
@@ -226,7 +226,7 @@ export const projects: Project[] = [
     liveUrl: "https://grieta.xync.es/",
     image: {
       src: "/portfolio/hero-image.webp",
-      alt: "Tienda online Grieta",
+      alt: "Tienda online Grieta desarrollada por Xync",
       width: 1600,
       height: 1000,
     },
@@ -244,7 +244,7 @@ export const projects: Project[] = [
     liveUrl: "https://thebyte.xync.es/",
     image: {
       src: "/portfolio/proyecto-2.webp",
-      alt: "Periódico digital The Byte",
+      alt: "Periódico digital The Byte desarrollado por Xync",
       width: 1600,
       height: 1000,
     },
@@ -262,7 +262,7 @@ export const projects: Project[] = [
     liveUrl: "https://lumiere.xync.es/",
     image: {
       src: "/portfolio/proyecto-3.webp",
-      alt: "Web del restaurante Lumière con carta dinámica",
+      alt: "Web del restaurante Lumière con carta dinámica desarrollada por Xync",
       width: 1600,
       height: 1000,
     },
@@ -285,6 +285,11 @@ export const testimonials: Testimonial[] = [
 ];
 
 export const faqs: Faq[] = [
+  {
+    question: "¿Hacéis páginas web y tiendas online en Salamanca?",
+    answer:
+      "Sí. Xync es un estudio de desarrollo y diseño web freelance con base en Salamanca. Creamos páginas web, tiendas online y productos digitales para negocios de Salamanca y de toda España, y trabajamos en remoto con clientes de Latinoamérica.",
+  },
   {
     question: "¿Cuánto tarda un proyecto?",
     answer:

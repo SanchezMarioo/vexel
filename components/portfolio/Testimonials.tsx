@@ -19,7 +19,7 @@ export default function Testimonials() {
           className="pf-display max-w-3xl text-pf-ink-strong"
           style={{ fontSize: "clamp(2rem, 4.5vw, 3.4rem)" }}
         >
-          ¿Qué dicen los negocios con los que he trabajado?
+          ¿Qué dicen los negocios para los que hemos trabajado?
         </motion.h2>
         <motion.div
           initial="hidden"
