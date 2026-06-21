@@ -106,20 +106,19 @@ export function isRealUrl(url?: string): url is string {
 export const identity: Identity = {
   name: "Xync",
   headline:
-    "Desarrollo la web y el producto digital que tu negocio necesita para crecer.",
+    "Desarrollamos la web y el producto digital que tu negocio necesita para crecer.",
   subhead:
-    "¿Tu web va lenta, no convierte o se quedó a medias? La dejo rápida, clara y lista para vender — con plazos cerrados que se cumplen.",
-  availability: "Disponible para nuevos proyectos · Junio 2026",
-  responseTime: "Respondo en menos de 24 h",
+    "¿Tu web va lenta, no convierte o se quedó a medias? La dejamos rápida, clara y lista para vender — con plazos cerrados que se cumplen.",
+  availability: "Disponibles para nuevos proyectos · Junio 2026",
+  responseTime: "Respondemos en menos de 24 h",
   location: "Salamanca, Castilla y León",
-  email: "xyncdev@gmail.com",
+  email: "contacto@xync.es",
   calUrl: "xync-ulzw2t/15min",
   socials: [
     { label: "Discord", href: "https://discord.gg/aENy8Sb4rS" },
     { label: "TikTok", href: "https://www.tiktok.com/@xyncdev" },
   ],
 };
-
 /**
  * Datos fiscales/legales del titular (autónomo). FUENTE ÚNICA para el aviso
  * legal, la política de privacidad y los datos estructurados (NAP consistente).
@@ -163,7 +162,7 @@ export const services: Service[] = [
     id: "construir",
     title: "Tu producto en internet, rápido y sin fallos",
     description:
-      "Construyo desde cero la web o la aplicación de tu negocio: fácil de usar, que carga al instante en el móvil y lista para empezar a vender.",
+      "Construimos desde cero la web o la aplicación de tu negocio: fácil de usar, que carga al instante en el móvil y lista para empezar a vender.",
     result: "Un producto en marcha, medible y preparado para crecer.",
     audience: "Para fundadores que lanzan algo nuevo.",
   },
@@ -171,7 +170,7 @@ export const services: Service[] = [
     id: "arreglar",
     title: "Tu web actual, arreglada y puesta a punto",
     description:
-      "Reparo lo que va lento, falla o frena las ventas, y dejo tu web mantenible para que no vuelva a romperse cada dos por tres.",
+      "Reparamos lo que va lento, falla o frena las ventas, y dejamos tu web mantenible para que no vuelva a romperse cada dos por tres.",
     result:
       "Menos errores, más velocidad y más clientes que terminan comprando.",
     audience: "Para negocios con una web que se quedó corta.",
@@ -180,7 +179,7 @@ export const services: Service[] = [
     id: "rediseñar",
     title: "Una imagen a la altura de tu producto",
     description:
-      "Rediseño la interfaz para que tu producto se vea profesional y se entienda en segundos, sin perder a nadie por el camino.",
+      "Rediseñamos la interfaz para que tu producto se vea profesional y se entienda en segundos, sin perder a nadie por el camino.",
     result: "Una experiencia clara que genera confianza y convierte mejor.",
     audience: "Para equipos que necesitan dar el salto de calidad.",
   },
@@ -189,26 +188,26 @@ export const services: Service[] = [
 export const processSteps: ProcessStep[] = [
   {
     title: "Hablamos de tu objetivo",
-    you: "Me cuentas qué necesitas y qué sería un éxito para ti.",
-    me: "Te digo con franqueza si puedo ayudarte y cómo lo enfocaría.",
+    you: "Nos cuentas qué necesitas y qué sería un éxito para ti.",
+    me: "Te decimos con franqueza si podemos ayudarte y cómo lo enfocaríamos.",
     when: "En la primera llamada, sin coste.",
   },
   {
-    title: "Te paso un plan y un precio cerrado",
+    title: "Te pasamos un plan y un precio cerrado",
     you: "Revisas alcance, plazo y precio. Sin letra pequeña.",
-    me: "Dejo por escrito qué se entrega y cuándo.",
+    me: "Dejamos por escrito qué se entrega y cuándo.",
     when: "En 48 h tras hablar.",
   },
   {
-    title: "Construyo y te enseño avances",
+    title: "Construimos y te enseñamos avances",
     you: "Ves el progreso en cada hito y das tu opinión.",
-    me: "Desarrollo por fases y te muestro resultados reales, no promesas.",
+    me: "Desarrollamos por fases y te mostramos resultados reales, no promesas.",
     when: "Cada semana.",
   },
   {
-    title: "Lanzamos y te dejo todo en orden",
+    title: "Lanzamos y te dejamos todo en orden",
     you: "Recibes tu producto funcionando, listo para usar.",
-    me: "Me aseguro de que vaya rápido, sin errores y fácil de mantener.",
+    me: "Nos aseguramos de que vaya rápido, sin errores y fácil de mantener.",
     when: "En la fecha que acordamos.",
   },
 ];
@@ -289,17 +288,17 @@ export const faqs: Faq[] = [
   {
     question: "¿Cuánto tarda un proyecto?",
     answer:
-      "Siempre con fecha cerrada antes de empezar. Una web suele estar lista en 2–4 semanas; te doy un plazo concreto tras nuestra primera conversación, según lo que necesites.",
+      "Siempre con fecha cerrada antes de empezar. Una web suele estar lista en 2–4 semanas; te damos un plazo concreto tras nuestra primera conversación, según lo que necesites.",
   },
   {
     question: "¿Cuánto cuesta?",
     answer:
-      "Trabajo con presupuesto cerrado, no por horas: sabes el precio total antes de empezar. Cada proyecto es distinto, así que el número sale del plan que acordamos juntos, sin sorpresas después.",
+      "Trabajamos con presupuesto cerrado, no por horas: sabes el precio total antes de empezar. Cada proyecto es distinto, así que el número sale del plan que acordamos juntos, sin sorpresas después.",
   },
   {
     question: "¿Cuántas revisiones incluye?",
     answer:
-      "Las necesarias dentro del alcance acordado. Trabajo por fases y reviso contigo en cada hito, así no llegamos al final con sorpresas ni con un resultado que no esperabas.",
+      "Las necesarias dentro del alcance acordado. Trabajamos por fases y revisamos contigo en cada hito, así no llegamos al final con sorpresas ni con un resultado que no esperabas.",
   },
   {
     question: "¿Cómo nos comunicamos durante el proyecto?",
@@ -309,11 +308,11 @@ export const faqs: Faq[] = [
   {
     question: "¿Y si no quedo satisfecho?",
     answer:
-      "Avanzamos por hitos: si algo no encaja, lo ajustamos antes de seguir. No cobro la parte final hasta que el resultado funciona y estás conforme.",
+      "Avanzamos por hitos: si algo no encaja, lo ajustamos antes de seguir. No cobramos la parte final hasta que el resultado funciona y estás conforme.",
   },
   {
-    question: "¿Trabajas en remoto?",
+    question: "¿Trabajáis en remoto?",
     answer:
-      "Sí. Trabajo desde Salamanca con clientes de toda España y de Latinoamérica en remoto. La distancia nunca ha sido un problema: lo que de verdad importa es la comunicación clara y los plazos cumplidos.",
+      "Sí. Trabajamos desde Salamanca con clientes de toda España y de Latinoamérica en remoto. La distancia nunca ha sido un problema: lo que de verdad importa es la comunicación clara y los plazos cumplidos.",
   },
 ];
