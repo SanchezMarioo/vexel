@@ -14,7 +14,7 @@ import { siteUrl } from "@/lib/site-url";
 
 const title = `Desarrollador web freelance en Salamanca | ${identity.name}`;
 const description =
-  "Desarrollo y mejoro webs, tiendas online y productos digitales en Salamanca y toda España: rápido, sin fallos y con precio y plazo cerrados. Te respondo en menos de 24 h.";
+  "Estudio de desarrollo y diseño web freelance en Salamanca. Creamos webs, tiendas online y productos digitales para toda España, con precio y plazo cerrados.";
 
 export const metadata: Metadata = {
   title: { absolute: title },
