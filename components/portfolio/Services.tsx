@@ -19,7 +19,7 @@ export default function Services() {
             className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.4rem)" }}
           >
-            ¿Qué necesitas resolver?
+            ¿Qué necesitas desarrollar o mejorar en tu web?
           </h2>
           <p className="pf-prose mt-5 text-lg text-pf-ink-soft">
             Tres formas de quitarte un problema de encima. Sin tecnicismos: esto es lo
