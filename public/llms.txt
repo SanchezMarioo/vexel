@@ -1,0 +1,33 @@
+# Xync
+
+> Xync es un estudio de desarrollo y diseño web freelance con base en Salamanca (Castilla y León, España), fundado por Alejandro Martín Herrero. Creamos páginas web, tiendas online y productos digitales rápidos y orientados a conversión, con precio y plazo cerrados. Trabajamos para negocios de Salamanca y de toda España, y en remoto con clientes de Latinoamérica.
+
+Tecnologías principales: Next.js, React y Medusa.js, con SEO técnico incluido en cada proyecto. Respondemos a las solicitudes en menos de 24 horas. Una web suele estar lista en 2–4 semanas.
+
+## Servicios
+
+- [Construir](https://www.xync.es/#servicios): desarrollamos desde cero la web, la tienda online o la aplicación de tu negocio, rápida y lista para vender.
+- [Arreglar](https://www.xync.es/#servicios): reparamos webs que van lentas, fallan o no convierten, y las dejamos mantenibles.
+- [Rediseñar](https://www.xync.es/#servicios): rediseñamos la interfaz para que tu producto se vea profesional y se entienda en segundos.
+- [Tiendas online sin comisiones](https://www.xync.es/#proyectos): tiendas propias en tu dominio (p. ej. con Medusa.js), sin comisiones por venta de plataformas intermediarias.
+- [Landing pages para negocios locales](https://www.xync.es/landing-pages-negocios-locales): páginas de captación para negocios locales.
+
+## Proyectos de referencia
+
+- [Grieta](https://grieta.xync.es/): tienda online sin comisiones, construida con Medusa.js y optimizada para buscadores.
+- [The Byte](https://thebyte.xync.es/): periódico digital donde la redacción publica de forma autónoma, optimizado para SEO.
+- [Lumière](https://lumiere.xync.es/): web de restaurante con carta dinámica y búsqueda local.
+
+## Localización y contacto
+
+- Ubicación: Salamanca, Castilla y León, España.
+- Área de servicio: Salamanca, toda España y Latinoamérica (en remoto).
+- Email: contacto@xync.es
+- Web: https://www.xync.es
+
+## Enlaces
+
+- [Web principal](https://www.xync.es)
+- [Casos reales](https://www.xync.es/#proyectos)
+- [Aviso legal](https://www.xync.es/aviso-legal)
+- [Privacidad](https://www.xync.es/privacidad)

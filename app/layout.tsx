@@ -50,13 +50,6 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  keywords: [
-    "diseño web",
-    "landing page",
-    "conversión",
-    "agencia digital",
-    "web para negocios locales",
-  ],
   alternates: {
     canonical: "/",
   },

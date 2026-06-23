@@ -107,8 +107,7 @@ const xyncGraph = {
       ],
       sameAs: [
         "https://discord.gg/aENy8Sb4rS",
-        "https://www.linkedin.com/in/REAL_LINKEDIN", // ← sustituir o borrar
-        "https://github.com/REAL_GITHUB", // ← sustituir o borrar
+        "https://www.tiktok.com/@xyncdev"
       ],
     },
     {

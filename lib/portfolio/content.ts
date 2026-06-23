@@ -215,7 +215,7 @@ export const processSteps: ProcessStep[] = [
 export const projects: Project[] = [
   {
     id: "proyecto-1",
-    title: "PROYECTO 1 — Grieta",
+    title: "Grieta — Tienda online sin comisiones",
     sector: "Ecommerce online",
     problem:
       "Vendían en marketplaces de terceros pagando comisiones altas y sin visibilidad propia en Google. Cada venta dependía de la plataforma, no de ellos.",
@@ -226,14 +226,14 @@ export const projects: Project[] = [
     liveUrl: "https://grieta.xync.es/",
     image: {
       src: "/portfolio/hero-image.webp",
-      alt: "Tienda online Grieta desarrollada por Xync",
+      alt: "Tienda online Grieta, desarrollada por Xync, estudio de desarrollo web en Salamanca",
       width: 1600,
       height: 1000,
     },
   },
   {
     id: "proyecto-2",
-    title: "PROYECTO 2 — The Byte",
+    title: "The Byte — Periódico digital optimizado para SEO",
     sector: "Periódico digital",
     problem:
       "Publicaban buen contenido que nadie leía. No aparecían en Google y cada artículo nuevo requería ayuda técnica para subirse.",
@@ -251,7 +251,7 @@ export const projects: Project[] = [
   },
   {
     id: "proyecto-3",
-    title: "PROYECTO 3 — Lumière",
+    title: "Lumière — Web de restaurante con carta dinámica",
     sector: "Restaurante",
     problem:
       "Llenos los fines de semana pero vacíos entre semana. No aparecían cuando alguien buscaba en Google dónde comer cerca.",
@@ -288,7 +288,12 @@ export const faqs: Faq[] = [
   {
     question: "¿Hacéis páginas web y tiendas online en Salamanca?",
     answer:
-      "Sí. Xync es un estudio de desarrollo y diseño web freelance con base en Salamanca. Creamos páginas web, tiendas online y productos digitales para negocios de Salamanca y de toda España, y trabajamos en remoto con clientes de Latinoamérica.",
+      "Sí. Xync es un estudio de desarrollo y diseño web freelance con base en Salamanca, fundado por Alejandro Martín Herrero. Diseñamos y programamos páginas web, tiendas online y productos digitales para autónomos, pymes y negocios locales de Salamanca y de toda España, y trabajamos en remoto con clientes de Latinoamérica. Nos especializamos en webs rápidas y orientadas a conversión con tecnologías modernas como Next.js, React y Medusa.js, e incluimos SEO técnico en cada proyecto para que tu web aparezca en Google desde el primer día. Trabajamos siempre con precio y plazo cerrados antes de empezar —una web suele estar lista en dos a cuatro semanas— así sabes exactamente qué recibes y cuándo. Si quieres crear, arreglar o rediseñar tu web o tu tienda online, escríbenos a contacto@xync.es y te respondemos en menos de 24 horas.",
+  },
+  {
+    question: "¿Cómo creo una tienda online sin comisiones por venta?",
+    answer:
+      "Montando una tienda propia en lugar de vender solo en marketplaces o plataformas que cobran un porcentaje por cada venta. En Xync creamos tiendas online a medida —por ejemplo con Medusa.js— alojadas en tu propio dominio, donde cada pedido es tuyo y no pagas comisiones por transacción a un intermediario. Te la entregamos lista para vender, optimizada para Google y para el móvil, con precio y plazo cerrados. Es lo que hicimos con Grieta, que pasó de depender de marketplaces a vender directo desde su web.",
   },
   {
     question: "¿Cuánto tarda un proyecto?",

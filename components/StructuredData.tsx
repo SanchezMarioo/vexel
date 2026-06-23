@@ -1,4 +1,4 @@
-import { identity, isRealUrl, legalEntity } from "@/lib/portfolio/content";
+import { faqs, identity, isRealUrl, legalEntity } from "@/lib/portfolio/content";
 import { siteUrl } from "@/lib/site-url";
 
 /**
@@ -9,7 +9,10 @@ import { siteUrl } from "@/lib/site-url";
  *
  * - `sameAs` se deriva de identity.socials y se filtra con isRealUrl, así nunca
  *   se emiten URLs placeholder (LinkedIn/GitHub) hasta que sean reales.
- * - Sin FAQPage (rich result retirado may-2026) ni HowTo (retirado sep-2023).
+ * - FAQPage: aunque Google retiró el rich result, el marcado sigue dando valor
+ *   semántico a los motores de IA (ChatGPT/Perplexity/Gemini), que consumen los
+ *   pares pregunta-respuesta como pasajes citables. Se deriva de `faqs` para no
+ *   duplicar el copy (fuente única en content.ts). Sin HowTo (retirado sep-2023).
  *
  * Se renderiza una sola vez en app/layout.tsx → válido en todo el sitio.
  */
@@ -54,9 +57,15 @@ export default function StructuredData() {
         ...(sameAs.length > 0 ? { sameAs } : {}),
       },
       {
-        "@type": "ProfessionalService",
+        // Tipo dual: ProfessionalService (estudio freelance sin local público)
+        // + LocalBusiness para máxima cobertura de señales locales en IA/Google.
+        // ProfessionalService es subtipo de LocalBusiness, así que no se pierde
+        // ninguna propiedad heredada (address, geo, areaServed, priceRange).
+        "@type": ["LocalBusiness", "ProfessionalService"],
         "@id": `${siteUrl}/#business`,
         name: identity.name,
+        legalName: legalEntity.legalName,
+        brand: identity.name,
         alternateName: "Xync — Desarrollo web freelance",
         description:
           "Estudio freelance de diseño y desarrollo web en Salamanca: landing pages, tiendas online y productos digitales con precio y plazo cerrados.",
@@ -93,13 +102,30 @@ export default function StructuredData() {
         inLanguage: "es",
         publisher: { "@id": `${siteUrl}/#business` },
       },
+      {
+        "@type": "FAQPage",
+        "@id": `${siteUrl}/#faq`,
+        isPartOf: { "@id": `${siteUrl}/#website` },
+        about: { "@id": `${siteUrl}/#business` },
+        mainEntity: faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: { "@type": "Answer", text: faq.answer },
+        })),
+      },
     ],
   };
 
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(graph) }}
+      // Escapa el carácter "menor que" a su equivalente unicode para neutralizar
+      // cualquier intento de XSS si en el futuro el contenido de content.ts
+      // incluyera HTML (recomendación oficial de Next.js para JSON-LD, ya que
+      // JSON.stringify no escapa etiquetas por sí mismo).
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(graph).replace(/</g, "\\u003c"),
+      }}
     />
   );
 }
