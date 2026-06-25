@@ -16,13 +16,14 @@
 
 | | GEO Score | Lectura |
 |---|---|---|
-| **Inicial** (sitio en vivo auditado hoy) | **54 / 100** | Fair — base técnica fuerte, lastrada por crawlers de IA bloqueados, baja autoridad de marca y falta de contenido citable. |
-| **Final** (tras cambios en código de este trabajo) | **≈ 64 / 100** | Good — schema y contenido on-page casi maximizados. |
-| **Proyectado** (tras acciones externas pendientes) | **≈ 78–80 / 100** | El salto restante NO depende del código, sino de Cloudflare + presencia externa (ver §5). |
+| **Inicial** (sitio en vivo auditado el 2026-06-23) | **54 / 100** | Fair — base técnica fuerte, lastrada por crawlers de IA bloqueados, baja autoridad de marca y falta de contenido citable. |
+| **Actual** (en vivo: código desplegado + bots IA desbloqueados, verificado 2026-06-25) | **≈ 70 / 100** | Good — crawlers IA con acceso (HTTP 200), schema `LocalBusiness`+`FAQPage`, `llms.txt` y párrafo citable servidos en producción. |
+| **Proyectado** (tras autoridad de marca externa) | **≈ 80 / 100** | El salto restante depende **solo de presencia externa** (GBP, LinkedIn, GitHub, Wikidata…). |
 
-> **Clave del informe:** el código ya está prácticamente optimizado. El techo real lo ponen
-> **dos factores que no se arreglan editando archivos**: (1) Cloudflare bloquea a los crawlers
-> de IA, y (2) la marca casi no tiene presencia externa que la IA pueda corroborar.
+> **Clave del informe (actualizada 2026-06-25):** el cuello de botella nº1 —Cloudflare bloqueaba
+> a los crawlers de IA— **ya está RESUELTO** (verificado en vivo). Todas las mejoras de código
+> están **desplegadas**. El único lastre grande que queda es **Brand Authority (12/100)**, que
+> es 100% externo: la marca aún no tiene presencia que la IA pueda corroborar.
 
 ### Desglose por categoría
 
