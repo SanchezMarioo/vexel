@@ -47,6 +47,8 @@ export interface ProjectImage {
 
 export interface Project {
   id: string;
+  /** Segmento de URL en /proyectos/[slug]. Estable y único. */
+  slug: string;
   title: string;
   sector: string;
   /** El problema de negocio que tenía el cliente. */
@@ -55,6 +57,10 @@ export interface Project {
   built: string;
   /** Qué resultado tuvo (medible si es posible). */
   result: string;
+  /** Tecnologías usadas — se listan en el detalle. */
+  stack: string[];
+  /** Capturas ADICIONALES (rutas en /public); la principal es `image`. */
+  images: string[];
   liveUrl?: string;
   image: ProjectImage;
 }
@@ -109,8 +115,8 @@ export const identity: Identity = {
     "Desarrollamos webs, tiendas online y productos digitales en Salamanca para hacer crecer tu negocio.",
   subhead:
     "¿Tu web va lenta, no convierte o se quedó a medias? La dejamos rápida, clara y lista para vender — con plazos cerrados que se cumplen.",
-  availability: "Disponibles para nuevos proyectos · Junio 2026",
-  responseTime: "Respondemos en menos de 24 h",
+  availability: "Libres para empezar en julio",
+  responseTime: "Te respondemos hoy",
   location: "Salamanca, Castilla y León",
   email: "contacto@xync.es",
   calUrl: "xync-ulzw2t/15min",
@@ -215,6 +221,7 @@ export const processSteps: ProcessStep[] = [
 export const projects: Project[] = [
   {
     id: "proyecto-1",
+    slug: "grieta",
     title: "Grieta — Tienda online sin comisiones",
     sector: "Ecommerce online",
     problem:
@@ -223,6 +230,18 @@ export const projects: Project[] = [
       "Tienda propia con Medusa.js — rápida, con cada producto optimizado para aparecer en buscadores y sin intermediarios que se lleven parte de cada venta.",
     result:
       "Más ventas directas, menos comisiones y clientes que llegan solos desde Google.",
+    stack: [
+      "Next.js",
+      "Medusa.js",
+      "React",
+      "PostgreSQL",
+      "Stripe",
+      "SEO técnico",
+    ],
+    images: [
+      "/portfolio/grieta-detalle.webp",
+      "/portfolio/grieta-detalle-2.webp",
+    ],
     liveUrl: "https://grieta.xync.es/",
     image: {
       src: "/portfolio/hero-image.webp",
@@ -233,6 +252,7 @@ export const projects: Project[] = [
   },
   {
     id: "proyecto-2",
+    slug: "the-byte",
     title: "The Byte — Periódico digital optimizado para SEO",
     sector: "Periódico digital",
     problem:
@@ -241,6 +261,11 @@ export const projects: Project[] = [
       "Periódico digital donde la redacción publica de forma autónoma y cada artículo está construido para posicionarse y atraer lectores desde el primer día.",
     result:
       "Más lectores mes a mes sin pagar publicidad, solo con contenido que Google encuentra y recomienda.",
+    stack: ["Next.js", "React", "CMS headless", "MDX", "SEO técnico", "ISR"],
+    images: [
+      "/portfolio/the-byte-detalle-1.webp",
+      "/portfolio/the-byte-detalle-2.webp",
+    ],
     liveUrl: "https://thebyte.xync.es/",
     image: {
       src: "/portfolio/proyecto-2.webp",
@@ -251,6 +276,7 @@ export const projects: Project[] = [
   },
   {
     id: "proyecto-3",
+    slug: "lumiere",
     title: "Lumière — Web de restaurante con carta dinámica",
     sector: "Restaurante",
     problem:
@@ -259,6 +285,11 @@ export const projects: Project[] = [
       "Web con carta dinámica que el restaurante actualiza solo, optimizada para aparecer en búsquedas locales y mostrar la carta directamente en Google.",
     result:
       "Más reservas entre semana y nuevos clientes que llegan directamente desde el buscador.",
+    stack: ["Next.js", "React", "Carta dinámica", "SEO local", "Schema.org"],
+    images: [
+      "/portfolio/lumiere-detalle-1.webp",
+      "/portfolio/lumiere-detalle-2.webp",
+    ],
     liveUrl: "https://lumiere.xync.es/",
     image: {
       src: "/portfolio/proyecto-3.webp",
@@ -267,7 +298,95 @@ export const projects: Project[] = [
       height: 1000,
     },
   },
+  {
+    id: "proyecto-4",
+    slug: "cenit",
+    title: "Cenit — Panel de reservas y clientes a medida",
+    sector: "Producto digital",
+    problem:
+      "Gestionaban reservas y clientes en hojas de cálculo y WhatsApp. Se solapaban citas, se perdían avisos y cada alta era trabajo manual.",
+    built:
+      "Un panel a medida donde el equipo ve la agenda del día, gestiona clientes y cobros, y los usuarios reservan solos desde el móvil sin llamar por teléfono.",
+    result:
+      "Cero solapamientos, menos huecos sin cubrir y horas de gestión manual que desaparecen cada semana.",
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Supabase",
+      "Stripe",
+      "Autenticación",
+    ],
+    images: [
+      "/portfolio/cenit-detalle-1.webp",
+      "/portfolio/cenit-detalle-2.webp",
+    ],
+    image: {
+      src: "/portfolio/cenit.webp",
+      alt: "Panel de gestión y reservas Cenit, producto digital desarrollado por Xync en Salamanca",
+      width: 1600,
+      height: 1000,
+    },
+  },
+  {
+    id: "proyecto-5",
+    slug: "lumen",
+    title: "Lumen — Web de clínica con cita online",
+    sector: "Clínica y servicios locales",
+    problem:
+      "Una clínica sin web propia dependía de portales de terceros para captar pacientes y no aparecía cuando alguien buscaba su especialidad en la ciudad.",
+    built:
+      "Una web clara con sus servicios, su equipo y reserva de cita online, optimizada para las búsquedas locales de su especialidad en Salamanca.",
+    result:
+      "Pacientes que la encuentran directamente en Google y piden cita sin intermediarios de por medio.",
+    stack: ["Next.js", "React", "SEO local", "Schema.org", "Reserva online"],
+    images: [
+      "/portfolio/lumen-detalle-1.webp",
+      "/portfolio/lumen-detalle-2.webp",
+    ],
+    image: {
+      src: "/portfolio/lumen.webp",
+      alt: "Web de la clínica Lumen con reserva de cita online, desarrollada por Xync en Salamanca",
+      width: 1600,
+      height: 1000,
+    },
+  },
 ];
+
+/** Descripciones SEO (150-160 car., con problema y resultado) para el detalle. */
+export const projectSeo: Record<string, string> = {
+  grieta:
+    "Grieta dependía de marketplaces con comisiones y sin visibilidad en Google. Su tienda online propia, hecha en Salamanca: más ventas directas y sin comisiones.",
+  "the-byte":
+    "The Byte publicaba contenido que nadie hallaba en Google. Un periódico digital optimizado para SEO, hecho en Salamanca: más lectores cada mes sin pagar anuncios.",
+  lumiere:
+    "Lumière llenaba los findes pero no entre semana ni salía en Google. Su web de restaurante con carta dinámica y SEO local en Salamanca: más reservas entre semana.",
+  cenit:
+    "Cenit gestionaba reservas en hojas de cálculo y WhatsApp. Le creamos un panel a medida en Salamanca: cero solapamientos y horas de gestión manual que desaparecen.",
+  lumen:
+    "Lumen, una clínica sin web propia, dependía de portales de terceros. Su web con cita online y SEO local en Salamanca: pacientes que la encuentran en Google.",
+};
+
+/** Busca un proyecto por su slug de URL. */
+export function getProjectBySlug(slug: string): Project | undefined {
+  return projects.find((project) => project.slug === slug);
+}
+
+/**
+ * Proyecto anterior y siguiente en orden de listado, con vuelta circular
+ * (el anterior del primero es el último). Devuelve `null` si no hay proyecto.
+ */
+export function getProjectNeighbors(slug: string): {
+  prev: Project | null;
+  next: Project | null;
+} {
+  const index = projects.findIndex((project) => project.slug === slug);
+  if (index === -1) return { prev: null, next: null };
+  const prev =
+    projects[(index - 1 + projects.length) % projects.length] ?? null;
+  const next = projects[(index + 1) % projects.length] ?? null;
+  return { prev, next };
+}
 
 export const testimonials: Testimonial[] = [
   {

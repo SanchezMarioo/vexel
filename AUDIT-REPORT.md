@@ -27,14 +27,14 @@
 
 ### Desglose por categoría
 
-| Categoría | Peso | Inicial | Final (código) | Estado |
+| Categoría | Peso | Inicial | Actual (en vivo) | Estado |
 |---|---|---|---|---|
-| AI Citability & Visibility | 25% | 50 | **68** | ⚠️ (capado por Cloudflare) |
+| AI Citability & Visibility | 25% | 50 | **83** | ✓ (bots desbloqueados + llms.txt + párrafo citable) |
 | Brand Authority Signals | 20% | 12 | **12** | ✗ (100% externo) |
 | Content Quality & E-E-A-T | 20% | 78 | **88** | ✓ |
-| Technical Foundations | 15% | 88 | **89** | ✓ |
+| Technical Foundations | 15% | 88 | **93** | ✓ (crawlers IA con acceso) |
 | Structured Data | 10% | 68 | **85** | ✓ |
-| Platform Optimization | 10% | 38 | **50** | ⚠️ (capado por Cloudflare) |
+| Platform Optimization | 10% | 38 | **70** | ✓ (ChatGPT/Perplexity ya pueden recuperar) |
 
 ---
 
@@ -87,9 +87,14 @@ Todos los cambios se editaron directamente en el repositorio y **el proyecto com
 
 ---
 
-## 3. 🔴 Hallazgo crítico nº1 — Cloudflare bloquea a los crawlers de IA (acción EXTERNA)
+## 3. ✅ Hallazgo crítico nº1 — Cloudflare bloqueaba a los crawlers de IA → RESUELTO (2026-06-25)
 
-La auditoría en vivo demostró que **el problema de acceso de IA NO está en tu código**:
+> **Estado actual:** verificado en vivo el 2026-06-25 — el `robots.txt` de producción ya **no**
+> contiene el bloque "Cloudflare Managed Content", y GPTBot, ClaudeBot, PerplexityBot y
+> OAI-SearchBot devuelven **HTTP 200** (antes 403). El `Block AI bots` de Cloudflare está
+> desactivado y el código nuevo (`app/robots.ts`) está desplegado. **Nada más que hacer aquí.**
+
+Lo que la auditoría inicial (2026-06-23) había detectado, para referencia histórica:
 
 - `app/robots.ts` (origen) **permite** todos los crawlers.
 - **Cloudflare** añade un bloque "Managed Content" con `Disallow: /` para **GPTBot, ClaudeBot,
@@ -133,10 +138,11 @@ ni el contenido citable).
 
 ## 5. Acciones pendientes EXTERNAS (no son código)
 
-Ordenadas por impacto. Mueven el score de ~64 a ~78–80; son responsabilidad del cliente.
+Ordenadas por impacto. Mueven el score de ~70 a ~80; son responsabilidad del cliente.
 
-### 🔴 Prioridad 1 — Desbloquear crawlers de IA en Cloudflare
-Ver §3. **Es el cuello de botella nº1.** Sin esto, ChatGPT y Perplexity no pueden citar el sitio.
+### ✅ Prioridad 1 — Desbloquear crawlers de IA en Cloudflare → HECHO (2026-06-25)
+Ver §3. Verificado en vivo: los bots de IA acceden con HTTP 200. El cuello de botella nº1
+está resuelto y todo el código está desplegado.
 
 ### 🟠 Prioridad 2 — Google Business Profile (GBP)
 - Crear y **verificar** la ficha para Salamanca, categoría "Diseñador de páginas web", con
@@ -144,9 +150,12 @@ Ver §3. **Es el cuello de botella nº1.** Sin esto, ChatGPT y Perplexity no pue
 - Señal dominante para "quién hace webs en Salamanca" en Gemini y AI Overviews locales;
   habilita reseñas reales (que alimentan E-E-A-T).
 
-### 🟠 Prioridad 3 — Google Search Console — solicitar indexación
-- Dar de alta la propiedad, enviar `sitemap.xml` y **solicitar indexación** de la home y de
-  `/landing-pages-negocios-locales`. Verificar cobertura tras desbloquear Cloudflare.
+### ✅ Prioridad 3 — Google Search Console → propiedad dada de alta (2026-06-25)
+- Propiedad verificada (por DNS/Analytics; no hay meta tag en el HTML). `sitemap.xml` responde
+  HTTP 200 con las 2 URLs.
+- **Pasos que quedan dentro de GSC:** enviar el `sitemap.xml` en *Sitemaps* y usar *Inspección
+  de URL → Solicitar indexación* para la home y `/landing-pages-negocios-locales`, para que
+  Google recoja cuanto antes el contenido nuevo (schema, párrafo citable).
 
 ### 🟠 Prioridad 4 — Autoridad de entidad externa (Brand Authority: 12/100)
 La categoría más baja y 100% off-site. Prioridad:
@@ -189,9 +198,12 @@ párrafo citable de 135 palabras, autor visible, FAQ "tienda sin comisiones", t�
 keywords, alt local, robots reforzado, `llms.txt` nuevo, limpieza de meta keywords.
 **Compila correctamente.**
 
-**Falta y NO es código** (mueve el score de 64 a 80): desbloquear Cloudflare, Google Business
-Profile, Search Console, y construir autoridad de marca (LinkedIn, GitHub, Wikidata, Reddit,
-directorios locales).
+**Ya hecho desde la auditoría inicial:** ✅ desbloqueo de crawlers IA en Cloudflare + despliegue
+de todo el código (verificado en vivo 2026-06-25). El sitio pasó de **54 a ~70**.
+
+**Falta y NO es código** (mueve el score de ~70 a ~80): Google Business Profile, Search Console,
+y construir autoridad de marca (LinkedIn, GitHub, Wikidata, Reddit, directorios locales). Es la
+categoría **Brand Authority (12/100)**, hoy el único lastre grande.
 
 ---
 

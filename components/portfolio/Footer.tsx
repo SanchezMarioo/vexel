@@ -31,7 +31,9 @@ export default function Footer() {
               {navLinks.map((link) => (
                 <li key={link.href}>
                   <a
-                    href={link.href}
+                    // Prefijamos "/" a las anclas para que el enlace lleve a la
+                    // home + sección desde cualquier ruta (también en subpáginas).
+                    href={link.href.startsWith("#") ? `/${link.href}` : link.href}
                     className="text-pf-bg/75 transition-colors hover:text-pf-bg"
                   >
                     {link.label}
