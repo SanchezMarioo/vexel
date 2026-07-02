@@ -301,29 +301,30 @@ export const projects: Project[] = [
   {
     id: "proyecto-4",
     slug: "cenit",
-    title: "Cenit — Panel de reservas y clientes a medida",
-    sector: "Producto digital",
+    title: "Cenit — Ecommerce de moda con sistema de drops",
+    sector: "Ecommerce de moda",
     problem:
-      "Gestionaban reservas y clientes en hojas de cálculo y WhatsApp. Se solapaban citas, se perdían avisos y cada alta era trabajo manual.",
+      "Vendían ropa a través de Instagram y marketplaces, pagando comisiones en cada venta y sin control sobre su propia base de clientes.",
     built:
-      "Un panel a medida donde el equipo ve la agenda del día, gestiona clientes y cobros, y los usuarios reservan solos desde el móvil sin llamar por teléfono.",
+      "Tienda de moda propia con sistema de drops — cada lanzamiento genera stock limitado y urgencia real de compra, sin depender de algoritmos ni comisiones de terceros.",
     result:
-      "Cero solapamientos, menos huecos sin cubrir y horas de gestión manual que desaparecen cada semana.",
+      "Canal de venta directo, base de clientes propia y margen completo en cada venta sin intermediarios.",
     stack: [
       "Next.js",
       "React",
       "TypeScript",
-      "Supabase",
+      "Medusa.js",
       "Stripe",
-      "Autenticación",
+      "PostgreSQL",
     ],
+    
     images: [
       "/portfolio/cenit-detalle-1.webp",
       "/portfolio/cenit-detalle-2.webp",
     ],
     image: {
       src: "/portfolio/cenit.webp",
-      alt: "Panel de gestión y reservas Cenit, producto digital desarrollado por Xync en Salamanca",
+      alt: "Tienda online Cenit con sistema de drops, ecommerce de moda desarrollado por Xync en Salamanca",
       width: 1600,
       height: 1000,
     },
@@ -331,22 +332,30 @@ export const projects: Project[] = [
   {
     id: "proyecto-5",
     slug: "lumen",
-    title: "Lumen — Web de clínica con cita online",
-    sector: "Clínica y servicios locales",
+    title: "Lumen — Ecommerce de muebles con catálogo filtrable",
+    sector: "Ecommerce de mobiliario",
     problem:
-      "Una clínica sin web propia dependía de portales de terceros para captar pacientes y no aparecía cuando alguien buscaba su especialidad en la ciudad.",
+      "Tenían un catálogo amplio pero los clientes no podían encontrar los productos en Google ni filtrar por estilo, medidas o precio desde el móvil.",
     built:
-      "Una web clara con sus servicios, su equipo y reserva de cita online, optimizada para las búsquedas locales de su especialidad en Salamanca.",
+      "Tienda de muebles con catálogo filtrable, fichas de producto optimizadas para buscadores y una experiencia de compra fluida en cualquier dispositivo.",
     result:
-      "Pacientes que la encuentran directamente en Google y piden cita sin intermediarios de por medio.",
-    stack: ["Next.js", "React", "SEO local", "Schema.org", "Reserva online"],
+      "Más visitas orgánicas desde Google y clientes que llegan directamente al producto que buscan sin necesitar ayuda.",
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Medusa.js",
+      "Stripe",
+      "PostgreSQL",
+    ],
+    liveUrl: "https://lumen.xync.es/",
     images: [
-      "/portfolio/lumen-detalle-1.webp",
+      "/portfolio/lumen-detalle.webp",
       "/portfolio/lumen-detalle-2.webp",
     ],
     image: {
       src: "/portfolio/lumen.webp",
-      alt: "Web de la clínica Lumen con reserva de cita online, desarrollada por Xync en Salamanca",
+      alt: "Tienda online Lumen con catálogo de muebles filtrable, ecommerce desarrollado por Xync en Salamanca",
       width: 1600,
       height: 1000,
     },

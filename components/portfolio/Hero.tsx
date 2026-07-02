@@ -5,6 +5,7 @@ import { identity } from "@/lib/portfolio/content";
 import { fadeUp, heroLcpSafe, popIn, stagger } from "@/lib/portfolio/motion";
 import Button from "./ui/Button";
 import ImageSlot from "./ui/ImageSlot";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -74,14 +75,14 @@ export default function Hero() {
               <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.75_0_0)]" />
               <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.75_0_0)]" />
               <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.75_0_0)]" />
-              <span className="pf-mono ml-3 truncate rounded-[var(--pf-radius-sm)] bg-pf-subtle px-3 py-1 text-xs text-pf-muted">
-                grieta.xync.es
-              </span>
+              <Link href="https://lumen.xync.es/" className="pf-mono ml-3 truncate rounded-[var(--pf-radius-sm)] bg-pf-subtle px-3 py-1 text-xs text-pf-muted">
+                lumen.xync.es
+              </Link>
             </div>
             <ImageSlot
               priority
               image={{
-                src: "/portfolio/hero-image.webp",
+                src: "/portfolio/hero-images.webp",
                 alt: "Tienda online Grieta desarrollada por Xync",
                 width: 1200,
                 height: 820,
