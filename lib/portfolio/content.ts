@@ -244,8 +244,8 @@ export const projects: Project[] = [
     ],
     liveUrl: "https://grieta.xync.es/",
     image: {
-      src: "/portfolio/hero-image.webp",
-      alt: "Tienda online Grieta, desarrollada por Xync, estudio de desarrollo web en Salamanca",
+      src: "/portfolio/grieta-hero.webp",
+      alt: "Catálogo de la tienda online de moda Grieta, desarrollada por Xync, estudio de desarrollo web en Salamanca",
       width: 1600,
       height: 1000,
     },
@@ -317,7 +317,7 @@ export const projects: Project[] = [
       "Stripe",
       "PostgreSQL",
     ],
-    
+
     images: [
       "/portfolio/cenit-detalle-1.webp",
       "/portfolio/cenit-detalle-2.webp",
@@ -371,9 +371,9 @@ export const projectSeo: Record<string, string> = {
   lumiere:
     "Lumière llenaba los findes pero no entre semana ni salía en Google. Su web de restaurante con carta dinámica y SEO local en Salamanca: más reservas entre semana.",
   cenit:
-    "Cenit gestionaba reservas en hojas de cálculo y WhatsApp. Le creamos un panel a medida en Salamanca: cero solapamientos y horas de gestión manual que desaparecen.",
+    "Cenit vendía moda por Instagram y marketplaces pagando comisiones. Su tienda propia con sistema de drops, hecha en Salamanca: margen completo y clientes propios.",
   lumen:
-    "Lumen, una clínica sin web propia, dependía de portales de terceros. Su web con cita online y SEO local en Salamanca: pacientes que la encuentran en Google.",
+    "Lumen tenía un catálogo de muebles que nadie encontraba en Google. Su ecommerce con catálogo filtrable, hecho en Salamanca: más visitas orgánicas y ventas.",
 };
 
 /** Busca un proyecto por su slug de URL. */
@@ -422,6 +422,11 @@ export const faqs: Faq[] = [
     question: "¿Cómo creo una tienda online sin comisiones por venta?",
     answer:
       "Montando una tienda propia en lugar de vender solo en marketplaces o plataformas que cobran un porcentaje por cada venta. En Xync creamos tiendas online a medida —por ejemplo con Medusa.js— alojadas en tu propio dominio, donde cada pedido es tuyo y no pagas comisiones por transacción a un intermediario. Te la entregamos lista para vender, optimizada para Google y para el móvil, con precio y plazo cerrados. Es lo que hicimos con Grieta, que pasó de depender de marketplaces a vender directo desde su web.",
+  },
+  {
+    question: "¿Qué tecnología usáis para crear una tienda online?",
+    answer:
+      "Trabajamos con Medusa.js, una plataforma de ecommerce de código abierto, combinada con Next.js y Stripe para los pagos. A diferencia de plataformas de suscripción como Shopify, con Medusa.js la tienda es tuya al cien por cien: sin cuota mensual obligatoria, sin comisiones por venta de la plataforma y con libertad total para personalizar catálogo, filtros o un sistema de drops. Somos un estudio freelance especializado en ecommerce con Medusa.js en España, con base en Salamanca: con esta tecnología hemos construido las tiendas de Grieta y Cenit (moda) y Lumen (muebles), rápidas, optimizadas para Google y preparadas para crecer. Si buscas un desarrollador freelance para tu ecommerce con Medusa.js, escríbenos a contacto@xync.es y te damos plazo y precio cerrados.",
   },
   {
     question: "¿Cuánto tarda un proyecto?",

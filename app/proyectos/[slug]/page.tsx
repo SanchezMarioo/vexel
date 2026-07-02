@@ -93,6 +93,7 @@ export default async function ProyectoDetallePage({
     image: `${siteUrl}${project.image.src}`,
     inLanguage: "es",
     keywords: project.stack.join(", "),
+    about: project.sector,
     creator: {
       "@type": "Organization",
       name: "Xync",

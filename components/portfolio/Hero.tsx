@@ -40,7 +40,7 @@ export default function Hero() {
 
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-3">
             <Button href="#contacto" variant="solid" size="lg" withArrow>
-              Cuéntame tu proyecto
+              Cuéntanos tu proyecto
             </Button>
             <Button href="#proyectos" variant="outline" size="lg">
               Ver casos reales
@@ -83,7 +83,7 @@ export default function Hero() {
               priority
               image={{
                 src: "/portfolio/hero-images.webp",
-                alt: "Tienda online Grieta desarrollada por Xync",
+                alt: "Tienda online de muebles Lumen, desarrollada por Xync, estudio de desarrollo web en Salamanca",
                 width: 1200,
                 height: 820,
               }}
