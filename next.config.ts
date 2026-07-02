@@ -2,14 +2,11 @@ import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV !== "production";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? process.env.SUPABASE_URL ?? "";
-const supabaseOrigin = supabaseUrl ? new URL(supabaseUrl).origin : "https://*.supabase.co";
-
 const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' https://app.cal.com${isDev ? " 'unsafe-eval' http://localhost:8400" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: blob: https://images.unsplash.com https://lh3.googleusercontent.com ${supabaseOrigin}`,
+  "img-src 'self' data: blob: https://images.unsplash.com",
   "font-src 'self' data:",
   `connect-src 'self' https://app.cal.com${isDev ? " ws: wss: http://localhost:* http://127.0.0.1:*" : ""}`,
   "object-src 'none'",
