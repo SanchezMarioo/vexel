@@ -47,6 +47,8 @@ export interface ProjectImage {
 
 export interface Project {
   id: string;
+  /** Segmento de URL en /proyectos/[slug]. Estable y único. */
+  slug: string;
   title: string;
   sector: string;
   /** El problema de negocio que tenía el cliente. */
@@ -55,6 +57,10 @@ export interface Project {
   built: string;
   /** Qué resultado tuvo (medible si es posible). */
   result: string;
+  /** Tecnologías usadas — se listan en el detalle. */
+  stack: string[];
+  /** Capturas ADICIONALES (rutas en /public); la principal es `image`. */
+  images: string[];
   liveUrl?: string;
   image: ProjectImage;
 }
@@ -109,8 +115,8 @@ export const identity: Identity = {
     "Desarrollamos webs, tiendas online y productos digitales en Salamanca para hacer crecer tu negocio.",
   subhead:
     "¿Tu web va lenta, no convierte o se quedó a medias? La dejamos rápida, clara y lista para vender — con plazos cerrados que se cumplen.",
-  availability: "Disponibles para nuevos proyectos · Junio 2026",
-  responseTime: "Respondemos en menos de 24 h",
+  availability: "Libres para empezar en julio",
+  responseTime: "Te respondemos hoy",
   location: "Salamanca, Castilla y León",
   email: "contacto@xync.es",
   calUrl: "xync-ulzw2t/15min",
@@ -215,6 +221,7 @@ export const processSteps: ProcessStep[] = [
 export const projects: Project[] = [
   {
     id: "proyecto-1",
+    slug: "grieta",
     title: "Grieta — Tienda online sin comisiones",
     sector: "Ecommerce online",
     problem:
@@ -223,16 +230,29 @@ export const projects: Project[] = [
       "Tienda propia con Medusa.js — rápida, con cada producto optimizado para aparecer en buscadores y sin intermediarios que se lleven parte de cada venta.",
     result:
       "Más ventas directas, menos comisiones y clientes que llegan solos desde Google.",
+    stack: [
+      "Next.js",
+      "Medusa.js",
+      "React",
+      "PostgreSQL",
+      "Stripe",
+      "SEO técnico",
+    ],
+    images: [
+      "/portfolio/grieta-detalle.webp",
+      "/portfolio/grieta-detalle-2.webp",
+    ],
     liveUrl: "https://grieta.xync.es/",
     image: {
-      src: "/portfolio/hero-image.webp",
-      alt: "Tienda online Grieta, desarrollada por Xync, estudio de desarrollo web en Salamanca",
+      src: "/portfolio/grieta-hero.webp",
+      alt: "Catálogo de la tienda online de moda Grieta, desarrollada por Xync, estudio de desarrollo web en Salamanca",
       width: 1600,
       height: 1000,
     },
   },
   {
     id: "proyecto-2",
+    slug: "the-byte",
     title: "The Byte — Periódico digital optimizado para SEO",
     sector: "Periódico digital",
     problem:
@@ -241,6 +261,11 @@ export const projects: Project[] = [
       "Periódico digital donde la redacción publica de forma autónoma y cada artículo está construido para posicionarse y atraer lectores desde el primer día.",
     result:
       "Más lectores mes a mes sin pagar publicidad, solo con contenido que Google encuentra y recomienda.",
+    stack: ["Next.js", "React", "CMS headless", "MDX", "SEO técnico", "ISR"],
+    images: [
+      "/portfolio/the-byte-detalle-1.webp",
+      "/portfolio/the-byte-detalle-2.webp",
+    ],
     liveUrl: "https://thebyte.xync.es/",
     image: {
       src: "/portfolio/proyecto-2.webp",
@@ -251,6 +276,7 @@ export const projects: Project[] = [
   },
   {
     id: "proyecto-3",
+    slug: "lumiere",
     title: "Lumière — Web de restaurante con carta dinámica",
     sector: "Restaurante",
     problem:
@@ -259,6 +285,11 @@ export const projects: Project[] = [
       "Web con carta dinámica que el restaurante actualiza solo, optimizada para aparecer en búsquedas locales y mostrar la carta directamente en Google.",
     result:
       "Más reservas entre semana y nuevos clientes que llegan directamente desde el buscador.",
+    stack: ["Next.js", "React", "Carta dinámica", "SEO local", "Schema.org"],
+    images: [
+      "/portfolio/lumiere-detalle-1.webp",
+      "/portfolio/lumiere-detalle-2.webp",
+    ],
     liveUrl: "https://lumiere.xync.es/",
     image: {
       src: "/portfolio/proyecto-3.webp",
@@ -267,7 +298,104 @@ export const projects: Project[] = [
       height: 1000,
     },
   },
+  {
+    id: "proyecto-4",
+    slug: "cenit",
+    title: "Cenit — Ecommerce de moda con sistema de drops",
+    sector: "Ecommerce de moda",
+    problem:
+      "Vendían ropa a través de Instagram y marketplaces, pagando comisiones en cada venta y sin control sobre su propia base de clientes.",
+    built:
+      "Tienda de moda propia con sistema de drops — cada lanzamiento genera stock limitado y urgencia real de compra, sin depender de algoritmos ni comisiones de terceros.",
+    result:
+      "Canal de venta directo, base de clientes propia y margen completo en cada venta sin intermediarios.",
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Medusa.js",
+      "Stripe",
+      "PostgreSQL",
+    ],
+
+    images: [
+      "/portfolio/cenit-detalle-1.webp",
+      "/portfolio/cenit-detalle-2.webp",
+    ],
+    image: {
+      src: "/portfolio/cenit.webp",
+      alt: "Tienda online Cenit con sistema de drops, ecommerce de moda desarrollado por Xync en Salamanca",
+      width: 1600,
+      height: 1000,
+    },
+  },
+  {
+    id: "proyecto-5",
+    slug: "lumen",
+    title: "Lumen — Ecommerce de muebles con catálogo filtrable",
+    sector: "Ecommerce de mobiliario",
+    problem:
+      "Tenían un catálogo amplio pero los clientes no podían encontrar los productos en Google ni filtrar por estilo, medidas o precio desde el móvil.",
+    built:
+      "Tienda de muebles con catálogo filtrable, fichas de producto optimizadas para buscadores y una experiencia de compra fluida en cualquier dispositivo.",
+    result:
+      "Más visitas orgánicas desde Google y clientes que llegan directamente al producto que buscan sin necesitar ayuda.",
+    stack: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Medusa.js",
+      "Stripe",
+      "PostgreSQL",
+    ],
+    liveUrl: "https://lumen.xync.es/",
+    images: [
+      "/portfolio/lumen-detalle.webp",
+      "/portfolio/lumen-detalle-2.webp",
+    ],
+    image: {
+      src: "/portfolio/lumen.webp",
+      alt: "Tienda online Lumen con catálogo de muebles filtrable, ecommerce desarrollado por Xync en Salamanca",
+      width: 1600,
+      height: 1000,
+    },
+  },
 ];
+
+/** Descripciones SEO (150-160 car., con problema y resultado) para el detalle. */
+export const projectSeo: Record<string, string> = {
+  grieta:
+    "Grieta dependía de marketplaces con comisiones y sin visibilidad en Google. Su tienda online propia, hecha en Salamanca: más ventas directas y sin comisiones.",
+  "the-byte":
+    "The Byte publicaba contenido que nadie hallaba en Google. Un periódico digital optimizado para SEO, hecho en Salamanca: más lectores cada mes sin pagar anuncios.",
+  lumiere:
+    "Lumière llenaba los findes pero no entre semana ni salía en Google. Su web de restaurante con carta dinámica y SEO local en Salamanca: más reservas entre semana.",
+  cenit:
+    "Cenit vendía moda por Instagram y marketplaces pagando comisiones. Su tienda propia con sistema de drops, hecha en Salamanca: margen completo y clientes propios.",
+  lumen:
+    "Lumen tenía un catálogo de muebles que nadie encontraba en Google. Su ecommerce con catálogo filtrable, hecho en Salamanca: más visitas orgánicas y ventas.",
+};
+
+/** Busca un proyecto por su slug de URL. */
+export function getProjectBySlug(slug: string): Project | undefined {
+  return projects.find((project) => project.slug === slug);
+}
+
+/**
+ * Proyecto anterior y siguiente en orden de listado, con vuelta circular
+ * (el anterior del primero es el último). Devuelve `null` si no hay proyecto.
+ */
+export function getProjectNeighbors(slug: string): {
+  prev: Project | null;
+  next: Project | null;
+} {
+  const index = projects.findIndex((project) => project.slug === slug);
+  if (index === -1) return { prev: null, next: null };
+  const prev =
+    projects[(index - 1 + projects.length) % projects.length] ?? null;
+  const next = projects[(index + 1) % projects.length] ?? null;
+  return { prev, next };
+}
 
 export const testimonials: Testimonial[] = [
   {
@@ -294,6 +422,11 @@ export const faqs: Faq[] = [
     question: "¿Cómo creo una tienda online sin comisiones por venta?",
     answer:
       "Montando una tienda propia en lugar de vender solo en marketplaces o plataformas que cobran un porcentaje por cada venta. En Xync creamos tiendas online a medida —por ejemplo con Medusa.js— alojadas en tu propio dominio, donde cada pedido es tuyo y no pagas comisiones por transacción a un intermediario. Te la entregamos lista para vender, optimizada para Google y para el móvil, con precio y plazo cerrados. Es lo que hicimos con Grieta, que pasó de depender de marketplaces a vender directo desde su web.",
+  },
+  {
+    question: "¿Qué tecnología usáis para crear una tienda online?",
+    answer:
+      "Trabajamos con Medusa.js, una plataforma de ecommerce de código abierto, combinada con Next.js y Stripe para los pagos. A diferencia de plataformas de suscripción como Shopify, con Medusa.js la tienda es tuya al cien por cien: sin cuota mensual obligatoria, sin comisiones por venta de la plataforma y con libertad total para personalizar catálogo, filtros o un sistema de drops. Somos un estudio freelance especializado en ecommerce con Medusa.js en España, con base en Salamanca: con esta tecnología hemos construido las tiendas de Grieta y Cenit (moda) y Lumen (muebles), rápidas, optimizadas para Google y preparadas para crecer. Si buscas un desarrollador freelance para tu ecommerce con Medusa.js, escríbenos a contacto@xync.es y te damos plazo y precio cerrados.",
   },
   {
     question: "¿Cuánto tarda un proyecto?",

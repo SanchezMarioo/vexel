@@ -1,11 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Bricolage_Grotesque } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { getServerSession } from "next-auth";
-import AuthSessionProvider from "@/components/AuthSessionProvider";
 import ClientEffects from "@/components/ClientEffects";
 import StructuredData from "@/components/StructuredData";
-import { authOptions } from "@/lib/auth/options";
 import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
@@ -87,13 +84,11 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOptions);
-
   return (
     <html
       lang="es"
@@ -101,10 +96,8 @@ export default async function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-body">
         <StructuredData />
-        <AuthSessionProvider session={session}>
-          {children}
-          <ClientEffects />
-        </AuthSessionProvider>
+        {children}
+        <ClientEffects />
         <Analytics />
       </body>
     </html>

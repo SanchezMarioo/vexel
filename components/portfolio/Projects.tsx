@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Link from "next/link";
 import type { Project } from "@/lib/portfolio/content";
 import { isRealUrl, projects } from "@/lib/portfolio/content";
 import { fadeUp, maskReveal, pfViewport, stagger } from "@/lib/portfolio/motion";
@@ -28,29 +29,50 @@ function Narrative({ project, dense = false }: { project: Project; dense?: boole
   );
 }
 
-function LiveLink({ project }: { project: Project }) {
-  if (!isRealUrl(project.liveUrl)) return null;
+function ProjectLinks({ project }: { project: Project }) {
   return (
-    <a
-      href={project.liveUrl}
-      target="_blank"
-      rel="noreferrer noopener"
-      className="group/link mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-pf-ink underline-offset-4 hover:underline"
-    >
-      Ver en vivo
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-        className="h-4 w-4 transition-transform duration-300 ease-[var(--pf-ease-out)] group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
+    <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
+      <Link
+        href={`/proyectos/${project.slug}`}
+        className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-pf-ink underline-offset-4 hover:underline"
       >
-        <path d="M7 17 17 7M8 7h9v9" />
-      </svg>
-    </a>
+        Ver el caso
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.75"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+          className="h-4 w-4 transition-transform duration-300 ease-[var(--pf-ease-out)] group-hover/link:translate-x-1"
+        >
+          <path d="M5 12h14m-6-6 6 6-6 6" />
+        </svg>
+      </Link>
+      {isRealUrl(project.liveUrl) ? (
+        <a
+          href={project.liveUrl}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="group/live inline-flex items-center gap-1.5 text-sm text-pf-ink-soft underline-offset-4 transition-colors hover:text-pf-ink hover:underline"
+        >
+          Ver en vivo
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            className="h-4 w-4 transition-transform duration-300 ease-[var(--pf-ease-out)] group-hover/live:translate-x-0.5 group-hover/live:-translate-y-0.5"
+          >
+            <path d="M7 17 17 7M8 7h9v9" />
+          </svg>
+        </a>
+      ) : null}
+    </div>
   );
 }
 
@@ -85,24 +107,29 @@ export default function Projects() {
             variants={stagger(0.12)}
             className="mt-14 grid gap-8 lg:grid-cols-12 lg:items-center"
           >
-            <motion.a
-              variants={maskReveal}
-              href={isRealUrl(featured.liveUrl) ? featured.liveUrl : "#proyectos"}
-              target={isRealUrl(featured.liveUrl) ? "_blank" : undefined}
-              rel={isRealUrl(featured.liveUrl) ? "noreferrer noopener" : undefined}
-              className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line lg:col-span-7"
-            >
-              <ImageSlot image={featured.image} />
-              <span className="absolute inset-0 bg-pf-ink/0 transition-colors duration-300 group-hover:bg-pf-ink/5" />
-            </motion.a>
+            <motion.div variants={maskReveal} className="lg:col-span-7">
+              <Link
+                href={`/proyectos/${featured.slug}`}
+                aria-label={`Ver el caso: ${featured.title}`}
+                className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line"
+              >
+                <ImageSlot image={featured.image} />
+                <span className="absolute inset-0 bg-pf-ink/0 transition-colors duration-300 group-hover:bg-pf-ink/5" />
+              </Link>
+            </motion.div>
 
             <motion.div variants={fadeUp} className="lg:col-span-5">
               <Tag variant="solid">{featured.sector}</Tag>
               <h3 className="pf-display mt-4 text-3xl leading-tight text-pf-ink md:text-4xl">
-                {featured.title}
+                <Link
+                  href={`/proyectos/${featured.slug}`}
+                  className="underline-offset-4 hover:underline"
+                >
+                  {featured.title}
+                </Link>
               </h3>
               <Narrative project={featured} />
-              <LiveLink project={featured} />
+              <ProjectLinks project={featured} />
             </motion.div>
           </motion.article>
         ) : null}
@@ -117,27 +144,58 @@ export default function Projects() {
           >
             {rest.map((project) => (
               <motion.article key={project.id} variants={fadeUp} className="flex flex-col">
-                <a
-                  href={isRealUrl(project.liveUrl) ? project.liveUrl : "#proyectos"}
-                  target={isRealUrl(project.liveUrl) ? "_blank" : undefined}
-                  rel={isRealUrl(project.liveUrl) ? "noreferrer noopener" : undefined}
+                <Link
+                  href={`/proyectos/${project.slug}`}
+                  aria-label={`Ver el caso: ${project.title}`}
                   className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line"
                 >
                   <ImageSlot image={project.image} />
                   <span className="absolute inset-0 bg-pf-ink/0 transition-colors duration-300 group-hover:bg-pf-ink/5" />
-                </a>
+                </Link>
                 <div className="mt-5">
                   <Tag variant="line">{project.sector}</Tag>
                   <h3 className="pf-display mt-3 text-2xl leading-tight text-pf-ink">
-                    {project.title}
+                    <Link
+                      href={`/proyectos/${project.slug}`}
+                      className="underline-offset-4 hover:underline"
+                    >
+                      {project.title}
+                    </Link>
                   </h3>
                   <Narrative project={project} dense />
-                  <LiveLink project={project} />
+                  <ProjectLinks project={project} />
                 </div>
               </motion.article>
             ))}
           </motion.div>
         ) : null}
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={pfViewport}
+          variants={fadeUp}
+          className="mt-12 border-t border-pf-line pt-8"
+        >
+          <Link
+            href="/proyectos"
+            className="group inline-flex items-center gap-2 text-base font-medium text-pf-ink underline-offset-4 hover:underline"
+          >
+            Ver todos los proyectos
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="h-4 w-4 transition-transform duration-300 ease-[var(--pf-ease-out)] group-hover:translate-x-1"
+            >
+              <path d="M5 12h14m-6-6 6 6-6 6" />
+            </svg>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

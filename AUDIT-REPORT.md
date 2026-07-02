@@ -1,14 +1,15 @@
-# Auditoría GEO-SEO — Xync
+# Auditoría GEO-SEO — Xync (incluye sección /proyectos)
 
 **Sitio:** https://www.xync.es
 **Entidad:** Alejandro Martín Herrero · marca **Xync** · Salamanca (Castilla y León, España)
 **Stack:** Next.js 16.2.4 (App Router) + TypeScript · Vercel + Cloudflare
-**Fecha:** 2026-06-23
-**Método:** `/geo audit` — 5 subagentes en paralelo (AI visibility, platforms, technical, content, schema) sobre el sitio en vivo + aplicación de mejoras en código.
+**Fecha:** 2026-07-02
+**Método:** `/geo audit` con subagentes en paralelo sobre el sitio en vivo + análisis del código local + aplicación de mejoras.
+**Nota de método:** 4 de los 5 subagentes se cortaron por límite de sesión; el de **visibilidad IA** entregó informe completo (citability, crawlers, llms.txt, brand) y las categorías restantes (técnico, contenido, schema, plataformas) se auditaron inline contra el HTML servido y el código fuente.
 
-> Existe un informe anterior archivado en `AUDIT-REPORT-2026-06-18.md`. Sus issues P0/P1
-> (canonical a `localhost`, ausencia de "Salamanca", páginas legales, schema sin `geo`)
-> **ya están resueltos** en el código actual; esta auditoría parte de ese estado mejorado.
+> Informes anteriores archivados: `AUDIT-REPORT-2026-06-18.md` y `AUDIT-REPORT-2026-06-23.md`.
+> Sus acciones de código están todas aplicadas; el desbloqueo de bots IA en Cloudflare quedó
+> verificado en vivo el 2026-06-25.
 
 ---
 
@@ -16,184 +17,157 @@
 
 | | GEO Score | Lectura |
 |---|---|---|
-| **Inicial** (sitio en vivo auditado el 2026-06-23) | **54 / 100** | Fair — base técnica fuerte, lastrada por crawlers de IA bloqueados, baja autoridad de marca y falta de contenido citable. |
-| **Actual** (en vivo: código desplegado + bots IA desbloqueados, verificado 2026-06-25) | **≈ 70 / 100** | Good — crawlers IA con acceso (HTTP 200), schema `LocalBusiness`+`FAQPage`, `llms.txt` y párrafo citable servidos en producción. |
-| **Proyectado** (tras autoridad de marca externa) | **≈ 80 / 100** | El salto restante depende **solo de presencia externa** (GBP, LinkedIn, GitHub, Wikidata…). |
-
-> **Clave del informe (actualizada 2026-06-25):** el cuello de botella nº1 —Cloudflare bloqueaba
-> a los crawlers de IA— **ya está RESUELTO** (verificado en vivo). Todas las mejoras de código
-> están **desplegadas**. El único lastre grande que queda es **Brand Authority (12/100)**, que
-> es 100% externo: la marca aún no tiene presencia que la IA pueda corroborar.
+| **Inicial** (producción, 2026-07-02) | **60 / 100** | La base técnica y el schema son fuertes, pero **la sección /proyectos entera devuelve 404 en producción**: el sitemap desplegado tiene solo 2 URLs y el llms.txt vivo lista 3 de 5 proyectos. El repo va muy por delante del deploy. |
+| **Final** (código de este repo, efectivo al desplegar) | **≈ 69 / 100** | 8 URLs indexables, 5 casos de estudio citables con CreativeWork, llms.txt completo, metadatos corregidos. |
+| **Proyectado** (tras acciones externas §5) | **≈ 80 / 100** | El lastre restante es Brand Authority (5/100), 100 % off-site. |
 
 ### Desglose por categoría
 
-| Categoría | Peso | Inicial | Final (código) | Estado |
+| Categoría | Peso | Inicial (prod.) | Final (código) | Estado |
 |---|---|---|---|---|
-| AI Citability & Visibility | 25% | 50 | **68** | ⚠️ (capado por Cloudflare) |
-| Brand Authority Signals | 20% | 12 | **12** | ✗ (100% externo) |
-| Content Quality & E-E-A-T | 20% | 78 | **88** | ✓ |
-| Technical Foundations | 15% | 88 | **89** | ✓ |
-| Structured Data | 10% | 68 | **85** | ✓ |
-| Platform Optimization | 10% | 38 | **50** | ⚠️ (capado por Cloudflare) |
+| AI Citability & Visibility | 25 % | 68 | **78** | ✓ |
+| Brand Authority | 20 % | 5 | **5** | ✗ (100 % externo — §5) |
+| Content Quality & E-E-A-T | 20 % | 80 | **88** | ✓ |
+| Technical Foundations | 15 % | 78 | **93** | ✓ |
+| Structured Data | 10 % | 80 | **90** | ✓ |
+| Platform Optimization | 10 % | 65 | **75** | ✓ |
+
+**El hallazgo que domina esta auditoría no es de código: es el gap deploy↔repo.** Casi todo el
+valor GEO construido (sección /proyectos, sitemap de 8 URLs, llms.txt completo) existe solo en
+local. Verificado hoy en vivo: `/proyectos` → HTTP 404, sitemap con 2 URLs.
 
 ---
 
-## 2. Cambios aplicados, por archivo
+## 2. Cambios aplicados en esta auditoría, por archivo
 
-Todos los cambios se editaron directamente en el repositorio y **el proyecto compila**
-(`npm run build` ✓, TypeScript sin errores, robots/sitemap generados OK).
+Compila: `npm run build` ✓ (TypeScript sin errores, 21 páginas estáticas, los 5 slugs generados,
+robots.txt y sitemap.xml emitidos).
 
-### `components/StructuredData.tsx` — Datos estructurados (Fase 2)
-- **Tipo dual** en el nodo de negocio: `"@type": ["LocalBusiness", "ProfessionalService"]`.
-  Cumple el requisito de `LocalBusiness` del encargo sin perder la especificidad de
-  `ProfessionalService` (es su subtipo: hereda `address`, `geo`, `areaServed`, `priceRange`).
-- Añadido `legalName: "Alejandro Martín Herrero"` y `brand: "Xync"` al negocio.
-- **Nuevo nodo `FAQPage`** en el `@graph`, derivado de `faqs` (fuente única en `content.ts`,
-  sin duplicar copy). Conectado por `isPartOf`/`about`. Era el issue ALTO señalado por 2
-  subagentes: convierte las 8 preguntas en pares Q&A citables por ChatGPT/Perplexity/Gemini.
-- **Sanitizado anti-XSS**: `JSON.stringify(...).replace(/</g, "<")` según la
-  recomendación oficial de la guía JSON-LD de Next.js 16.
+### `lib/portfolio/content.ts` (Fases 3 y 6)
+- **[CRÍTICO] Portada de Grieta rota**: `image.src` apuntaba a `/portfolio/hero-image.webp`,
+  archivo que **no existe** (el real es `hero-images.webp`, y además es una captura de *Lumen*,
+  no de Grieta). Ahora la portada es `grieta-detalle.webp` (captura real del catálogo de
+  Grieta), con alt de moda + Salamanca, y el grid "Por dentro" queda con `grieta-detalle-2.webp`
+  para no duplicar. Este bug estaba **en producción** (portada y og:image de Grieta rotos).
+- **[CRÍTICO] `projectSeo` de `cenit` y `lumen` describían proyectos antiguos** (un panel de
+  reservas y una clínica) que ya no existen. Las meta descriptions de esas dos páginas mentían
+  sobre su contenido. Reescritas (150-160 chars, problema→resultado, "Salamanca"):
+  - cenit: "Cenit vendía moda por Instagram y marketplaces pagando comisiones. Su tienda propia con sistema de drops, hecha en Salamanca: margen completo y clientes propios."
+  - lumen: "Lumen tenía un catálogo de muebles que nadie encontraba en Google. Su ecommerce con catálogo filtrable, hecho en Salamanca: más visitas orgánicas y ventas."
+- **Nueva FAQ answer-target** "¿Qué tecnología usáis para crear una tienda online?" (~120
+  palabras, citable): ataca "desarrollador freelance para ecommerce con Medusa.js" y "tienda
+  online sin comisiones", nombra los tres casos ecommerce (Grieta, Cenit, Lumen) y cierra con
+  contacto. Se emite también en el JSON-LD `FAQPage` automáticamente (deriva de `faqs`).
 
-### `lib/portfolio/content.ts` — Contenido y E-E-A-T (Fases 3 y 6)
-- **Párrafo citable autosuficiente de ~135 palabras** en la 1ª FAQ: entidad + ubicación +
-  servicios + tecnologías (Next.js/React/Medusa.js) + plazo + precio + contacto. Es el bloque
-  "ancla" que un AI Overview puede extraer como fuente única (rango objetivo 134–167: ✓).
-- **Autor visible**: el nombre real **Alejandro Martín Herrero** ahora aparece en contenido
-  visible (antes solo en JSON-LD). Resuelve la mayor fuga de E-E-A-T.
-- **Nueva FAQ answer-target** para la query objetivo *"cómo crear una tienda online sin
-  comisiones"* (la de mayor potencial), citando el caso Grieta.
-- **Títulos de proyecto con keywords** (los "PROYECTO 1/2/3" desperdiciaban headings):
-  `Grieta — Tienda online sin comisiones` · `The Byte — Periódico digital optimizado para SEO`
-  · `Lumière — Web de restaurante con carta dinámica`.
-- **Alt local** en la imagen del proyecto destacado ("…estudio de desarrollo web en Salamanca").
+### `app/proyectos/[slug]/page.tsx` (Fase 2)
+- `CreativeWork` ahora incluye **`about: project.sector`** (lo único que faltaba del encargo:
+  name, description, url, creator Organization Xync y locationCreated Salamanca ya estaban).
 
-### `app/robots.ts` — Crawlers IA (Fase 4)
-- Reescrito con **reglas explícitas de `Allow` por user-agent** para 15 bots de IA y
-  buscadores (GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-User, anthropic-ai,
-  PerplexityBot, Perplexity-User, Googlebot, Google-Extended, Bingbot, CCBot,
-  Applebot-Extended, Amazonbot, meta-externalagent), manteniendo `Disallow` de rutas privadas.
-- ⚠️ **El origen ya permitía todo**: el bloqueo real lo añade Cloudflare (ver §3). Estas
-  reglas son una declaración de intención, pero **no anulan el WAF de Cloudflare**.
-- *No se creó `public/robots.txt`*: habría entrado en conflicto con esta Route Handler.
+### `public/llms.txt` (Fase 5)
+- **Añadidos Cenit y Lumen** (faltaban 2 de los 5 proyectos; el desplegado lista solo 3).
+- Los proyectos enlazan ahora a sus **URLs canónicas** `/proyectos/[slug]` (antes solo demos en
+  subdominios: un LLM que las seguía aprendía sobre la tienda, no sobre Xync) manteniendo la
+  demo como enlace secundario. Añadido "Todos los proyectos" → `/proyectos`.
 
-### `public/llms.txt` — NUEVO (Fase 5)
-- `llms.txt` según el estándar llmstxt.org: qué es Xync, servicios, localización (Salamanca),
-  proyectos de referencia (Grieta, The Byte, Lumière) y contacto (contacto@xync.es).
-- Servido desde la raíz: `https://www.xync.es/llms.txt`.
+### `components/portfolio/Hero.tsx` y `components/portfolio/Contact.tsx` (Fase 3 — solo copy)
+- **Alt del hero corregido**: decía "Tienda online Grieta" sobre la captura de **Lumen**
+  (la ventana simulada ya enlazaba a lumen.xync.es). Ahora: Lumen + muebles + Salamanca.
+- **Voz plural unificada** (quedaban 6 restos en singular): "Cuéntanos tu proyecto",
+  "Cuéntanos qué quieres construir", "Escríbenos…" (×2), "Te respondemos… nos has dejado",
+  placeholder del formulario. Sin ningún cambio de diseño.
 
-### `app/layout.tsx` — SEO técnico (Fase 7)
-- Eliminado `<meta name="keywords">` (ignorado por Google, ruido).
-- **Sin cambios** en title/description/OG/Twitter/canonical: ya estaban óptimos (ver §4).
-
----
-
-## 3. 🔴 Hallazgo crítico nº1 — Cloudflare bloquea a los crawlers de IA (acción EXTERNA)
-
-La auditoría en vivo demostró que **el problema de acceso de IA NO está en tu código**:
-
-- `app/robots.ts` (origen) **permite** todos los crawlers.
-- **Cloudflare** añade un bloque "Managed Content" con `Disallow: /` para **GPTBot, ClaudeBot,
-  Google-Extended, CCBot, Bytespider, Amazonbot…** y declara `Content-Signal: ai-train=no`.
-- Peor aún: el **WAF de Cloudflare devuelve HTTP 403** a **OAI-SearchBot** y **PerplexityBot**
-  — los bots de *búsqueda en vivo* de ChatGPT y Perplexity. No pueden ni recuperar la página.
-- Lo que **sí** funciona: Googlebot y Bingbot no están bloqueados (alimentan Google AI
-  Overviews y Bing Copilot).
-
-➡️ **Acción:** Panel de Cloudflare → *Scrape Shield / AI Crawl Control* (o "Bots" → "Block AI
-bots") → **desactivar el bloqueo** o permitir explícitamente OAI-SearchBot, PerplexityBot,
-ChatGPT-User, Perplexity-User, GPTBot, ClaudeBot y Google-Extended. **Hasta hacer esto, gran
-parte del resto de optimizaciones GEO no rinde** (los bots de IA no ven el llms.txt, el schema
-ni el contenido citable).
+### Verificado sin cambios necesarios (Fases 4 y 7)
+- `app/robots.ts`: los 15 bots IA/buscadores permitidos — el subagente lo midió **100/100** en
+  producción, sin bloques inyectados por Cloudflare.
+- `app/sitemap.ts`: home + /proyectos + landing + 5 slugs ✓ (solo falta desplegarlo).
+- Canonicals: cada página define el suyo (home `/`, /proyectos, cada slug, legales, landing) ✓.
+- H1 único por página (Hero, ProjectsIndex, ProjectDetail, LegalLayout) ✓.
+- Titles conformes al encargo: home keyword literal; "Proyectos · Xync — Desarrollo web
+  Salamanca"; "[Nombre] · Xync — [Sector]" vía `generateMetadata` ✓.
+- OG completo por tipología (og:title/description/url/image; el detalle usa la portada del
+  proyecto) + twitter card ✓.
+- `next/image` en todas las imágenes (vía `ImageSlot`, con width/height) y `next/font` con
+  `display: swap` (Geist, Geist Mono, Bricolage Grotesque) ✓.
 
 ---
 
-## 4. Estado por checklist técnico (Fase 7)
+## 3. Estado por checklist (encargo original)
 
-| Ítem | Estado | Valor |
-|---|---|---|
-| `title` ≤ 60 chars con keyword local | ✓ | "Desarrollador web freelance en Salamanca \| Xync" (47) |
-| `description` 150–160 chars con keywords locales | ✓ | 158 chars |
-| og:image / og:url / og:title / og:description | ✓ | `/opengraph-image` (1200×630) + completos |
-| twitter:card | ✓ | `summary_large_image` |
-| canonical | ✓ | `https://www.xync.es` (self-ref) |
-| sitemap.xml | ✓ | `app/sitemap.ts` (dinámico) — NO se duplicó en `/public` |
-| Un solo H1 con keyword principal | ✓ | "Desarrollamos webs, tiendas online y productos digitales en Salamanca…" |
-| H2 con variaciones de keywords | ✓ | "Casos reales de webs y tiendas online…", etc. |
-| `next/image` en todas las imágenes | ✓ | confirmado |
-| `next/font` con `display: swap` | ✓ | Geist, Geist_Mono, Bricolage_Grotesque |
-| `<meta name="keywords">` eliminado | ✓ | quitado en esta auditoría |
-| `<html lang="es">` | ✓ | presente |
-| HTTPS + HSTS + redirecciones canónicas | ✓ | http→https, apex→www (308) |
-
-> **Nota title:** el encargo sugería `Xync · Desarrollo web en Salamanca`. **No se aplicó**
-> porque el title vigente (`Desarrollador web freelance en Salamanca | Xync`) ataca
-> directamente una keyword objetivo, cumple ≤60 chars y es estratégicamente superior.
+| Ítem | Estado |
+|---|---|
+| Robots permite GPTBot, ClaudeBot, PerplexityBot, GoogleBot, Bingbot | ✓ (100/100 en vivo) |
+| Cloudflare sin bloques inyectados en robots.txt | ✓ (verificado hoy) |
+| Cloudflare vs `ChatGPT-User` (Managed Rules) | ⚠ no verificable desde código — ver §5.2 |
+| JSON-LD LocalBusiness (legalName, brand, email, address, areaServed, sameAs) | ✓ ya existente |
+| CreativeWork por proyecto (name, description, url, creator, about, locationCreated) | ✓ (about añadido hoy) |
+| llms.txt con los 5 proyectos + contacto | ✓ (corregido hoy) |
+| Párrafo citable 134-167 palabras | ✓ (FAQ 1, ~135 palabras) |
+| "Salamanca" ≥ 3 veces en contenido visible | ✓ (hero, FAQs, footer) |
+| 5 proyectos con problema/solución/resultado | ✓ — sin métricas numéricas (ver §5.6) |
+| Meta descriptions 150-160 con problema+resultado | ✓ (cenit y lumen corregidas hoy) |
+| Alt texts con sector + Salamanca | ✓ (Grieta y hero corregidos hoy) |
+| FAQs en lenguaje natural de búsqueda | ✓ (+1 nueva para Medusa.js) |
+| Sitemap con home, /proyectos y 5 slugs | ✓ en código — ✗ en producción (2 URLs) |
+| Canonical / OG / H1 único / next-image / next-font swap | ✓ |
+| Consultas objetivo cubiertas con pasaje citable | ✓ "quién hace webs en Salamanca" (FAQ 1) · ✓ "tienda online sin comisiones" (FAQ 2) · ✓ "ecommerce Medusa.js" (FAQ nueva) |
 
 ---
 
-## 5. Acciones pendientes EXTERNAS (no son código)
+## 4. Hallazgos de la auditoría en vivo (subagente de visibilidad IA)
 
-Ordenadas por impacto. Mueven el score de ~64 a ~78–80; son responsabilidad del cliente.
+- **AI Citability 68/100**: bloques muy citables (plazos "14 días", precios cerrados en €,
+  FAQs con JSON-LD), pero superficie mínima — solo 2 URLs indexables en producción.
+- **Brand Authority 5/100** (el gran lastre): cero presencia en Wikipedia (verificado por API),
+  Reddit, YouTube, LinkedIn y directorios. `site:xync.es` sin resultados visibles; ante
+  "desarrollo web Salamanca" los LLMs citarán a competidores (JSSM, Nokeon, Virtual Salamanca).
+- **Colisión de marca**: existen xync.co, xync.net, xync.de… Desambiguar siempre como
+  "Xync, estudio de desarrollo web en Salamanca" en bios y perfiles externos.
+- **SSR 100 %**: todo el contenido y JSON-LD llegan en el HTML inicial sin JS.
+- Sugerencia menor (no aplicada — `MetadataRoute.Robots` no soporta directivas custom):
+  `Content-Signal` en robots.txt. Requeriría servir robots como texto estático; valor bajo.
 
-### 🔴 Prioridad 1 — Desbloquear crawlers de IA en Cloudflare
-Ver §3. **Es el cuello de botella nº1.** Sin esto, ChatGPT y Perplexity no pueden citar el sitio.
+---
 
-### 🟠 Prioridad 2 — Google Business Profile (GBP)
-- Crear y **verificar** la ficha para Salamanca, categoría "Diseñador de páginas web", con
-  **NAP idéntico** al del schema (Calle Pizarrales 38, 37003 Salamanca).
-- Señal dominante para "quién hace webs en Salamanca" en Gemini y AI Overviews locales;
-  habilita reseñas reales (que alimentan E-E-A-T).
+## 5. Acciones pendientes EXTERNAS (por orden de impacto)
 
-### 🟠 Prioridad 3 — Google Search Console — solicitar indexación
-- Dar de alta la propiedad, enviar `sitemap.xml` y **solicitar indexación** de la home y de
-  `/landing-pages-negocios-locales`. Verificar cobertura tras desbloquear Cloudflare.
-
-### 🟠 Prioridad 4 — Autoridad de entidad externa (Brand Authority: 12/100)
-La categoría más baja y 100% off-site. Prioridad:
-- **LinkedIn**: página de empresa "Xync — Desarrollo web, Salamanca" + perfil de Alejandro.
-  Resuelve una colisión de marca (existe un "Xync Inc." de EE. UU. no relacionado).
-- **GitHub**: organización pública (señal de expertise técnico de alto peso para IA).
-- **Wikidata**: ítem "Xync (estudio de desarrollo web, Salamanca)".
-- Tras crearlos, **añadir las URLs a `identity.socials`** en `content.ts`; el filtro
-  `isRealUrl` ya las emitirá automáticamente en `sameAs` del JSON-LD.
-
-### 🟡 Prioridad 5 — Backlinks y directorios locales (España)
-- Páginas Amarillas, directorios de Salamanca/Castilla y León, Malt, Clutch, asociaciones
-  y medios locales.
-
-### 🟡 Prioridad 6 — Menciones en plataformas que la IA cita
-- **Reddit** (r/SpainTech, r/webdev en ES): aportar valor real en preguntas sobre "tienda
-  online sin comisiones", enlazando el caso Grieta cuando sea pertinente.
-- **YouTube**: un caso de estudio en vídeo.
-- **LinkedIn**: publicaciones periódicas de los proyectos.
-
-### 🟢 Prioridad 7 — Mejoras de contenido que requieren datos reales del cliente
-- **Cuantificar los casos** (Grieta/The Byte/Lumière) con métricas reales. *No se inventaron
-  cifras en esta auditoría.*
-- **Verificar los testimonios** (Carlos Mendoza, Sophie Arnaud): si son reales, añadir
-  ciudad/enlace; si son demos, etiquetarlos o sustituirlos por reseñas de GBP. *No se tocaron
-  por ser datos del cliente.*
-- Considerar `Cache-Control` público para la home (hoy es dinámica por `getServerSession` en
-  el layout): mejoraría TTFB/LCP. Requiere refactor de auth, fuera del alcance SEO.
+1. **🔴 Desplegar este repo a producción.** Es la acción nº 1 con diferencia: /proyectos y los
+   5 casos (404 hoy), el sitemap de 8 URLs, el llms.txt completo y todos los fixes de hoy no
+   existen para Google ni para los LLMs hasta que se publiquen.
+2. **🟠 Cloudflare — `ChatGPT-User`**: el bloqueo masivo de bots IA se desactivó el 25-jun
+   (verificado), pero el UA `ChatGPT-User` (navegación en vivo de ChatGPT) pudo quedar afectado
+   por una Managed Rule y **no es verificable desde código**. Comprobar en Cloudflare →
+   Security → Bots / AI Crawl Control que `ChatGPT-User`, `OAI-SearchBot` y `Perplexity-User`
+   reciben 200, no challenge/403.
+3. **🟠 Google Search Console**: tras el deploy, reenviar `sitemap.xml` y solicitar indexación
+   de `/proyectos` y de los 5 slugs (grieta, the-byte, lumiere, cenit, lumen). Hacer lo mismo
+   en Bing Webmaster Tools (alimenta ChatGPT Search y Copilot).
+4. **🟠 Google Business Profile**: crear y verificar la ficha (categoría "Diseñador de páginas
+   web", NAP idéntico al schema). Señal dominante para "quién hace webs en Salamanca".
+5. **🟠 Brand Authority (5/100)**: LinkedIn (página de empresa + perfil de Alejandro), GitHub
+   público, Malt/Workana, directorios de Salamanca y Castilla y León. Al crear perfiles,
+   añadir las URLs a `identity.socials` en `content.ts` → entran solas en `sameAs`.
+6. **🟡 Métricas reales para los 5 casos**: los resultados actuales son cualitativos ("más
+   ventas directas"). Los LLMs citan cifras ("−30 % comisiones", "LCP 1,2 s"). **No se
+   inventaron números en esta auditoría** — pedirlos a los clientes y añadirlos a `result`.
+7. **🟡 TikTok (@xyncdev)**: enlazar xync.es en la bio para cerrar la verificación de entidad
+   del `sameAs`.
 
 ---
 
 ## 6. Resumen ejecutivo
 
-**Ya estaba muy bien** (no se tocó): SSR completo, seguridad de primer nivel (HSTS, CSP),
-metadata, Open Graph dinámico, canonical, un solo H1 con keyword, `next/image`, `next/font`
-con swap, JSON-LD bien conectado por `@id`.
+El código está en un estado GEO excelente: robots 100/100, grafo JSON-LD conectado
+(Person + LocalBusiness/ProfessionalService + WebSite + FAQPage + CollectionPage +
+CreativeWork), SSR completo, metadatos correctos en las tres tipologías y llms.txt completo.
+Esta sesión corrigió dos errores de contenido serios que ya estaban en producción (portada de
+Grieta rota y meta descriptions de Cenit/Lumen describiendo proyectos que ya no existen),
+completó el CreativeWork con `about`, añadió la FAQ de Medusa.js y unificó la voz plural.
 
-**Se mejoró en código** (este trabajo): schema `LocalBusiness` + `FAQPage` + sanitizado,
-párrafo citable de 135 palabras, autor visible, FAQ "tienda sin comisiones", títulos con
-keywords, alt local, robots reforzado, `llms.txt` nuevo, limpieza de meta keywords.
-**Compila correctamente.**
-
-**Falta y NO es código** (mueve el score de 64 a 80): desbloquear Cloudflare, Google Business
-Profile, Search Console, y construir autoridad de marca (LinkedIn, GitHub, Wikidata, Reddit,
-directorios locales).
+**Nada de esto rinde hasta desplegar**: producción sirve una versión sin la sección de
+proyectos. Tras el deploy, el techo del score (~69) lo pone Brand Authority (5/100), que se
+trabaja fuera del código (§5.4-5.5).
 
 ---
 
-*Generado por `/geo audit` + aplicación de mejoras. Validar el JSON-LD final en
-https://validator.schema.org/ y las Core Web Vitals en PageSpeed Insights tras desplegar.*
+*Generado por `/geo audit` el 2026-07-02. Validar el JSON-LD en https://validator.schema.org/
+y solicitar indexación en GSC tras desplegar.*

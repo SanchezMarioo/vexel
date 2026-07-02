@@ -65,10 +65,10 @@ export default function Contact() {
             className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2.2rem, 5vw, 4rem)" }}
           >
-            Cuéntame qué quieres construir.
+            Cuéntanos qué quieres construir.
           </motion.h2>
           <motion.p variants={fadeUp} className="pf-prose mt-5 text-lg text-pf-ink-soft">
-            Escríbeme en dos líneas qué necesitas. {identity.responseTime.toLowerCase()},
+            Escríbenos en dos líneas qué necesitas. {identity.responseTime.toLowerCase()},
             sin compromiso y sin tecnicismos.
           </motion.p>
 
@@ -77,7 +77,7 @@ export default function Contact() {
               Agendar una llamada
             </CalButton>
             <Button href={`mailto:${identity.email}`} variant="outline">
-              Escríbeme un email
+              Escríbenos un email
             </Button>
           </motion.div>
 
@@ -121,7 +121,7 @@ export default function Contact() {
               </span>
               <h3 className="pf-display mt-5 text-2xl text-pf-ink">Mensaje recibido</h3>
               <p className="pf-prose mt-2 text-pf-ink-soft">
-                Gracias por escribir. Te respondo lo antes posible al email que me has dejado.
+                Gracias por escribir. Te respondemos lo antes posible al email que nos has dejado.
               </p>
               <button
                 type="button"
@@ -171,7 +171,7 @@ export default function Contact() {
                   label="¿Qué quieres construir o mejorar?"
                   required
                   multiline
-                  placeholder="Cuéntame tu proyecto en un par de líneas y el plazo que manejas."
+                  placeholder="Cuéntanos tu proyecto en un par de líneas y el plazo que manejas."
                   field={register("message")}
                   error={errors.message?.message}
                 />

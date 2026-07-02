@@ -9,14 +9,16 @@ Tecnologías principales: Next.js, React y Medusa.js, con SEO técnico incluido 
 - [Construir](https://www.xync.es/#servicios): desarrollamos desde cero la web, la tienda online o la aplicación de tu negocio, rápida y lista para vender.
 - [Arreglar](https://www.xync.es/#servicios): reparamos webs que van lentas, fallan o no convierten, y las dejamos mantenibles.
 - [Rediseñar](https://www.xync.es/#servicios): rediseñamos la interfaz para que tu producto se vea profesional y se entienda en segundos.
-- [Tiendas online sin comisiones](https://www.xync.es/#proyectos): tiendas propias en tu dominio (p. ej. con Medusa.js), sin comisiones por venta de plataformas intermediarias.
+- [Tiendas online sin comisiones](https://www.xync.es/proyectos): tiendas propias en tu dominio (p. ej. con Medusa.js), sin comisiones por venta de plataformas intermediarias.
 - [Landing pages para negocios locales](https://www.xync.es/landing-pages-negocios-locales): páginas de captación para negocios locales.
 
 ## Proyectos de referencia
 
-- [Grieta](https://grieta.xync.es/): tienda online sin comisiones, construida con Medusa.js y optimizada para buscadores.
-- [The Byte](https://thebyte.xync.es/): periódico digital donde la redacción publica de forma autónoma, optimizado para SEO.
-- [Lumière](https://lumiere.xync.es/): web de restaurante con carta dinámica y búsqueda local.
+- [Grieta](https://www.xync.es/proyectos/grieta): tienda online de moda sin comisiones, construida con Medusa.js y optimizada para buscadores. Demo: https://grieta.xync.es/
+- [The Byte](https://www.xync.es/proyectos/the-byte): periódico digital donde la redacción publica de forma autónoma, optimizado para SEO. Demo: https://thebyte.xync.es/
+- [Lumière](https://www.xync.es/proyectos/lumiere): web de restaurante con carta dinámica que el propio restaurante actualiza, con SEO local. Demo: https://lumiere.xync.es/
+- [Cenit](https://www.xync.es/proyectos/cenit): ecommerce de moda con sistema de drops — lanzamientos de stock limitado, sin comisiones de terceros.
+- [Lumen](https://www.xync.es/proyectos/lumen): ecommerce de muebles con catálogo filtrable y fichas de producto optimizadas para Google. Demo: https://lumen.xync.es/
 
 ## Localización y contacto
 
@@ -28,6 +30,6 @@ Tecnologías principales: Next.js, React y Medusa.js, con SEO técnico incluido 
 ## Enlaces
 
 - [Web principal](https://www.xync.es)
-- [Casos reales](https://www.xync.es/#proyectos)
+- [Todos los proyectos](https://www.xync.es/proyectos)
 - [Aviso legal](https://www.xync.es/aviso-legal)
 - [Privacidad](https://www.xync.es/privacidad)

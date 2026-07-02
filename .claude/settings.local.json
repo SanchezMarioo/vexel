@@ -8,7 +8,24 @@
       "Bash(node -e \"console.log\\(require\\('next/package.json'\\).version\\)\")",
       "Bash(ls node_modules/next/og.*)",
       "Bash(node -e \"console.log\\(Object.keys\\(require\\('next/og'\\)\\)\\)\")",
-      "Bash(node -e \"const t=require\\('fs'\\).readFileSync\\('node_modules/next/types.d.ts','utf8'\\); console.log\\(t.slice\\(0,400\\)\\)\")"
+      "Bash(node -e \"const t=require\\('fs'\\).readFileSync\\('node_modules/next/types.d.ts','utf8'\\); console.log\\(t.slice\\(0,400\\)\\)\")",
+      "PowerShell(git status --short | Select-Object -First 80; Write-Output \"----\"; Write-Output \\(\"archivos borrados: \" + \\(git diff --name-only --diff-filter=D | Measure-Object -Line\\).Lines\\); Write-Output \\(\"archivos modificados: \" + \\(git diff --name-only --diff-filter=M | Measure-Object -Line\\).Lines\\))"
     ]
-  }
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/skills/impeccable/scripts/hook.mjs\"",
+            "timeout": 5,
+            "statusMessage": "Checking UI changes"
+          }
+        ]
+      }
+    ]
+  },
+  "description": "Impeccable design detector: runs after Edit/Write/MultiEdit on UI files and surfaces findings as system reminders."
 }
