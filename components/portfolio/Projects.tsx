@@ -37,18 +37,7 @@ function ProjectLinks({ project }: { project: Project }) {
         className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-pf-ink underline-offset-4 hover:underline"
       >
         Ver el caso
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.75"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-          className="h-4 w-4 transition-transform duration-300 ease-[var(--pf-ease-out)] group-hover/link:translate-x-1"
-        >
-          <path d="M5 12h14m-6-6 6 6-6 6" />
-        </svg>
+        <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" aria-hidden="true" className="h-4 w-4 transition-transform duration-300 ease-[var(--pf-ease-out)] group-hover/link:translate-x-1" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
       </Link>
       {isRealUrl(project.liveUrl) ? (
         <a
@@ -58,18 +47,7 @@ function ProjectLinks({ project }: { project: Project }) {
           className="group/live inline-flex items-center gap-1.5 text-sm text-pf-ink-soft underline-offset-4 transition-colors hover:text-pf-ink hover:underline"
         >
           Ver en vivo
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.75"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-            className="h-4 w-4 transition-transform duration-300 ease-[var(--pf-ease-out)] group-hover/live:translate-x-0.5 group-hover/live:-translate-y-0.5"
-          >
-            <path d="M7 17 17 7M8 7h9v9" />
-          </svg>
+          <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.75" aria-hidden="true" className="h-4 w-4 transition-transform duration-300 ease-[var(--pf-ease-out)] group-hover/live:translate-x-0.5 group-hover/live:-translate-y-0.5" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9"/></svg>
         </a>
       ) : null}
     </div>

@@ -20,8 +20,14 @@ const revealTransition: Transition = {
   ease: pfEaseOut,
 };
 
-/** Default once-per-element viewport trigger. */
-export const pfViewport = { once: true, amount: 0.3 } as const;
+/**
+ * Default once-per-element viewport trigger. Usa margen del viewport en vez de
+ * `amount`: un porcentaje del elemento (p. ej. 0.3) nunca se alcanza en móvil
+ * cuando el contenedor apilado mide varias pantallas de alto, y la sección se
+ * queda invisible. Con `margin` dispara en cuanto el borde superior entra en el
+ * 82% superior del viewport, sea cual sea la altura del elemento.
+ */
+export const pfViewport = { once: true, margin: "0px 0px -18% 0px" } as const;
 
 /** Vertical reveal for blocks of text and cards. */
 export const fadeUp: Variants = {
