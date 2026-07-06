@@ -16,18 +16,20 @@ import { siteUrl } from "@/lib/site-url";
  *
  * Se renderiza una sola vez en app/layout.tsx → válido en todo el sitio.
  */
-export default function StructuredData() {
-  const sameAs = identity.socials.map((s) => s.href).filter(isRealUrl);
+// NAP único compartido por Person y ProfessionalService (postalCode opcional).
+// A nivel de módulo: no depende de estado del componente, así que se construye
+// una sola vez en lugar de en cada render.
+const postalAddress = {
+  "@type": "PostalAddress",
+  streetAddress: legalEntity.street,
+  addressLocality: legalEntity.locality,
+  addressRegion: legalEntity.region,
+  ...(legalEntity.postalCode ? { postalCode: legalEntity.postalCode } : {}),
+  addressCountry: legalEntity.countryCode,
+};
 
-  // NAP único compartido por Person y ProfessionalService (postalCode opcional).
-  const postalAddress = {
-    "@type": "PostalAddress",
-    streetAddress: legalEntity.street,
-    addressLocality: legalEntity.locality,
-    addressRegion: legalEntity.region,
-    ...(legalEntity.postalCode ? { postalCode: legalEntity.postalCode } : {}),
-    addressCountry: legalEntity.countryCode,
-  };
+export default function StructuredData() {
+  const sameAs = identity.socials.flatMap((s) => (isRealUrl(s.href) ? [s.href] : []));
 
   const graph = {
     "@context": "https://schema.org",

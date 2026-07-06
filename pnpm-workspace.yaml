@@ -1,0 +1,7 @@
+# Endurecimiento de cadena de suministro (react-doctor/require-pnpm-hardening).
+# minimumReleaseAge: no instalar versiones publicadas hace menos de 7 días
+# (el malware recién publicado suele detectarse y retirarse en horas).
+minimumReleaseAge: 10080
+# trustPolicy: rechazar paquetes cuya confianza (provenance/firmas) se
+# debilite entre resoluciones.
+trustPolicy: no-downgrade

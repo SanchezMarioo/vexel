@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { identity, isRealUrl, navLinks } from "@/lib/portfolio/content";
 
 export default function Footer() {
@@ -69,15 +70,15 @@ export default function Footer() {
             © {year} {identity.name}. Todos los derechos reservados.
           </p>
           <nav aria-label="Enlaces legales" className="flex flex-wrap gap-x-4 gap-y-1">
-            <a href="/aviso-legal" className="transition-colors hover:text-pf-bg">
+            <Link href="/aviso-legal" className="transition-colors hover:text-pf-bg">
               Aviso legal
-            </a>
-            <a href="/privacidad" className="transition-colors hover:text-pf-bg">
+            </Link>
+            <Link href="/privacidad" className="transition-colors hover:text-pf-bg">
               Privacidad
-            </a>
-            <a href="/cookies" className="transition-colors hover:text-pf-bg">
+            </Link>
+            <Link href="/cookies" className="transition-colors hover:text-pf-bg">
               Cookies
-            </a>
+            </Link>
           </nav>
         </div>
       </div>

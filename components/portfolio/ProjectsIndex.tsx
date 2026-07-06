@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import type { Project } from "@/lib/portfolio/content";
 import { projects } from "@/lib/portfolio/content";
@@ -16,7 +16,7 @@ function leadProblem(problem: string): string {
 
 function IndexRow({ project }: { project: Project }) {
   return (
-    <motion.li
+    <m.li
       initial="hidden"
       whileInView="visible"
       viewport={pfViewport}
@@ -77,7 +77,7 @@ function IndexRow({ project }: { project: Project }) {
       >
         <path d="M7 17 17 7M8 7h9v9" />
       </svg>
-    </motion.li>
+    </m.li>
   );
 }
 
@@ -85,27 +85,27 @@ export default function ProjectsIndex() {
   return (
     <div className="pf-container py-20 md:py-28">
       {/* Masthead */}
-      <motion.div
+      <m.div
         initial="hidden"
         animate="visible"
         className="max-w-4xl"
       >
-        <motion.h1
+        <m.h1
           variants={heroLcpSafe}
           className="pf-display text-pf-ink-strong"
           style={{ fontSize: "clamp(2.4rem, 6vw, 4.5rem)" }}
         >
           Casos reales que ya están funcionando
-        </motion.h1>
-        <motion.p
+        </m.h1>
+        <m.p
           variants={fadeUp}
           className="pf-prose mt-6 text-lg leading-relaxed text-pf-ink-soft"
         >
           Cada proyecto empezó como un problema de negocio concreto. Aquí tienes qué
           construimos y qué cambió después — para que veas de un vistazo si el tuyo se
           parece.
-        </motion.p>
-      </motion.div>
+        </m.p>
+      </m.div>
 
       {/* Índice */}
       <ul className="mt-14 md:mt-20">
@@ -115,7 +115,7 @@ export default function ProjectsIndex() {
       </ul>
 
       {/* Cierre */}
-      <motion.div
+      <m.div
         initial="hidden"
         whileInView="visible"
         viewport={pfViewport}
@@ -128,7 +128,7 @@ export default function ProjectsIndex() {
         <Button href="/#contacto" variant="primary" size="lg" withArrow>
           Cuéntanos tu proyecto
         </Button>
-      </motion.div>
+      </m.div>
     </div>
   );
 }

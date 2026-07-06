@@ -1,7 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
+import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { identity } from "@/lib/portfolio/content";
@@ -53,35 +54,35 @@ export default function Contact() {
     <section id="contacto" className="scroll-mt-20 border-t border-pf-line py-24 md:py-32">
       <div className="pf-container grid gap-12 lg:grid-cols-12 lg:gap-8">
         {/* Left: invitación + alternativas directas */}
-        <motion.div
+        <m.div
           initial="hidden"
           whileInView="visible"
           viewport={pfViewport}
           variants={stagger(0.1)}
           className="lg:col-span-5"
         >
-          <motion.h2
+          <m.h2
             variants={fadeUp}
             className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2.2rem, 5vw, 4rem)" }}
           >
             Cuéntanos qué quieres construir.
-          </motion.h2>
-          <motion.p variants={fadeUp} className="pf-prose mt-5 text-lg text-pf-ink-soft">
+          </m.h2>
+          <m.p variants={fadeUp} className="pf-prose mt-5 text-lg text-pf-ink-soft">
             Escríbenos en dos líneas qué necesitas. {identity.responseTime.toLowerCase()},
             sin compromiso y sin tecnicismos.
-          </motion.p>
+          </m.p>
 
-          <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-3">
+          <m.div variants={fadeUp} className="mt-8 flex flex-wrap gap-3">
             <CalButton calLink={identity.calUrl} variant="ink" withArrow>
               Agendar una llamada
             </CalButton>
             <Button href={`mailto:${identity.email}`} variant="outline">
               Escríbenos un email
             </Button>
-          </motion.div>
+          </m.div>
 
-          <motion.p variants={fadeUp} className="mt-6 text-sm text-pf-muted">
+          <m.p variants={fadeUp} className="mt-6 text-sm text-pf-muted">
             ¿Prefieres el correo directo?{" "}
             <a
               href={`mailto:${identity.email}`}
@@ -89,11 +90,11 @@ export default function Contact() {
             >
               {identity.email}
             </a>
-          </motion.p>
-        </motion.div>
+          </m.p>
+        </m.div>
 
         {/* Right: formulario corto */}
-        <motion.div
+        <m.div
           initial="hidden"
           whileInView="visible"
           viewport={pfViewport}
@@ -203,12 +204,12 @@ export default function Contact() {
                   />
                   <span>
                     He leído y acepto la{" "}
-                    <a
+                    <Link
                       href="/privacidad"
                       className="text-pf-ink underline underline-offset-4 hover:no-underline"
                     >
                       política de privacidad
-                    </a>
+                    </Link>
                     .
                   </span>
                 </label>
@@ -226,7 +227,7 @@ export default function Contact() {
               </div>
             </form>
           )}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

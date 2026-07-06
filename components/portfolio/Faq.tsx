@@ -31,7 +31,7 @@ export default function Faq() {
               const panelId = `faq-panel-${index}`;
               const buttonId = `faq-button-${index}`;
               return (
-                <li key={index} className="border-b border-pf-line">
+                <li key={faq.question} className="border-b border-pf-line">
                   <h3>
                     <button
                       type="button"

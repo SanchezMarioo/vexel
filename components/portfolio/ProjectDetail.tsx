@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import type { Project, ProjectImage } from "@/lib/portfolio/content";
 import { isRealUrl } from "@/lib/portfolio/content";
@@ -36,7 +36,7 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
   return (
     <div className="pf-container pb-24 pt-10 md:pb-32 md:pt-14">
       {/* Migas */}
-      <motion.nav
+      <m.nav
         initial="hidden"
         animate="visible"
         variants={fadeUp}
@@ -52,23 +52,23 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
         </Link>
         <span aria-hidden="true">/</span>
         <span className="text-pf-ink-soft">{project.sector}</span>
-      </motion.nav>
+      </m.nav>
 
       {/* 1 · HERO */}
-      <motion.header
+      <m.header
         initial="hidden"
         animate="visible"
         variants={stagger(0.1, 0.03)}
         className="mt-6"
       >
-        <motion.h1
+        <m.h1
           variants={heroLcpSafe}
           className="pf-display text-pf-ink-strong"
           style={{ fontSize: "clamp(2.4rem, 6vw, 4.75rem)" }}
         >
           {project.title}
-        </motion.h1>
-        <motion.div
+        </m.h1>
+        <m.div
           variants={fadeUp}
           className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2"
         >
@@ -89,54 +89,54 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
               </a>
             </>
           ) : null}
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           variants={heroLcpSafe}
           className="mt-10 overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line md:mt-12"
         >
           <ImageSlot image={project.image} priority />
-        </motion.div>
-      </motion.header>
+        </m.div>
+      </m.header>
 
       {/* 2 · RESUMEN — El problema · Lo que construimos · El resultado.
           Tres columnas en fila (desktop) / apiladas (móvil). El resultado no es
           una card aparte: comparte patrón pero se destaca por peso, tamaño y una
           tinta más fuerte, porque es el dato que más le importa al cliente. */}
       <section aria-label="Resumen del proyecto" className="mt-20 md:mt-28">
-        <motion.div
+        <m.div
           initial="hidden"
           whileInView="visible"
           viewport={pfViewport}
           variants={stagger(0.12)}
           className="grid gap-x-12 gap-y-10 md:grid-cols-3"
         >
-          <motion.div variants={fadeUp}>
+          <m.div variants={fadeUp}>
             <p className="pf-mono text-xs text-pf-muted">El problema</p>
             <p className="mt-3 text-base leading-relaxed text-pf-ink-soft">
               {project.problem}
             </p>
-          </motion.div>
-          <motion.div variants={fadeUp}>
+          </m.div>
+          <m.div variants={fadeUp}>
             <p className="pf-mono text-xs text-pf-muted">Lo que construimos</p>
             <p className="mt-3 text-base leading-relaxed text-pf-ink-soft">
               {project.built}
             </p>
-          </motion.div>
-          <motion.div variants={fadeUp}>
+          </m.div>
+          <m.div variants={fadeUp}>
             <p className="pf-mono text-xs text-pf-ink">El resultado</p>
             <p className="mt-3 text-base leading-relaxed text-pf-ink-soft">
               {project.result}
             </p>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       </section>
 
       {/* 3 · CAPTURAS */}
       {project.images.length > 0 ? (
         <section aria-label="Capturas del proyecto" className="mt-24 md:mt-32">
           <h2 className="pf-display text-2xl text-pf-ink md:text-3xl">Por dentro</h2>
-          <motion.div
+          <m.div
             initial="hidden"
             whileInView="visible"
             viewport={pfViewport}
@@ -144,15 +144,15 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
             className="mt-8 grid gap-4 sm:grid-cols-2"
           >
             {project.images.map((src, index) => (
-              <motion.div
+              <m.div
                 key={src}
                 variants={maskReveal}
                 className="overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line"
               >
                 <ImageSlot image={captureImage(project, src, index)} />
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         </section>
       ) : null}
 
@@ -161,7 +161,7 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
         <h2 className="pf-display text-2xl text-pf-ink md:text-3xl">
           Con qué está construido
         </h2>
-        <motion.ul
+        <m.ul
           initial="hidden"
           whileInView="visible"
           viewport={pfViewport}
@@ -176,11 +176,11 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
               <span className="text-xl font-medium text-pf-ink md:text-2xl">{tech}</span>
             </li>
           ))}
-        </motion.ul>
+        </m.ul>
       </section>
 
       {/* 5 · CTA */}
-      <motion.section
+      <m.section
         initial="hidden"
         whileInView="visible"
         viewport={pfViewport}
@@ -203,7 +203,7 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
             Ver todos los proyectos
           </Button>
         </div>
-      </motion.section>
+      </m.section>
 
       {/* 6 · NAVEGACIÓN anterior / siguiente */}
       <nav

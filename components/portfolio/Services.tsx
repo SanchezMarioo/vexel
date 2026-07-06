@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { services } from "@/lib/portfolio/content";
 import { fadeUp, pfViewport, stagger } from "@/lib/portfolio/motion";
 
@@ -8,7 +8,7 @@ export default function Services() {
   return (
     <section id="servicios" className="scroll-mt-20 border-t border-pf-line py-24 md:py-32">
       <div className="pf-container">
-        <motion.div
+        <m.div
           initial="hidden"
           whileInView="visible"
           viewport={pfViewport}
@@ -25,9 +25,9 @@ export default function Services() {
             Tres formas de quitarte un problema de encima. Sin tecnicismos: esto es lo
             que consigues y para quién es.
           </p>
-        </motion.div>
+        </m.div>
 
-        <motion.ul
+        <m.ul
           initial="hidden"
           whileInView="visible"
           viewport={pfViewport}
@@ -35,7 +35,7 @@ export default function Services() {
           className="mt-14 border-t border-pf-line"
         >
           {services.map((service) => (
-            <motion.li
+            <m.li
               key={service.id}
               variants={fadeUp}
               className="group grid gap-5 border-b border-pf-line py-9 md:grid-cols-12 md:gap-8"
@@ -64,9 +64,9 @@ export default function Services() {
                   </span>
                 </p>
               </div>
-            </motion.li>
+            </m.li>
           ))}
-        </motion.ul>
+        </m.ul>
       </div>
     </section>
   );

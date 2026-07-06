@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { identity } from "@/lib/portfolio/content";
 import { fadeUp, heroLcpSafe, popIn, stagger } from "@/lib/portfolio/motion";
 import Button from "./ui/Button";
@@ -11,43 +11,43 @@ export default function Hero() {
   return (
     <section id="inicio" className="relative overflow-hidden bg-pf-bg">
       <div className="pf-container relative grid items-center gap-12 pb-20 pt-16 md:pt-20 lg:grid-cols-12 lg:gap-10 lg:pb-28 lg:pt-24">
-        <motion.div
+        <m.div
           initial="hidden"
           animate="visible"
           variants={stagger(0.12, 0.05)}
           className="lg:col-span-6"
         >
-          <motion.h1
+          <m.h1
             variants={heroLcpSafe}
             className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2.4rem, 5.2vw, 4.4rem)" }}
           >
             {identity.headline}
-          </motion.h1>
+          </m.h1>
 
-          <motion.p
+          <m.p
             variants={fadeUp}
             className="pf-prose mt-6 text-lg leading-relaxed text-pf-ink"
           >
             {identity.subhead}
-          </motion.p>
+          </m.p>
 
-          <motion.p variants={fadeUp} className="mt-4 text-base text-pf-ink-soft">
+          <m.p variants={fadeUp} className="mt-4 text-base text-pf-ink-soft">
             Xync es un estudio de desarrollo y diseño web freelance en{" "}
             {identity.location}. Trabajamos para toda España y Latinoamérica en
             remoto.
-          </motion.p>
+          </m.p>
 
-          <motion.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-3">
+          <m.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-3">
             <Button href="#contacto" variant="solid" size="lg" withArrow>
               Cuéntanos tu proyecto
             </Button>
             <Button href="#proyectos" variant="outline" size="lg">
               Ver casos reales
             </Button>
-          </motion.div>
+          </m.div>
 
-          <motion.p
+          <m.p
             variants={fadeUp}
             className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-pf-muted"
           >
@@ -57,17 +57,17 @@ export default function Hero() {
             </span>
             <span aria-hidden="true" className="hidden sm:inline">·</span>
             <span>{identity.responseTime}</span>
-          </motion.p>
-        </motion.div>
+          </m.p>
+        </m.div>
 
         {/* Visual: el resultado que entrego, no el código. */}
-        <motion.div
+        <m.div
           initial="hidden"
           animate="visible"
           variants={stagger(0.12, 0.1)}
           className="relative lg:col-span-6"
         >
-          <motion.div
+          <m.div
             variants={heroLcpSafe}
             className="overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line bg-pf-surface"
           >
@@ -88,9 +88,9 @@ export default function Hero() {
                 height: 820,
               }}
             />
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             variants={popIn}
             className="absolute -bottom-4 -left-2 flex items-center gap-2.5 rounded-[var(--pf-radius)] border border-pf-line bg-pf-bg px-4 py-3 shadow-[0_8px_24px_-12px_oklch(0_0_0_/_0.35)] sm:-left-5"
           >
@@ -100,8 +100,8 @@ export default function Hero() {
             <span className="text-sm font-medium text-pf-ink">
               Precio y plazo cerrados antes de empezar
             </span>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       </div>
     </section>
   );

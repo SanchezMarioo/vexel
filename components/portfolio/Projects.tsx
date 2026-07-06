@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
 import type { Project } from "@/lib/portfolio/content";
 import { isRealUrl, projects } from "@/lib/portfolio/content";
@@ -58,7 +58,7 @@ export default function Projects() {
   return (
     <section id="proyectos" className="scroll-mt-20 border-t border-pf-line py-24 md:py-32">
       <div className="pf-container">
-        <motion.div
+        <m.div
           initial="hidden"
           whileInView="visible"
           viewport={pfViewport}
@@ -75,17 +75,17 @@ export default function Projects() {
             Qué problema tenía cada negocio, qué construí y qué cambió después. Eso es lo
             que de verdad importa.
           </p>
-        </motion.div>
+        </m.div>
 
         {featured ? (
-          <motion.article
+          <m.article
             initial="hidden"
             whileInView="visible"
             viewport={pfViewport}
             variants={stagger(0.12)}
             className="mt-14 grid gap-8 lg:grid-cols-12 lg:items-center"
           >
-            <motion.div variants={maskReveal} className="lg:col-span-7">
+            <m.div variants={maskReveal} className="lg:col-span-7">
               <Link
                 href={`/proyectos/${featured.slug}`}
                 aria-label={`Ver el caso: ${featured.title}`}
@@ -94,9 +94,9 @@ export default function Projects() {
                 <ImageSlot image={featured.image} />
                 <span className="absolute inset-0 bg-pf-ink/0 transition-colors duration-300 group-hover:bg-pf-ink/5" />
               </Link>
-            </motion.div>
+            </m.div>
 
-            <motion.div variants={fadeUp} className="lg:col-span-5">
+            <m.div variants={fadeUp} className="lg:col-span-5">
               <Tag variant="solid">{featured.sector}</Tag>
               <h3 className="pf-display mt-4 text-3xl leading-tight text-pf-ink md:text-4xl">
                 <Link
@@ -108,12 +108,12 @@ export default function Projects() {
               </h3>
               <Narrative project={featured} />
               <ProjectLinks project={featured} />
-            </motion.div>
-          </motion.article>
+            </m.div>
+          </m.article>
         ) : null}
 
         {rest.length > 0 ? (
-          <motion.div
+          <m.div
             initial="hidden"
             whileInView="visible"
             viewport={pfViewport}
@@ -121,7 +121,7 @@ export default function Projects() {
             className="mt-12 grid gap-8 md:grid-cols-2"
           >
             {rest.map((project) => (
-              <motion.article key={project.id} variants={fadeUp} className="flex flex-col">
+              <m.article key={project.id} variants={fadeUp} className="flex flex-col">
                 <Link
                   href={`/proyectos/${project.slug}`}
                   aria-label={`Ver el caso: ${project.title}`}
@@ -143,12 +143,12 @@ export default function Projects() {
                   <Narrative project={project} dense />
                   <ProjectLinks project={project} />
                 </div>
-              </motion.article>
+              </m.article>
             ))}
-          </motion.div>
+          </m.div>
         ) : null}
 
-        <motion.div
+        <m.div
           initial="hidden"
           whileInView="visible"
           viewport={pfViewport}
@@ -173,7 +173,7 @@ export default function Projects() {
               <path d="M5 12h14m-6-6 6 6-6 6" />
             </svg>
           </Link>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

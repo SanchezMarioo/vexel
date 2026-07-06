@@ -7,7 +7,6 @@ import type { Transition, Variants } from "framer-motion";
  */
 
 export const pfEaseOut: [number, number, number, number] = [0.16, 1, 0.3, 1];
-export const pfEaseInOut: [number, number, number, number] = [0.65, 0, 0.35, 1];
 
 export const pfDurations = {
   reveal: 0.8,
@@ -35,23 +34,12 @@ export const fadeUp: Variants = {
   visible: { opacity: 1, y: 0, transition: revealTransition },
 };
 
-/** Headline reveal: rises from a clipped baseline (mask, not opacity gate). */
-export const clipUp: Variants = {
-  hidden: { opacity: 0, y: "0.4em", clipPath: "inset(0 0 100% 0)" },
-  visible: {
-    opacity: 1,
-    y: 0,
-    clipPath: "inset(0 0 -10% 0)",
-    transition: { duration: pfDurations.slow, ease: pfEaseOut },
-  },
-};
-
 /**
  * Entrada LCP-safe para el contenido above-the-fold del hero. NO usa `opacity`
  * ni `clip-path`: el elemento pinta a opacidad plena en el primer frame, así el
  * LCP no queda gateado por la hidratación de JS. Solo un leve desplazamiento.
  * Úsalo en el <h1> y la imagen del hero (el resto de secciones, que entran con
- * `whileInView` bajo el pliegue, sí pueden usar fadeUp/clipUp con opacidad).
+ * `whileInView` bajo el pliegue, sí pueden usar fadeUp con opacidad).
  */
 export const heroLcpSafe: Variants = {
   hidden: { y: 16 },

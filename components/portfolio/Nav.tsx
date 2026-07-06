@@ -1,22 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { identity, navLinks } from "@/lib/portfolio/content";
 import Button from "./ui/Button";
 
 const sectionIds = navLinks.map((link) => link.href.replace("#", ""));
 
+// useSyncExternalStore evita el render extra de inicializar "scrolled" desde
+// un useEffect y aporta un snapshot de servidor (false) que hidrata limpio.
+function subscribeToScroll(onChange: () => void) {
+  window.addEventListener("scroll", onChange, { passive: true });
+  return () => window.removeEventListener("scroll", onChange);
+}
+
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false);
+  const scrolled = useSyncExternalStore(
+    subscribeToScroll,
+    () => window.scrollY > 12,
+    () => false,
+  );
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<string>("");
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     const sections = sectionIds

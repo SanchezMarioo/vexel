@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { processSteps } from "@/lib/portfolio/content";
 import { fadeUp, pfDurations, pfEaseOut, pfViewport, stagger } from "@/lib/portfolio/motion";
 
@@ -8,7 +8,7 @@ export default function Process() {
   return (
     <section id="proceso" className="scroll-mt-20 border-t border-pf-line py-24 md:py-32">
       <div className="pf-container">
-        <motion.div
+        <m.div
           initial="hidden"
           whileInView="visible"
           viewport={pfViewport}
@@ -25,16 +25,16 @@ export default function Process() {
             Un proceso sin sorpresas: en todo momento sabes qué tienes que hacer tú, de
             qué me encargo yo y cuándo ves resultados.
           </p>
-        </motion.div>
+        </m.div>
 
-        <motion.ol
+        <m.ol
           initial="hidden"
           whileInView="visible"
           viewport={pfViewport}
           variants={stagger(0.14)}
           className="relative mt-16 grid gap-x-8 gap-y-12 md:grid-cols-4"
         >
-          <motion.span
+          <m.span
             aria-hidden="true"
             className="absolute left-0 right-0 top-5 hidden h-px origin-left bg-pf-line-strong md:block"
             initial={{ scaleX: 0 }}
@@ -44,7 +44,7 @@ export default function Process() {
           />
 
           {processSteps.map((step, index) => (
-            <motion.li key={step.title} variants={fadeUp} className="relative">
+            <m.li key={step.title} variants={fadeUp} className="relative">
               <span className="pf-mono relative z-10 grid h-10 w-10 place-items-center rounded-full bg-pf-ink text-sm font-medium text-pf-bg">
                 {index + 1}
               </span>
@@ -64,9 +64,9 @@ export default function Process() {
                   <dd className="mt-1 text-pf-ink">{step.when}</dd>
                 </div>
               </dl>
-            </motion.li>
+            </m.li>
           ))}
-        </motion.ol>
+        </m.ol>
       </div>
     </section>
   );

@@ -366,7 +366,10 @@ function extractColors(section) {
     if (!sub.name || /Named Rules?/i.test(sub.name) || /^The\s/i.test(sub.name)) continue;
 
     const bullets = collectBullets(sub.lines);
-    const parsed = bullets.map((b) => parseColorBullet(b)).filter(Boolean);
+    const parsed = bullets.flatMap((b) => {
+      const p = parseColorBullet(b);
+      return p ? [p] : [];
+    });
     if (parsed.length === 0) continue;
 
     // If every bullet starts with a role keyword (Primary/Secondary/...), promote
@@ -386,17 +389,21 @@ function extractColors(section) {
   // If the Colors section has no subsections at all (unlikely), fall back to
   // scanning the whole section as a flat bullet list.
   if (groups.length === 0) {
-    const flat = collectBullets(section.lines)
-      .map((b) => parseColorBullet(b))
-      .filter(Boolean);
+    const flat = collectBullets(section.lines).flatMap((b) => {
+      const p = parseColorBullet(b);
+      return p ? [p] : [];
+    });
     if (flat.length) {
+      let palette = null;
       for (const p of flat) {
         if (p.name && ROLE_KEYWORDS.test(p.name)) {
           groups.push({ role: p.name, colors: [p] });
         } else {
-          const fallback = groups.find((g) => g.role === 'Palette');
-          if (fallback) fallback.colors.push(p);
-          else groups.push({ role: 'Palette', colors: [p] });
+          if (!palette) {
+            palette = { role: 'Palette', colors: [] };
+            groups.push(palette);
+          }
+          palette.colors.push(p);
         }
       }
     }
@@ -564,7 +571,10 @@ function extractTypography(section) {
   const hierSub = subs.find((s) => s.name && /hierarch/i.test(s.name));
   if (hierSub) {
     const bullets = collectBullets(hierSub.lines);
-    hierarchy = bullets.map(parseTypeBullet).filter(Boolean);
+    hierarchy = bullets.flatMap((b) => {
+      const t = parseTypeBullet(b);
+      return t ? [t] : [];
+    });
   }
 
   return {
@@ -580,11 +590,11 @@ function normalizeFontRole(raw) {
   // Canonical roles the panel cares about: display, body, label, mono.
   // Stitch often writes compound roles like "display-&-headlines" or "ui-&-body"
   // — collapse them to the first canonical role present.
-  const tokens = raw.split(/[-/&\s]+/).filter(Boolean);
+  const tokens = new Set(raw.split(/[-/&\s]+/).filter(Boolean));
   const priority = ['display', 'headline', 'body', 'ui', 'label', 'mono'];
   const canonical = { headline: 'display', ui: 'body' };
   for (const p of priority) {
-    if (tokens.includes(p)) return canonical[p] || p;
+    if (tokens.has(p)) return canonical[p] || p;
   }
   return null;
 }
