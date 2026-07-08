@@ -287,12 +287,12 @@ export const projects: Project[] = [
       "Más reservas entre semana y nuevos clientes que llegan directamente desde el buscador.",
     stack: ["Next.js", "React", "Carta dinámica", "SEO local", "Schema.org"],
     images: [
-      "/portfolio/lumiere-detalle-1.webp",
-      "/portfolio/lumiere-detalle-2.webp",
+      "/portfolio/lumiere-detalle-1_1.webp",
+      "/portfolio/lumiere-detalle-2_1.webp",
     ],
     liveUrl: "https://lumiere.xync.es/",
     image: {
-      src: "/portfolio/proyecto-3.webp",
+      src: "/portfolio/proyecto-3_1.webp",
       alt: "Web del restaurante Lumière con carta dinámica desarrollada por Xync",
       width: 1600,
       height: 1000,
