@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Bricolage_Grotesque } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import ClientEffects from "@/components/ClientEffects";
 import StructuredData from "@/components/StructuredData";
 import { siteUrl } from "@/lib/site-url";
@@ -99,6 +100,7 @@ export default function RootLayout({
         {children}
         <ClientEffects />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
