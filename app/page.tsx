@@ -21,14 +21,16 @@ export const metadata: Metadata = {
   description,
   alternates: { canonical: "/" },
   openGraph: {
-    type: "profile",
+    type: "website",
     locale: "es_ES",
     url: siteUrl,
+    siteName: identity.name,
     title,
     description,
   },
   twitter: {
     card: "summary_large_image",
+    site: "@xyncdev",
     title,
     description,
   },

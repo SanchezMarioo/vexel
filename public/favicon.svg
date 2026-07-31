@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Xync favicon</title>
+  <desc id="desc">Dark square favicon with the Xync monogram.</desc>
+  <rect width="64" height="64" rx="16" fill="#050505" />
+  <path d="M18 18h8.2l5.8 8.7 5.8-8.7H46L36.2 32l9.8 14H37.8L32 37.1 26.2 46H18l9.8-14L18 18Z" fill="#ffffff" />
+</svg>

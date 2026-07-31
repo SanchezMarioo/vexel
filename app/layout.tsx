@@ -72,8 +72,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
+    site: "@xyncdev",
     title: defaultTitle,
     description: defaultDescription,
+  },
+  icons: {
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },
   category: "business",
 };

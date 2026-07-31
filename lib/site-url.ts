@@ -10,11 +10,25 @@
  * en vez de leer la env var suelta, para que la protección sea consistente.
  */
 const RAW = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
-const FALLBACK = "https://www.xync.es";
+const FALLBACK = "https://xync.es";
+
+function normalizeSiteUrl(value: string): string {
+  try {
+    const url = new URL(value);
+
+    if (url.hostname === "www.xync.es") {
+      url.hostname = "xync.es";
+    }
+
+    return url.toString().replace(/\/$/, "");
+  } catch {
+    return value;
+  }
+}
 
 export const siteUrl =
   RAW &&
   (RAW.startsWith("https://") ||
     (process.env.NODE_ENV !== "production" && RAW.startsWith("http://")))
-    ? RAW
+    ? normalizeSiteUrl(RAW)
     : FALLBACK;
