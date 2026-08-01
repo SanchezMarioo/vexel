@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_ES",
     siteName: "Xync",
-    url: `${siteUrl}${pagePath}`,
+    url: toAbsoluteUrl(pagePath),
     title: pageTitle,
     description: pageDescription,
   },
