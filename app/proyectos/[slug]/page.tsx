@@ -10,7 +10,7 @@ import {
   projects,
   projectSeo,
 } from "@/lib/portfolio/content";
-import { siteUrl } from "@/lib/site-url";
+import { siteUrl, toAbsoluteUrl } from "@/lib/site-url";
 
 type Params = { slug: string };
 
@@ -48,7 +48,7 @@ export async function generateMetadata({
       type: "article",
       locale: "es_ES",
       siteName: "Xync",
-      url: `${siteUrl}${pagePath}`,
+      url: toAbsoluteUrl(pagePath),
       title,
       description,
       images: [{ url: project.image.src, alt: project.image.alt }],
@@ -89,8 +89,8 @@ export default async function ProyectoDetallePage({
     "@type": "CreativeWork",
     name,
     description: `${project.problem} ${project.result}`,
-    url: `${siteUrl}${pagePath}`,
-    image: `${siteUrl}${project.image.src}`,
+    url: toAbsoluteUrl(pagePath),
+    image: toAbsoluteUrl(project.image.src),
     inLanguage: "es",
     keywords: project.stack.join(", "),
     about: project.sector,
@@ -109,18 +109,18 @@ export default async function ProyectoDetallePage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Inicio", item: siteUrl },
+      { "@type": "ListItem", position: 1, name: "Inicio", item: toAbsoluteUrl("/") },
       {
         "@type": "ListItem",
         position: 2,
         name: "Proyectos",
-        item: `${siteUrl}/proyectos`,
+        item: toAbsoluteUrl("/proyectos"),
       },
       {
         "@type": "ListItem",
         position: 3,
         name,
-        item: `${siteUrl}${pagePath}`,
+        item: toAbsoluteUrl(pagePath),
       },
     ],
   };

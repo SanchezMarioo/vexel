@@ -3,7 +3,7 @@ import EyebrowTag from "@/components/ui/EyebrowTag";
 import Button from "@/components/portfolio/ui/Button";
 import PortfolioShell from "@/components/portfolio/PortfolioShell";
 import { faqs } from "@/lib/content/faqs";
-import { siteUrl } from "@/lib/site-url";
+import { toAbsoluteUrl } from "@/lib/site-url";
 
 const pagePath = "/landing-pages-negocios-locales";
 
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: pageTitle,
     description: pageDescription,
-    url: `${siteUrl}${pagePath}`,
+    url: toAbsoluteUrl(pagePath),
     type: "article",
     locale: "es_ES",
     siteName: "Xync",
@@ -57,13 +57,13 @@ const breadcrumbJsonLd = {
       "@type": "ListItem",
       position: 1,
       name: "Inicio",
-      item: siteUrl,
+      item: toAbsoluteUrl("/"),
     },
     {
       "@type": "ListItem",
       position: 2,
       name: "Landing pages para negocios locales",
-      item: `${siteUrl}${pagePath}`,
+      item: toAbsoluteUrl(pagePath),
     },
   ],
 };

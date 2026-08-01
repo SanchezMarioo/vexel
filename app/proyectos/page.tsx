@@ -4,7 +4,7 @@ import PortfolioShell from "@/components/portfolio/PortfolioShell";
 import ProjectsIndex from "@/components/portfolio/ProjectsIndex";
 import SubHeader from "@/components/portfolio/SubHeader";
 import { projects } from "@/lib/portfolio/content";
-import { siteUrl } from "@/lib/site-url";
+import { siteUrl, toAbsoluteUrl } from "@/lib/site-url";
 
 const pagePath = "/proyectos";
 const pageTitle = "Proyectos · Xync — Desarrollo web Salamanca";
@@ -40,7 +40,7 @@ const collectionJsonLd = {
   "@id": `${siteUrl}${pagePath}#collection`,
   name: pageTitle,
   description: pageDescription,
-  url: `${siteUrl}${pagePath}`,
+  url: toAbsoluteUrl(pagePath),
   inLanguage: "es",
   isPartOf: { "@id": `${siteUrl}/#website` },
   about: { "@id": `${siteUrl}/#business` },
@@ -49,7 +49,7 @@ const collectionJsonLd = {
     itemListElement: projects.map((project, index) => ({
       "@type": "ListItem",
       position: index + 1,
-      item: `${siteUrl}${pagePath}/${project.slug}`,
+      item: toAbsoluteUrl(`${pagePath}/${project.slug}`),
       name: project.title,
     })),
   },
@@ -59,12 +59,12 @@ const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Inicio", item: siteUrl },
+    { "@type": "ListItem", position: 1, name: "Inicio", item: toAbsoluteUrl("/") },
     {
       "@type": "ListItem",
       position: 2,
       name: "Proyectos",
-      item: `${siteUrl}${pagePath}`,
+      item: toAbsoluteUrl(pagePath),
     },
   ],
 };
