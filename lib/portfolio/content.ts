@@ -284,13 +284,13 @@ export const projects: Project[] = [
     built:
       "Web con carta dinámica que el restaurante actualiza solo, optimizada para aparecer en búsquedas locales y mostrar la carta directamente en Google.",
     result:
-      "Más reservas entre semana y nuevos clientes que llegan directamente desde el buscador.",
+      "Más reservas entre semana y nuevos clientes que llegan directamente desde el buscador",
     stack: ["Next.js", "React", "Carta dinámica", "SEO local", "Schema.org"],
     images: [
       "/portfolio/lumiere-detalle-1_1.webp",
       "/portfolio/lumiere-detalle-2_1.webp",
     ],
-    liveUrl: "https://lumiere.xync.es/",
+    // liveUrl: "https://lumiere.xync.es/",
     image: {
       src: "/portfolio/proyecto-3_1.webp",
       alt: "Web del restaurante Lumière con carta dinámica desarrollada por Xync",
