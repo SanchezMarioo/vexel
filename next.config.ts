@@ -6,9 +6,11 @@ const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline' https://app.cal.com${isDev ? " 'unsafe-eval' http://localhost:8400" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://images.unsplash.com",
+  // cdn.sanity.io: imágenes del blog (Portable Text, portadas OG).
+  "img-src 'self' data: blob: https://images.unsplash.com https://cdn.sanity.io",
   "font-src 'self' data:",
-  `connect-src 'self' https://app.cal.com${isDev ? " ws: wss: http://localhost:* http://127.0.0.1:*" : ""}`,
+  // Sanity Studio: API + CDN de módulos (check de versión / auto-update).
+  `connect-src 'self' https://app.cal.com https://*.api.sanity.io wss://*.api.sanity.io https://*.apicdn.sanity.io https://sanity-cdn.com https://*.sanity-cdn.com${isDev ? " ws: wss: http://localhost:* http://127.0.0.1:*" : ""}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -62,6 +64,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "images.unsplash.com",
+      },
+      {
+        // Imágenes del blog servidas desde Sanity CDN (optimizadas por next/image).
+        protocol: "https",
+        hostname: "cdn.sanity.io",
       },
     ],
   },

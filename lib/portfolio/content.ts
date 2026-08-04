@@ -161,6 +161,9 @@ export const navLinks: NavLink[] = [
   { label: "Servicios", href: "#servicios" },
   { label: "Cómo trabajo", href: "#proceso" },
   { label: "Proyectos", href: "#proyectos" },
+  // Ruta absoluta (no ancla): Nav/Footer ya tratan los href sin "#" como
+  // navegación a otra página, sin observarlo como sección.
+  { label: "Blog", href: "/blog" },
 ];
 
 export const services: Service[] = [

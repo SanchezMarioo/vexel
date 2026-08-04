@@ -1,15 +1,29 @@
 import type { MetadataRoute } from "next";
+import { getPosts } from "@/lib/blog/getPosts";
 import { projects } from "@/lib/portfolio/content";
 import { siteUrl } from "@/lib/site-url";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+// Misma cadencia que el blog: los artículos nuevos entran en el sitemap sin
+// redeployar (tag "blog" del webhook + red horaria).
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
+  const posts = await getPosts();
 
   const projectRoutes: MetadataRoute.Sitemap = projects.map((project) => ({
     url: `${siteUrl}/proyectos/${project.slug}`,
     lastModified: now,
     changeFrequency: "monthly",
     priority: 0.7,
+  }));
+
+  const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
+    url: `${siteUrl}/blog/${post.slug}`,
+    // La fecha real del artículo (o su última revisión), no la del deploy.
+    lastModified: new Date(`${post.updatedAt ?? post.publishedAt}T00:00:00Z`),
+    changeFrequency: "monthly",
+    priority: 0.6,
   }));
 
   return [
@@ -26,11 +40,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${siteUrl}/blog`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${siteUrl}/landing-pages-negocios-locales`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.9,
     },
     ...projectRoutes,
+    ...blogRoutes,
   ];
 }

@@ -5,3 +5,16 @@ minimumReleaseAge: 10080
 # trustPolicy: rechazar paquetes cuya confianza (provenance/firmas) se
 # debilite entre resoluciones.
 trustPolicy: no-downgrade
+# Excepción acotada al árbol OFICIAL de Sanity (CMS del blog): algunas de sus
+# versiones estables se publican sin provenance de forma intermitente, lo que
+# rompería la resolución con decenas de overrides frágiles. El resto del
+# ecosistema sigue sujeto a trustPolicy, y minimumReleaseAge se aplica a todo
+# (incluidos estos paquetes).
+trustPolicyExclude:
+  - "@sanity/*"
+  - "@portabletext/*"
+  - "groq"
+  # Utilidades antiguas (2020-2023) del árbol del Studio de Sanity, previas a
+  # la era del provenance: semver@6.3.1 es justamente la versión con el fix de
+  # seguridad ReDoS, pero se publicó sin atestación.
+  - "semver"

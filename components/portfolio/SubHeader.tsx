@@ -32,6 +32,12 @@ export default function SubHeader() {
           >
             Servicios
           </Link>
+          <Link
+            href="/blog"
+            className="hidden rounded-[var(--pf-radius-sm)] px-3 py-2 text-sm text-pf-ink-soft transition-colors duration-200 hover:text-pf-ink sm:inline-block"
+          >
+            Blog
+          </Link>
           <Button href="/#contacto" size="sm" variant="ink">
             Hablemos
           </Button>

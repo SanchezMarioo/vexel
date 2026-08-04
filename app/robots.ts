@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { siteUrl } from "@/lib/site-url";
 
 // Rutas privadas que ningún crawler debe indexar (paneles, API, auth, cuenta).
-const disallow = ["/api/", "/auth/", "/cuenta/", "/admin/"];
+const disallow = ["/api/", "/auth/", "/cuenta/", "/admin/", "/studio/"];
 
 /**
  * Crawlers de IA y de buscadores con IA a los que permitimos EXPLÍCITAMENTE el
