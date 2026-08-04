@@ -29,3 +29,6 @@ export function requireSanityEnv(): { projectId: string; dataset: string; apiVer
     apiVersion: sanityApiVersion,
   };
 }
+export const projectId = sanityProjectId;
+export const dataset = sanityDataset;
+export const apiVersion = sanityApiVersion;
