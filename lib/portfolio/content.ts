@@ -293,7 +293,7 @@ export const projects: Project[] = [
       "/portfolio/lumiere-detalle-1_1.webp",
       "/portfolio/lumiere-detalle-2_1.webp",
     ],
-    // liveUrl: "https://lumiere.xync.es/",
+    liveUrl: "https://lumiere.xync.es/",
     image: {
       src: "/portfolio/proyecto-3_1.webp",
       alt: "Web del restaurante Lumière con carta dinámica desarrollada por Xync",
