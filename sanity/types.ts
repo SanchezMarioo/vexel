@@ -110,3 +110,26 @@ export interface SanityPostFull extends SanityPostCard {
   coverImage: SanityImage | null;
   ogImage: SanityImage | null;
 }
+
+export interface SanityServiceCard {
+  _id: string;
+  slug: string;
+  title: string;
+  updatedAt?: string;
+  status: "published";
+}
+
+export interface SanityServiceFull extends SanityServiceCard {
+  seoTitle?: string;
+  metaDescription: string;
+  hero: {
+    eyebrow?: string;
+    title?: string;
+    text?: string;
+    image?: SanityImage;
+  } | null;
+  content: SanityPortableText | null;
+  faq: Array<{ question: string; answer: string }> | null;
+  cta: { title?: string; text?: string; label?: string; href?: string } | null;
+  ogImage: SanityImage | null;
+}

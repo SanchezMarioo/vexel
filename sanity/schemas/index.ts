@@ -3,5 +3,6 @@ import { categoryType } from "./category";
 import { codeType } from "./code";
 import { evidenceType } from "./evidence";
 import { postType } from "./post";
+import { serviceType } from "./service";
 
-export const schemaTypes = [postType, categoryType, authorType, codeType, evidenceType];
+export const schemaTypes = [postType, serviceType, categoryType, authorType, codeType, evidenceType];

@@ -1,7 +1,7 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { parseBody } from "next-sanity/webhook";
 import type { NextRequest } from "next/server";
-import { BLOG_CACHE_TAG } from "@/sanity/client";
+import { BLOG_CACHE_TAG, SERVICES_CACHE_TAG } from "@/sanity/client";
 
 /**
  * Webhook de Sanity (Settings → Webhooks del proyecto): al publicar,
@@ -29,11 +29,12 @@ export async function POST(request: NextRequest) {
 
   // Invalida todas las lecturas del blog (páginas ISR, sitemap y RSS).
   // { expire: 0 }: expiración inmediata para llamadas externas (webhook de Sanity).
-  revalidateTag(BLOG_CACHE_TAG, { expire: 0 });
-  revalidatePath("/blog");
+  const isService = body?._type === "service";
+  revalidateTag(isService ? SERVICES_CACHE_TAG : BLOG_CACHE_TAG, { expire: 0 });
+  revalidatePath(isService ? "/sitemap.xml" : "/blog");
 
   if (body?.slug?.current) {
-    revalidatePath(`/blog/${body.slug.current}`);
+    revalidatePath(isService ? `/${body.slug.current}` : `/blog/${body.slug.current}`);
   }
 
   return Response.json({ revalidated: true, type: body?._type ?? null, now: Date.now() });

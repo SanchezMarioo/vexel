@@ -13,6 +13,7 @@ import { sanityApiVersion, sanityDataset, sanityProjectId } from "./env";
  */
 
 export const BLOG_CACHE_TAG = "blog";
+export const SERVICES_CACHE_TAG = "services";
 
 const token = process.env.SANITY_API_READ_TOKEN;
 
@@ -40,17 +41,20 @@ interface SanityFetchOptions {
   params?: QueryParams;
   /** true en Draft Mode: lee borradores sin caché. */
   preview?: boolean;
+  /** Tag de caché del agregado consultado (blog o servicios). */
+  tags?: string[];
 }
 
 export async function sanityFetch<T>({
   query,
   params = {},
   preview = false,
+  tags = [BLOG_CACHE_TAG],
 }: SanityFetchOptions): Promise<T> {
   if (preview) {
     return draftClient.fetch<T>(query, params, { cache: "no-store" });
   }
   return sanityClient.fetch<T>(query, params, {
-    next: { tags: [BLOG_CACHE_TAG] },
+    next: { tags },
   });
 }
