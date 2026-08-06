@@ -4,7 +4,7 @@ import Button from "@/components/portfolio/ui/Button";
 import PortfolioShell from "@/components/portfolio/PortfolioShell";
 import { faqs } from "@/lib/content/faqs";
 import { toAbsoluteUrl } from "@/lib/site-url";
-import { socialImage } from "@/lib/seo/metadata";
+import { getOgImageMetadata } from "@/lib/seo/getOgImage";
 
 const pagePath = "/landing-pages-negocios-locales";
 
@@ -25,13 +25,13 @@ export const metadata: Metadata = {
     type: "article",
     locale: "es_ES",
     siteName: "Xync",
-    images: [socialImage(undefined, pageTitle)],
+    images: [getOgImageMetadata(undefined, pageTitle)],
   },
   twitter: {
     card: "summary_large_image",
     title: pageTitle,
     description: pageDescription,
-    images: [socialImage(undefined, pageTitle).url],
+    images: [getOgImageMetadata(undefined, pageTitle).url],
   },
 };
 

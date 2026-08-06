@@ -1,8 +1,8 @@
 import "server-only";
 import type { BlogBlock } from "@/lib/content/blog";
 import { mapPortableTextToBlocks } from "@/lib/blog/portable-text";
-import { urlForOgImage } from "@/sanity/image";
-import type { SanityImageSource, SanityServiceCard, SanityServiceFull } from "@/sanity/types";
+import { getOgImage } from "@/lib/seo/getOgImage";
+import type { SanityServiceCard, SanityServiceFull } from "@/sanity/types";
 
 export interface ServicePage {
   slug: string;
@@ -19,7 +19,7 @@ export interface ServicePage {
   content: BlogBlock[];
   faq: Array<{ question: string; answer: string }>;
   cta: { title: string; text: string; label: string; href: string };
-  ogImage?: { src: string; alt: string; width: number; height: number };
+  ogImage: { src: string; alt: string; width: number; height: number };
 }
 
 const DEFAULT_CTA = {
@@ -40,24 +40,14 @@ function mapImage(image?: { url: string; alt: string; width: number; height: num
   };
 }
 
-function mapOgImage(image?: SanityImageSource | null) {
-  if (!image?.asset?._ref) return undefined;
-  return {
-    src: urlForOgImage({
-      _type: "image",
-      asset: image.asset,
-      crop: image.crop,
-      hotspot: image.hotspot,
-    }),
-    alt: image.alt,
+export function mapSanityService(service: SanityServiceFull): ServicePage {
+  const heroImage = mapImage(service.hero?.image);
+  const ogImage = {
+    src: getOgImage(service.ogImage),
+    alt: service.ogImage?.alt || service.title,
     width: 1200,
     height: 630,
   };
-}
-
-export function mapSanityService(service: SanityServiceFull): ServicePage {
-  const heroImage = mapImage(service.hero?.image);
-  const ogImage = mapOgImage(service.ogImage);
 
   return {
     slug: service.slug,
@@ -84,7 +74,7 @@ export function mapSanityService(service: SanityServiceFull): ServicePage {
             href: service.cta.href,
           }
         : DEFAULT_CTA,
-    ...(ogImage ? { ogImage } : {}),
+    ogImage,
   };
 }
 

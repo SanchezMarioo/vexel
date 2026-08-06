@@ -11,7 +11,7 @@ import {
   projectSeo,
 } from "@/lib/portfolio/content";
 import { siteUrl, toAbsoluteUrl } from "@/lib/site-url";
-import { socialImage } from "@/lib/seo/metadata";
+import { getOgImageMetadata } from "@/lib/seo/getOgImage";
 
 type Params = { slug: string };
 
@@ -40,7 +40,7 @@ export async function generateMetadata({
   const title = `${name} · Xync — ${project.sector}`;
   const description = projectSeo[slug] ?? `${project.problem} ${project.result}`;
   const pagePath = `/proyectos/${slug}`;
-  const ogImage = socialImage();
+  const ogImage = getOgImageMetadata(undefined, `${name} · Proyecto Xync`);
 
   return {
     title: { absolute: title },

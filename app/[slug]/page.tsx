@@ -8,7 +8,7 @@ import ServiceDetail from "@/components/services/ServiceDetail";
 import { getService } from "@/lib/services/getService";
 import { getServices } from "@/lib/services/getServices";
 import { siteUrl, toAbsoluteUrl } from "@/lib/site-url";
-import { socialImage } from "@/lib/seo/metadata";
+import { getOgImageMetadata } from "@/lib/seo/getOgImage";
 
 type Params = { slug: string };
 
@@ -29,9 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const title = service.seoTitle ?? service.title;
   const description = service.metaDescription;
   const pagePath = `/${service.slug}`;
-  const image = service.ogImage
-    ? socialImage(service.ogImage.src, service.ogImage.alt || title)
-    : socialImage(undefined, title);
+  const image = getOgImageMetadata(service.ogImage, title);
 
   return {
     title: { absolute: title },
@@ -63,9 +61,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
   if (!service) notFound();
 
   const pageUrl = toAbsoluteUrl(`/${service.slug}`);
-  const social = service.ogImage
-    ? socialImage(service.ogImage.src, service.ogImage.alt || service.title)
-    : socialImage(undefined, service.title);
+  const social = getOgImageMetadata(service.ogImage, service.title);
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",

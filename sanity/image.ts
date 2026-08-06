@@ -35,6 +35,7 @@ export function urlForOgImage(source: SanityImageSource): string {
     .width(1200)
     .height(630)
     .fit("crop")
+    .auto("format")
     .format("jpg")
     .dpr(1)
     .url();

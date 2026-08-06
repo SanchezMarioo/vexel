@@ -1,23 +1,18 @@
-import { toAbsoluteUrl } from "@/lib/site-url";
+export { DEFAULT_OG_IMAGE, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH, getOgImage, getOgImageMetadata } from "./getOgImage";
 
-export const OG_IMAGE_WIDTH = 1200;
-export const OG_IMAGE_HEIGHT = 630;
-export const DEFAULT_OG_IMAGE = toAbsoluteUrl("/opengraph-image");
+/** Keeps social/search titles within a practical 60-character envelope. */
+export function compactSeoTitle(value: string, brand = "Xync"): string {
+  const withoutBrand = value
+    .replace(/\s*[|·—–-]\s*(?:Blog\s+)?Xync.*$/i, "")
+    .trim();
+  const suffix = ` | ${brand}`;
+  const terminalPunctuation = /[?!…]$/.exec(withoutBrand)?.[0] ?? "";
+  const words = withoutBrand.split(/\s+/).filter(Boolean);
 
-export interface SocialImage {
-  url: string;
-  alt: string;
-  width: number;
-  height: number;
-  type: "image/jpeg" | "image/png";
-}
+  while (words.length > 1 && `${words.join(" ")}${terminalPunctuation}${suffix}`.length > 60) {
+    words.pop();
+  }
 
-export function socialImage(url = DEFAULT_OG_IMAGE, alt = "Xync"): SocialImage {
-  return {
-    url: toAbsoluteUrl(url),
-    alt,
-    width: OG_IMAGE_WIDTH,
-    height: OG_IMAGE_HEIGHT,
-    type: url.endsWith(".jpg") || url.includes("fm=jpg") ? "image/jpeg" : "image/png",
-  };
+  const compact = words.join(" ");
+  return `${compact}${terminalPunctuation && !compact.endsWith(terminalPunctuation) ? terminalPunctuation : ""}${suffix}`;
 }

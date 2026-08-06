@@ -12,7 +12,8 @@ import { getPosts } from "@/lib/blog/getPosts";
 import { getWordCount } from "@/lib/content/blog";
 import { legalEntity } from "@/lib/portfolio/content";
 import { toAbsoluteUrl } from "@/lib/site-url";
-import { socialImage } from "@/lib/seo/metadata";
+import { compactSeoTitle } from "@/lib/seo/metadata";
+import { getOgImageMetadata } from "@/lib/seo/getOgImage";
 
 type Params = { slug: string };
 
@@ -40,13 +41,11 @@ export async function generateMetadata({
   }
 
   // Overrides SEO del CMS; fallback a título/extracto del artículo.
-  const title = `${post.seoTitle ?? post.title} · Blog Xync`;
+  const title = compactSeoTitle(post.seoTitle ?? post.title);
   const description = post.seoDescription ?? post.excerpt;
   const pagePath = `/blog/${post.slug}`;
   const author = post.authorName ?? legalEntity.legalName;
-  const ogImage = post.ogImage
-    ? socialImage(post.ogImage.src, post.ogImage.alt || post.title)
-    : socialImage(undefined, post.title);
+  const ogImage = getOgImageMetadata(post.ogImage, post.title);
 
   return {
     title: { absolute: title },
@@ -67,6 +66,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
+      site: "@xyncdev",
       title,
       description,
       images: [ogImage.url],
@@ -91,9 +91,7 @@ export default async function BlogPostPage({
   const pagePath = `/blog/${post.slug}`;
   const articleUrl = toAbsoluteUrl(pagePath);
   const author = post.authorName ?? legalEntity.legalName;
-  const social = post.ogImage
-    ? socialImage(post.ogImage.src, post.ogImage.alt || post.title)
-    : socialImage(undefined, post.title);
+  const social = getOgImageMetadata(post.ogImage, post.title);
 
   // BlogPosting conectado al grafo global de la entidad (layout.tsx emite
   // #person y #business en todas las páginas): autor Person real para E-E-A-T

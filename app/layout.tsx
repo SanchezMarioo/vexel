@@ -5,7 +5,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import ClientEffects from "@/components/ClientEffects";
 import StructuredData from "@/components/StructuredData";
 import { siteUrl } from "@/lib/site-url";
-import { socialImage } from "@/lib/seo/metadata";
+import { getOgImageMetadata } from "@/lib/seo/getOgImage";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -70,17 +70,18 @@ export const metadata: Metadata = {
     siteName: "Xync",
     title: defaultTitle,
     description: defaultDescription,
-    images: [socialImage(undefined, defaultTitle)],
+    images: [getOgImageMetadata(undefined, defaultTitle)],
   },
   twitter: {
     card: "summary_large_image",
     site: "@xyncdev",
     title: defaultTitle,
     description: defaultDescription,
-    images: [socialImage(undefined, defaultTitle).url],
+    images: [getOgImageMetadata(undefined, defaultTitle).url],
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-icon", sizes: "180x180", type: "image/png" }],
   },
   category: "business",
 };

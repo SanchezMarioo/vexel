@@ -5,7 +5,7 @@ import ProjectsIndex from "@/components/portfolio/ProjectsIndex";
 import SubHeader from "@/components/portfolio/SubHeader";
 import { projects } from "@/lib/portfolio/content";
 import { siteUrl, toAbsoluteUrl } from "@/lib/site-url";
-import { socialImage } from "@/lib/seo/metadata";
+import { getOgImageMetadata } from "@/lib/seo/getOgImage";
 
 const pagePath = "/proyectos";
 const pageTitle = "Proyectos · Xync — Desarrollo web Salamanca";
@@ -23,13 +23,13 @@ export const metadata: Metadata = {
     url: toAbsoluteUrl(pagePath),
     title: pageTitle,
     description: pageDescription,
-    images: [socialImage(undefined, pageTitle)],
+    images: [getOgImageMetadata(undefined, pageTitle)],
   },
   twitter: {
     card: "summary_large_image",
     title: pageTitle,
     description: pageDescription,
-    images: [socialImage(undefined, pageTitle).url],
+    images: [getOgImageMetadata(undefined, pageTitle).url],
   },
 };
 

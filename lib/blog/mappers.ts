@@ -1,7 +1,7 @@
 import "server-only";
 import type { BlogPost } from "@/lib/content/blog";
 import type { SanityPostCard, SanityPostFull } from "@/sanity/types";
-import { urlForOgImage } from "@/sanity/image";
+import { getOgImage } from "@/lib/seo/getOgImage";
 import { mapPortableTextToBlocks } from "./portable-text";
 
 /**
@@ -55,22 +55,15 @@ export function mapSanityPost(post: SanityPostFull): BlogPost {
       ? { title: post.cta.title, text: post.cta.text, label: post.cta.label, href: post.cta.href }
       : DEFAULT_CTA;
 
-  // Imagen social: ogImage propia; si falta, la portada. Dimensiones de la CDN.
-  const social = post.ogImage ?? post.coverImage;
-  const ogImage =
-    social?.asset?._ref
-      ? {
-          src: urlForOgImage({
-            _type: "image",
-            asset: social.asset,
-            crop: social.crop,
-            hotspot: social.hotspot,
-          }),
-          alt: social.alt,
-          width: 1200,
-          height: 630,
-        }
-      : undefined;
+  // La imagen social solo usa el campo OG explícito; si falta, getOgImage()
+  // aplica el fallback global del sitio.
+  const social = post.ogImage;
+  const ogImage = {
+    src: getOgImage(social),
+    alt: social?.alt ?? post.title,
+    width: 1200,
+    height: 630,
+  };
 
   return {
     ...mapCard(post),
@@ -81,6 +74,6 @@ export function mapSanityPost(post: SanityPostFull): BlogPost {
     ...(post.author?.name ? { authorName: post.author.name } : {}),
     ...(post.seoTitle ? { seoTitle: post.seoTitle } : {}),
     ...(post.seoDescription ? { seoDescription: post.seoDescription } : {}),
-    ...(ogImage ? { ogImage } : {}),
+    ogImage,
   };
 }
