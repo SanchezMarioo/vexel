@@ -66,7 +66,7 @@ export default function ServiceDetail({ service }: { service: ServicePage }) {
 
       <section
         aria-label="Contacto"
-        className="mt-20 max-w-4xl border-t border-pf-line pt-14 md:mt-28"
+        className="mt-10 max-w-4xl border-t border-pf-line pt-14 md:mt-15"
       >
         <h2 className="pf-display text-3xl text-pf-ink-strong md:text-4xl" style={{ textWrap: "balance" }}>
           {service.cta.title}
