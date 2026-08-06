@@ -8,6 +8,14 @@ import { getOgImageMetadata } from "@/lib/seo/getOgImage";
 
 const pagePath = "/landing-pages-negocios-locales";
 
+const landingFeatures = [
+  "Estrategia de conversión y definición del objetivo principal.",
+  "Copy orientado a ventas con estructura de alto impacto.",
+  "Diseño visual con jerarquía clara para mejorar decisiones.",
+  "Desarrollo responsive optimizado para SEO técnico.",
+  "Integración de CTA y flujo de contacto sin fricción.",
+];
+
 const pageTitle = "Landing Pages para Negocios Locales que Convierten | Xync";
 const pageDescription =
   "Diseñamos landing pages para negocios locales orientadas a captar más contactos y ventas. Estrategia, copy, diseño y desarrollo en 14 días.";
@@ -116,12 +124,13 @@ export default function LandingPagesNegociosLocalesPage() {
               <h2 className="pf-display text-3xl text-pf-ink-strong md:text-4xl">
                 Qué incluye una landing page completa
               </h2>
-              <ul className="mt-6 list-disc space-y-2 pl-6 text-pf-ink-soft marker:text-pf-muted">
-                <li>Estrategia de conversión y definición del objetivo principal.</li>
-                <li>Copy orientado a ventas con estructura de alto impacto.</li>
-                <li>Diseño visual con jerarquía clara para mejorar decisiones.</li>
-                <li>Desarrollo responsive optimizado para SEO técnico.</li>
-                <li>Integración de CTA y flujo de contacto sin fricción.</li>
+              <ul className="mt-7 flex flex-col gap-3">
+                {landingFeatures.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span aria-hidden="true" className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-pf-ink-strong" />
+                    <span className="text-pf-ink">{item}</span>
+                  </li>
+                ))}
               </ul>
             </section>
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ServicePage } from "@/lib/services/mappers";
 import PostBody from "@/components/blog/PostBody";
 import Button from "@/components/portfolio/ui/Button";
+import ServiceFaq from "@/components/services/ServiceFaq";
 
 export default function ServiceDetail({ service }: { service: ServicePage }) {
   return (
@@ -59,14 +60,7 @@ export default function ServiceDetail({ service }: { service: ServicePage }) {
       {service.faq.length > 0 ? (
         <section aria-labelledby="faq-title" className="mt-20 max-w-4xl border-t border-pf-line pt-14 md:mt-28">
           <h2 id="faq-title" className="pf-display text-3xl text-pf-ink-strong md:text-4xl">Preguntas frecuentes</h2>
-          <div className="mt-8 divide-y divide-pf-line">
-            {service.faq.map((item) => (
-              <details key={item.question} className="py-5">
-                <summary className="cursor-pointer text-lg font-medium text-pf-ink-strong">{item.question}</summary>
-                <p className="pf-prose mt-4 text-pf-ink-soft">{item.answer}</p>
-              </details>
-            ))}
-          </div>
+          <ServiceFaq items={service.faq} />
         </section>
       ) : null}
 

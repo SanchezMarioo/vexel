@@ -53,11 +53,9 @@ function Block({ block }: { block: BlogBlock }) {
       return (
         <ul className="pf-prose mt-6 flex flex-col gap-3">
           {block.items.map((item, index) => (
-            <li key={index} className="flex gap-3.5 text-base leading-relaxed text-pf-ink-soft md:text-[1.0625rem]">
-              <span aria-hidden="true" className="text-pf-muted">
-                —
-              </span>
-              <span>
+            <li key={index} className="flex items-start gap-3 text-base leading-relaxed md:text-[1.0625rem]">
+              <span aria-hidden="true" className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-pf-ink-strong" />
+              <span className="text-pf-ink">
                 <InlineText text={item} />
               </span>
             </li>
