@@ -10,6 +10,23 @@ import InlineText from "./InlineText";
  * Componente de servidor: el cuerpo no se anima por bloques (la lectura
  * manda; solo la cabecera del artículo tiene reveal).
  */
+function getBlockKey(block: BlogBlock) {
+  switch (block.type) {
+    case "paragraph":
+    case "heading":
+    case "quote":
+      return `${block.type}:${block.text}`;
+    case "list":
+      return `${block.type}:${block.style}:${block.items.join("\u001f")}`;
+    case "evidence":
+      return `${block.type}:${block.projectSlug}`;
+    case "image":
+      return `${block.type}:${block.src}`;
+    case "code":
+      return `${block.type}:${block.language}:${block.code}`;
+  }
+}
+
 function Block({ block }: { block: BlogBlock }) {
   switch (block.type) {
     case "paragraph":
@@ -38,7 +55,7 @@ function Block({ block }: { block: BlogBlock }) {
         return (
           <ol className="pf-prose mt-6 flex flex-col gap-3">
             {block.items.map((item, index) => (
-              <li key={index} className="flex gap-3.5 text-base leading-relaxed text-pf-ink-soft md:text-[1.0625rem]">
+              <li key={item} className="flex gap-3.5 text-base leading-relaxed text-pf-ink-soft md:text-[1.0625rem]">
                 <span aria-hidden="true" className="pf-mono pt-0.5 text-sm text-pf-muted">
                   {index + 1}.
                 </span>
@@ -52,8 +69,8 @@ function Block({ block }: { block: BlogBlock }) {
       }
       return (
         <ul className="pf-prose mt-6 flex flex-col gap-3">
-          {block.items.map((item, index) => (
-            <li key={index} className="flex items-start gap-3 text-base leading-relaxed md:text-[1.0625rem]">
+          {block.items.map((item) => (
+            <li key={item} className="flex items-start gap-3 text-base leading-relaxed md:text-[1.0625rem]">
               <span aria-hidden="true" className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-pf-ink-strong" />
               <span className="text-pf-ink">
                 <InlineText text={item} />
@@ -141,8 +158,8 @@ function Block({ block }: { block: BlogBlock }) {
 export default function PostBody({ blocks }: { blocks: BlogBlock[] }) {
   return (
     <div>
-      {blocks.map((block, index) => (
-        <Block key={index} block={block} />
+      {blocks.map((block) => (
+        <Block key={getBlockKey(block)} block={block} />
       ))}
     </div>
   );

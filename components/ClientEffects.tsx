@@ -26,7 +26,12 @@ export default function ClientEffects() {
         return;
       }
 
-      const nextTarget = document.querySelector<HTMLElement>(href);
+      let nextTarget: HTMLElement | null = null;
+      try {
+        nextTarget = document.querySelector<HTMLElement>(href);
+      } catch {
+        return;
+      }
       if (!nextTarget) {
         return;
       }

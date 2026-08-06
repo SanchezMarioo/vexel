@@ -10,8 +10,7 @@ export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
-  const posts = await getPosts();
-  const services = await getServices();
+  const [posts, services] = await Promise.all([getPosts(), getServices()]);
 
   const projectRoutes: MetadataRoute.Sitemap = projects.map((project) => ({
     url: `${siteUrl}/proyectos/${project.slug}`,

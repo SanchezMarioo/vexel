@@ -107,7 +107,7 @@ export default function CalButton({
     };
   }, []);
 
-  const classes = `group inline-flex select-none items-center justify-center gap-2.5 rounded-[var(--pf-radius)] font-medium leading-none transition-[transform,background-color,border-color,color] duration-150 ease-[var(--pf-ease-quart)] active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100 ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
+  const classes = `group cursor-pointer inline-flex select-none items-center justify-center gap-2.5 rounded-[var(--pf-radius)] font-medium leading-none transition-[transform,background-color,border-color,color] duration-150 ease-[var(--pf-ease-quart)] active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100 ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
 
   return (
     <button

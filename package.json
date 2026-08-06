@@ -40,10 +40,5 @@
         "eslint-config-next": "16.2.6",
         "tailwindcss": "^4",
         "typescript": "^5.9.2"
-    },
-    "pnpm": {
-        "overrides": {
-            "nanoid": "3.3.8"
-        }
     }
 }

@@ -68,7 +68,7 @@ export default function Faq() {
                   <AnimatePresence initial={false} mode="wait">
                     {isOpen ? (
                       <m.div
-                        key={panelId}
+                        key={faq.question}
                         id={panelId}
                         role="region"
                         aria-labelledby={buttonId}

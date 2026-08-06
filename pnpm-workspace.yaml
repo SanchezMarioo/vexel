@@ -18,5 +18,17 @@ trustPolicyExclude:
   # la era del provenance: semver@6.3.1 es justamente la versión con el fix de
   # seguridad ReDoS, pero se publicó sin atestación.
   - "semver"
+  # @types/node@20.19.43 requiere esta versión oficial; npm no publica
+  # provenance para ella, por lo que pnpm la marca como trust downgrade.
+  - "undici-types@6.21.0"
+  # Dependencia oficial de eslint-config-next@16.2.6; esta versión tampoco
+  # incluye provenance en npm aunque su integridad está verificada.
+  - "eslint-import-resolver-typescript@3.10.1"
 minimumReleaseAgeExclude:
   - next
+  - '@next/*'
+overrides:
+  nanoid: 3.3.8
+allowBuilds:
+  esbuild: true
+  unrs-resolver: true
