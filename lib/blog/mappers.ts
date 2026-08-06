@@ -1,6 +1,7 @@
 import "server-only";
 import type { BlogPost } from "@/lib/content/blog";
 import type { SanityPostCard, SanityPostFull } from "@/sanity/types";
+import { urlForOgImage } from "@/sanity/image";
 import { mapPortableTextToBlocks } from "./portable-text";
 
 /**
@@ -57,8 +58,18 @@ export function mapSanityPost(post: SanityPostFull): BlogPost {
   // Imagen social: ogImage propia; si falta, la portada. Dimensiones de la CDN.
   const social = post.ogImage ?? post.coverImage;
   const ogImage =
-    social && social.width > 0 && social.height > 0
-      ? { src: social.url, alt: social.alt, width: social.width, height: social.height }
+    social?.asset?._ref
+      ? {
+          src: urlForOgImage({
+            _type: "image",
+            asset: social.asset,
+            crop: social.crop,
+            hotspot: social.hotspot,
+          }),
+          alt: social.alt,
+          width: 1200,
+          height: 630,
+        }
       : undefined;
 
   return {

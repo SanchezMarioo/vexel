@@ -52,13 +52,17 @@ export const POST_BY_SLUG_QUERY = groq`
     seoTitle,
     seoDescription,
     "coverImage": coverImage{
-      "url": asset->url,
+      asset,
+      crop,
+      hotspot,
       "alt": coalesce(alt, ""),
       "width": asset->metadata.dimensions.width,
       "height": asset->metadata.dimensions.height
     },
     "ogImage": ogImage{
-      "url": asset->url,
+      asset,
+      crop,
+      hotspot,
       "alt": coalesce(alt, ""),
       "width": asset->metadata.dimensions.width,
       "height": asset->metadata.dimensions.height
@@ -126,7 +130,9 @@ export const SERVICE_BY_SLUG_QUERY = groq`
     faq[]{ question, answer },
     "cta": cta{ title, text, label, href },
     "ogImage": ogImage{
-      "url": asset->url,
+      asset,
+      crop,
+      hotspot,
       "alt": coalesce(alt, ""),
       "width": asset->metadata.dimensions.width,
       "height": asset->metadata.dimensions.height

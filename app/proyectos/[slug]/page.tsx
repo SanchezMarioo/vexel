@@ -11,6 +11,7 @@ import {
   projectSeo,
 } from "@/lib/portfolio/content";
 import { siteUrl, toAbsoluteUrl } from "@/lib/site-url";
+import { socialImage } from "@/lib/seo/metadata";
 
 type Params = { slug: string };
 
@@ -39,6 +40,7 @@ export async function generateMetadata({
   const title = `${name} · Xync — ${project.sector}`;
   const description = projectSeo[slug] ?? `${project.problem} ${project.result}`;
   const pagePath = `/proyectos/${slug}`;
+  const ogImage = socialImage();
 
   return {
     title: { absolute: title },
@@ -51,13 +53,13 @@ export async function generateMetadata({
       url: toAbsoluteUrl(pagePath),
       title,
       description,
-      images: [{ url: project.image.src, alt: project.image.alt }],
+      images: [{ ...ogImage, alt: `${name} · Proyecto Xync` }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [project.image.src],
+      images: [ogImage.url],
     },
   };
 }

@@ -1,7 +1,8 @@
 import "server-only";
 import type { BlogBlock } from "@/lib/content/blog";
 import { mapPortableTextToBlocks } from "@/lib/blog/portable-text";
-import type { SanityServiceCard, SanityServiceFull } from "@/sanity/types";
+import { urlForOgImage } from "@/sanity/image";
+import type { SanityImageSource, SanityServiceCard, SanityServiceFull } from "@/sanity/types";
 
 export interface ServicePage {
   slug: string;
@@ -39,9 +40,24 @@ function mapImage(image?: { url: string; alt: string; width: number; height: num
   };
 }
 
+function mapOgImage(image?: SanityImageSource | null) {
+  if (!image?.asset?._ref) return undefined;
+  return {
+    src: urlForOgImage({
+      _type: "image",
+      asset: image.asset,
+      crop: image.crop,
+      hotspot: image.hotspot,
+    }),
+    alt: image.alt,
+    width: 1200,
+    height: 630,
+  };
+}
+
 export function mapSanityService(service: SanityServiceFull): ServicePage {
   const heroImage = mapImage(service.hero?.image);
-  const ogImage = service.ogImage && mapImage(service.ogImage);
+  const ogImage = mapOgImage(service.ogImage);
 
   return {
     slug: service.slug,

@@ -8,6 +8,7 @@ import ServiceDetail from "@/components/services/ServiceDetail";
 import { getService } from "@/lib/services/getService";
 import { getServices } from "@/lib/services/getServices";
 import { siteUrl, toAbsoluteUrl } from "@/lib/site-url";
+import { socialImage } from "@/lib/seo/metadata";
 
 type Params = { slug: string };
 
@@ -28,7 +29,9 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const title = service.seoTitle ?? service.title;
   const description = service.metaDescription;
   const pagePath = `/${service.slug}`;
-  const image = service.ogImage;
+  const image = service.ogImage
+    ? socialImage(service.ogImage.src, service.ogImage.alt || title)
+    : socialImage(undefined, title);
 
   return {
     title: { absolute: title },
@@ -41,13 +44,13 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
       url: toAbsoluteUrl(pagePath),
       title,
       description,
-      ...(image ? { images: [{ url: image.src, alt: image.alt || title, width: image.width, height: image.height }] } : {}),
+      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      ...(image ? { images: [image.src] } : {}),
+      images: [image.url],
     },
   };
 }
@@ -60,6 +63,9 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
   if (!service) notFound();
 
   const pageUrl = toAbsoluteUrl(`/${service.slug}`);
+  const social = service.ogImage
+    ? socialImage(service.ogImage.src, service.ogImage.alt || service.title)
+    : socialImage(undefined, service.title);
   const serviceJsonLd = {
     "@context": "https://schema.org",
     "@type": "Service",
@@ -69,7 +75,7 @@ export default async function ServicePage({ params }: { params: Promise<Params> 
     url: pageUrl,
     provider: { "@id": `${siteUrl}/#business` },
     mainEntityOfPage: pageUrl,
-    ...(service.ogImage ? { image: service.ogImage.src } : {}),
+    image: social.url,
   };
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",

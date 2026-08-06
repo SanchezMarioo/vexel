@@ -6,6 +6,7 @@ import PortfolioShell from "@/components/portfolio/PortfolioShell";
 import SubHeader from "@/components/portfolio/SubHeader";
 import { getFeaturedPost } from "@/lib/blog/getFeaturedPost";
 import { toAbsoluteUrl } from "@/lib/site-url";
+import { socialImage } from "@/lib/seo/metadata";
 
 const pagePath = "/blog";
 const pageTitle = "Blog · Xync — Desarrollo web y SEO en Salamanca";
@@ -23,11 +24,13 @@ export const metadata: Metadata = {
     url: toAbsoluteUrl(pagePath),
     title: pageTitle,
     description: pageDescription,
+    images: [socialImage(undefined, pageTitle)],
   },
   twitter: {
     card: "summary_large_image",
     title: pageTitle,
     description: pageDescription,
+    images: [socialImage(undefined, pageTitle).url],
   },
 };
 

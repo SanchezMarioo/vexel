@@ -12,6 +12,7 @@ import { getPosts } from "@/lib/blog/getPosts";
 import { getWordCount } from "@/lib/content/blog";
 import { legalEntity } from "@/lib/portfolio/content";
 import { toAbsoluteUrl } from "@/lib/site-url";
+import { socialImage } from "@/lib/seo/metadata";
 
 type Params = { slug: string };
 
@@ -43,6 +44,9 @@ export async function generateMetadata({
   const description = post.seoDescription ?? post.excerpt;
   const pagePath = `/blog/${post.slug}`;
   const author = post.authorName ?? legalEntity.legalName;
+  const ogImage = post.ogImage
+    ? socialImage(post.ogImage.src, post.ogImage.alt || post.title)
+    : socialImage(undefined, post.title);
 
   return {
     title: { absolute: title },
@@ -55,18 +59,7 @@ export async function generateMetadata({
       url: toAbsoluteUrl(pagePath),
       title,
       description,
-      ...(post.ogImage
-        ? {
-            images: [
-              {
-                url: post.ogImage.src,
-                alt: post.ogImage.alt || post.title,
-                width: post.ogImage.width,
-                height: post.ogImage.height,
-              },
-            ],
-          }
-        : {}),
+      images: [ogImage],
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt ?? post.publishedAt,
       authors: [author],
@@ -76,7 +69,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      ...(post.ogImage ? { images: [post.ogImage.src] } : {}),
+      images: [ogImage.url],
     },
   };
 }
@@ -98,6 +91,9 @@ export default async function BlogPostPage({
   const pagePath = `/blog/${post.slug}`;
   const articleUrl = toAbsoluteUrl(pagePath);
   const author = post.authorName ?? legalEntity.legalName;
+  const social = post.ogImage
+    ? socialImage(post.ogImage.src, post.ogImage.alt || post.title)
+    : socialImage(undefined, post.title);
 
   // BlogPosting conectado al grafo global de la entidad (layout.tsx emite
   // #person y #business en todas las páginas): autor Person real para E-E-A-T
@@ -113,7 +109,7 @@ export default async function BlogPostPage({
     inLanguage: "es",
     articleSection: post.category,
     wordCount: getWordCount(post),
-    image: post.ogImage?.src ?? toAbsoluteUrl("/opengraph-image"),
+    image: social.url,
     mainEntityOfPage: articleUrl,
     isPartOf: { "@id": `${toAbsoluteUrl("/blog")}#blog` },
     author: {

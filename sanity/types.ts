@@ -107,8 +107,18 @@ export interface SanityPostFull extends SanityPostCard {
   cta: SanityPostCta | null;
   seoTitle?: string;
   seoDescription?: string;
-  coverImage: SanityImage | null;
-  ogImage: SanityImage | null;
+  coverImage: SanityImageSource | null;
+  ogImage: SanityImageSource | null;
+}
+
+/** Imagen de Sanity sin URL precalculada; se transforma con el URL Builder. */
+export interface SanityImageSource {
+  asset?: { _ref?: string; _id?: string; _type?: string };
+  crop?: unknown;
+  hotspot?: unknown;
+  alt: string;
+  width: number;
+  height: number;
 }
 
 export interface SanityServiceCard {
@@ -131,5 +141,5 @@ export interface SanityServiceFull extends SanityServiceCard {
   content: SanityPortableText | null;
   faq: Array<{ question: string; answer: string }> | null;
   cta: { title?: string; text?: string; label?: string; href?: string } | null;
-  ogImage: SanityImage | null;
+  ogImage: SanityImageSource | null;
 }

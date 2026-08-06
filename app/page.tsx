@@ -11,6 +11,7 @@ import Services from "@/components/portfolio/Services";
 import Testimonials from "@/components/portfolio/Testimonials";
 import { identity } from "@/lib/portfolio/content";
 import { siteUrl } from "@/lib/site-url";
+import { socialImage } from "@/lib/seo/metadata";
 
 const title = `Desarrollador web freelance en Salamanca | ${identity.name}`;
 const description =
@@ -27,12 +28,14 @@ export const metadata: Metadata = {
     siteName: identity.name,
     title,
     description,
+    images: [socialImage(undefined, title)],
   },
   twitter: {
     card: "summary_large_image",
     site: "@xyncdev",
     title,
     description,
+    images: [socialImage(undefined, title).url],
   },
 };
 
