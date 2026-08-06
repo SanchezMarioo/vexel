@@ -18,3 +18,5 @@ trustPolicyExclude:
   # la era del provenance: semver@6.3.1 es justamente la versión con el fix de
   # seguridad ReDoS, pero se publicó sin atestación.
   - "semver"
+minimumReleaseAgeExclude:
+  - next
