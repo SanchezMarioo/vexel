@@ -6,6 +6,8 @@ import Button from "@/components/portfolio/ui/Button";
 import ServiceFaq from "@/components/services/ServiceFaq";
 
 export default function ServiceDetail({ service }: { service: ServicePage }) {
+  const hasHeroImage = Boolean(service.hero?.image);
+
   return (
     <div className="pf-container pb-24 pt-10 md:pb-32 md:pt-14">
       <nav aria-label="Ruta de navegación" className="pf-mono flex flex-wrap items-center gap-2 text-xs text-pf-muted">
@@ -14,17 +16,32 @@ export default function ServiceDetail({ service }: { service: ServicePage }) {
         <span className="text-pf-ink-soft">{service.title}</span>
       </nav>
 
-      <header className="relative mt-10 grid max-w-6xl gap-12 border-b border-pf-line pb-16 md:grid-cols-[1fr_0.8fr] md:items-center md:gap-16 md:pb-24">
-        <div className="max-w-3xl">
+      <header
+        className={`relative mt-10 max-w-6xl gap-12 border-b border-pf-line pb-16 ${
+          hasHeroImage ? "grid md:grid-cols-[1fr_0.8fr] md:items-center md:gap-16 md:pb-24" : "md:pb-28"
+        }`}
+      >
+        <div className={hasHeroImage ? "max-w-3xl" : "max-w-5xl"}>
           <div className="flex items-center gap-3">
             <span className="pf-mono text-[0.68rem] uppercase tracking-[0.16em] text-pf-muted">Servicio</span>
             <span aria-hidden="true" className="h-px w-8 bg-pf-line-strong" />
             {service.hero?.eyebrow ? <p className="pf-mono text-xs text-pf-muted">{service.hero.eyebrow}</p> : null}
           </div>
-          <h1 className="pf-display mt-4 max-w-4xl text-pf-ink-strong" style={{ fontSize: "clamp(2.5rem, 6.4vw, 5.5rem)", letterSpacing: "-0.055em", lineHeight: 0.92 }}>
+          <h1
+            className={`pf-display mt-4 text-pf-ink-strong ${hasHeroImage ? "max-w-4xl" : "max-w-5xl"}`}
+            style={{
+              fontSize: hasHeroImage ? "clamp(2.5rem, 6.4vw, 5.5rem)" : "clamp(2.75rem, 8vw, 7rem)",
+              letterSpacing: "-0.055em",
+              lineHeight: 0.92,
+            }}
+          >
             {service.hero?.title ?? service.title}
           </h1>
-          {service.hero?.text ? <p className="pf-prose mt-8 max-w-xl text-lg leading-relaxed text-pf-ink-soft md:text-xl">{service.hero.text}</p> : null}
+          {service.hero?.text ? (
+            <p className={`pf-prose mt-8 text-lg leading-relaxed text-pf-ink-soft md:text-xl ${hasHeroImage ? "max-w-xl" : "max-w-2xl"}`}>
+              {service.hero.text}
+            </p>
+          ) : null}
           <a
             href="#contenido-servicio"
             className="pf-mono group mt-10 inline-flex items-center gap-3 text-xs uppercase tracking-[0.12em] text-pf-ink-soft transition-colors hover:text-pf-ink-strong"
