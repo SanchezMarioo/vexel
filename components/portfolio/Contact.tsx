@@ -74,13 +74,17 @@ export default function Contact() {
           </m.p>
 
           <m.div variants={fadeUp} className="mt-8 flex flex-wrap gap-3">
-            <CalButton calLink={identity.calUrl} variant="ink" withArrow>
+            <Button href="/empezar" variant="solid" withArrow>
+              Cuéntanos tu proyecto
+            </Button>
+            <CalButton calLink={identity.calUrl} variant="outline">
               Agendar una llamada
             </CalButton>
-            <Button href={`mailto:${identity.email}`} variant="outline">
-              Escríbenos un email
-            </Button>
           </m.div>
+
+          <m.p variants={fadeUp} className="mt-4 text-sm text-pf-muted">
+            Dos minutos, una pregunta cada vez. O usa el formulario si ya lo tienes claro.
+          </m.p>
 
           <m.p variants={fadeUp} className="mt-6 text-sm text-pf-muted">
             ¿Prefieres el correo directo?{" "}

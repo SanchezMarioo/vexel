@@ -39,7 +39,7 @@ export default function Hero() {
           </m.p>
 
           <m.div variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-3">
-            <Button href="#contacto" variant="solid" size="lg" withArrow>
+            <Button href="/empezar" variant="solid" size="lg" withArrow>
               Cuéntanos tu proyecto
             </Button>
             <Button href="#proyectos" variant="outline" size="lg">

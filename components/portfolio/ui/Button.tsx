@@ -46,6 +46,7 @@ type ButtonProps = CommonProps & {
   href?: undefined;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
+  onClick?: () => void;
 };
 
 type AnchorProps = CommonProps & {
@@ -106,7 +107,12 @@ export default function Button(props: Props) {
   }
 
   return (
-    <button type={props.type ?? "button"} disabled={props.disabled} className={classes}>
+    <button
+      type={props.type ?? "button"}
+      disabled={props.disabled}
+      onClick={props.onClick}
+      className={classes}
+    >
       {inner}
     </button>
   );

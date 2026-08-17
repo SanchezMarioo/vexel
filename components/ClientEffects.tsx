@@ -2,9 +2,14 @@
 
 import { useEffect } from "react";
 import Lenis from "lenis";
+import { captureEntryPoint } from "@/lib/funnel/attribution";
 
 export default function ClientEffects() {
   useEffect(() => {
+    // Atribución del funnel: fija la primera página vista de la sesión (con
+    // sus UTMs) antes de que el usuario navegue a /empezar.
+    captureEntryPoint();
+
     const lenis = new Lenis({
       lerp: 0.07,
       wheelMultiplier: 0.92,

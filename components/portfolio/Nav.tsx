@@ -94,8 +94,8 @@ export default function Nav() {
         </ul>
 
         <div className="hidden md:block">
-          <Button href="#contacto" size="sm" variant="ink">
-            Hablemos
+          <Button href="/empezar" size="sm" variant="ink">
+            Empezar
           </Button>
         </div>
 
@@ -140,8 +140,8 @@ export default function Nav() {
               </li>
             ))}
             <li className="pt-4">
-              <Button href="#contacto" variant="primary" className="w-full" withArrow>
-                Hablemos
+              <Button href="/empezar" variant="primary" className="w-full" withArrow>
+                Empezar
               </Button>
             </li>
           </ul>
