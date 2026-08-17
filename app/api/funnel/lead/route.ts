@@ -174,7 +174,7 @@ export async function GET(request: Request) {
       message: "No se encontraron datos asociados.",
       data: null 
     }, { status: 200 });
-  } catch (error) {
+  } catch {
     return errorResponse("Error procesando tu solicitud.", 500);
   }
 }

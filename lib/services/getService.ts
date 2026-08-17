@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { sanityFetch, SERVICES_CACHE_TAG } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
 import { SERVICE_BY_SLUG_QUERY } from "@/sanity/queries";
@@ -6,7 +7,7 @@ import type { SanityServiceFull } from "@/sanity/types";
 import type { ServicePage } from "./mappers";
 import { mapSanityService } from "./mappers";
 
-export async function getService(slug: string, preview = false): Promise<ServicePage | null> {
+export const getService = cache(async function getService(slug: string, preview = false): Promise<ServicePage | null> {
   if (!isSanityConfigured) return null;
 
   try {
@@ -21,4 +22,4 @@ export async function getService(slug: string, preview = false): Promise<Service
     console.error(`[services] Error leyendo "${slug}" de Sanity.`, error);
     return null;
   }
-}
+});

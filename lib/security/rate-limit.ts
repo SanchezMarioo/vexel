@@ -124,7 +124,7 @@ export async function checkRateLimitUpstash(identifier: string): Promise<RateLim
     });
   }
 
-  const { success, limit, reset, remaining } = await ratelimit.limit(identifier);
+  const { success, reset, remaining } = await ratelimit.limit(identifier);
   return {
     ok: success,
     remaining,
