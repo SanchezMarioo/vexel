@@ -74,7 +74,12 @@ export default function Contact() {
           </m.p>
 
           <m.div variants={fadeUp} className="mt-8 flex flex-wrap gap-3">
-            <Button href="/empezar" variant="solid" withArrow>
+            <Button
+              href="/empezar"
+              variant="solid"
+              withArrow
+              aria-label="Cuéntanos tu proyecto para empezar"
+            >
               Cuéntanos tu proyecto
             </Button>
             <CalButton calLink={identity.calUrl} variant="outline">

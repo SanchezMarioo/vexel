@@ -38,7 +38,7 @@ export default function SubHeader() {
           >
             Blog
           </Link>
-          <Button href="/#contacto" size="sm" variant="ink">
+          <Button href="/#contacto" size="sm" variant="ink" aria-label="Hablemos sobre tu proyecto">
             Hablemos
           </Button>
         </div>

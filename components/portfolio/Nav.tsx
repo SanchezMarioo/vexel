@@ -99,7 +99,13 @@ export default function Nav() {
         </ul>
 
         <div className="hidden md:block">
-          <Button href="/empezar" size="sm" variant="ink" withArrow>
+          <Button
+            href="/empezar"
+            size="sm"
+            variant="ink"
+            withArrow
+            aria-label="Empezar un proyecto con Xync"
+          >
             Empezar
           </Button>
         </div>
@@ -150,8 +156,14 @@ export default function Nav() {
                 </li>
               ))}
               <li className="pt-5 pb-2">
-                <Button href="/empezar" variant="primary" className="w-full" withArrow>
-                  Empezar
+                <Button
+                  href="/empezar"
+                  variant="primary"
+                  className="w-full"
+                  withArrow
+                  aria-label="Empezar un proyecto con Xync"
+                >
+                  Empezar proyecto
                 </Button>
               </li>
             </ul>
