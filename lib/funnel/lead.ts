@@ -12,10 +12,14 @@ import type { FunnelInput } from "./schema";
  */
 export interface NormalizedLead {
   nombre: string;
+  empresa: string;
   email: string;
+  telefono: string;
+  descripcion: string;
   situacion: string;
   situacionDetalle: string;
   tipo: string;
+  objetivo: string;
   catalogo: string;
   webActual: string;
   presupuesto: string;
@@ -33,6 +37,7 @@ export interface NormalizedLead {
   labels: {
     situacion: string;
     tipo: string;
+    objetivo: string;
     catalogo: string;
     webActual: string;
     presupuesto: string;
@@ -79,18 +84,28 @@ export function buildLead(data: FunnelInput): NormalizedLead {
   const answers: FunnelAnswers = {
     situacion: data.situacion,
     tipo: data.tipo,
+    objetivo: data.objetivo,
     catalogo: data.catalogo,
     webActual: data.webActual,
     presupuesto: data.presupuesto,
     plazo: data.plazo,
+    descripcion: data.descripcion,
+    nombre: data.nombre,
+    empresa: data.empresa,
+    email: data.email,
+    telefono: data.telefono,
   };
 
   return {
     nombre: normalizeText(data.nombre),
+    empresa: normalizeText(data.empresa),
     email: data.email.trim().toLowerCase(),
+    telefono: normalizeText(data.telefono),
+    descripcion: normalizeText(data.descripcion),
     situacion: data.situacion,
     situacionDetalle: (data.situacionDetalle ?? "").trim().replace(/\s+/g, " ").slice(0, 500),
     tipo: data.tipo,
+    objetivo: data.objetivo ?? "",
     catalogo: data.catalogo ?? "",
     webActual: data.webActual ?? "",
     presupuesto: data.presupuesto,
@@ -108,6 +123,7 @@ export function buildLead(data: FunnelInput): NormalizedLead {
     labels: {
       situacion: optionLabel("situacion", answers.situacion),
       tipo: optionLabel("tipo", answers.tipo),
+      objetivo: optionLabel("objetivo", answers.objetivo),
       catalogo: optionLabel("catalogo", answers.catalogo),
       webActual: optionLabel("web-actual", answers.webActual),
       presupuesto: optionLabel("presupuesto", answers.presupuesto),

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   CATALOGO_IDS,
+  OBJETIVO_IDS,
   PLAZO_IDS,
   PRESUPUESTO_IDS,
   SITUACION_IDS,
@@ -26,21 +27,25 @@ export const funnelSchema = z
     situacion: z.enum(SITUACION_IDS),
     situacionDetalle: z.string().trim().max(500, "Con una línea nos vale.").optional(),
     tipo: z.enum(TIPO_IDS),
+    objetivo: z.enum(OBJETIVO_IDS).optional(),
     catalogo: z.enum(CATALOGO_IDS).optional(),
     webActual: z.enum(WEB_ACTUAL_IDS).optional(),
     presupuesto: z.enum(PRESUPUESTO_IDS),
     plazo: z.enum(PLAZO_IDS),
+    descripcion: z.string().trim().max(2000, "El texto es demasiado largo.").optional(),
     nombre: z
       .string()
       .trim()
       .min(2, "Dime tu nombre.")
       .max(80, "Ese nombre es demasiado largo.")
       .refine((value) => !/[<>]/.test(value), "El nombre contiene caracteres no permitidos."),
+    empresa: z.string().trim().max(120, "El nombre de la empresa es demasiado largo.").optional(),
     email: z
       .string()
       .trim()
       .email("Introduce un email válido.")
       .max(320, "El email es demasiado largo."),
+    telefono: z.string().trim().max(40, "El teléfono es demasiado largo.").optional(),
     // RGPD: consentimiento explícito obligatorio para tratar los datos del lead.
     consent: z
       .boolean()

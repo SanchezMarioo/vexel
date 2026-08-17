@@ -15,6 +15,7 @@ interface StepInputProps {
   consentError: string | null;
   serverError: string | null;
   submitting: boolean;
+  isLastStep?: boolean;
   honeypot: string;
   onClearError: () => void;
   onConsentChange: (value: boolean) => void;
@@ -23,9 +24,10 @@ interface StepInputProps {
 }
 
 /**
- * Paso de texto libre (nombre, email): la pregunta es el label, el campo es
- * tipografía grande sobre una sola hairline animada.
- * El paso de email lleva el consentimiento RGPD y envía el lead.
+ * Paso de texto libre (nombre, empresa, email, teléfono, descripción):
+ * la pregunta es el label, el campo es tipografía grande sobre una sola
+ * hairline animada (o textarea expansible para descripción).
+ * El paso de email lleva el consentimiento RGPD.
  */
 export default function StepInput({
   step,
@@ -35,6 +37,7 @@ export default function StepInput({
   consentError,
   serverError,
   submitting,
+  isLastStep = false,
   honeypot,
   onClearError,
   onConsentChange,
@@ -46,6 +49,8 @@ export default function StepInput({
   const headingId = `funnel-question-${step.id}`;
   const inputId = `funnel-${step.id}`;
   const errorId = `${inputId}-error`;
+
+  const isMultiline = step.multiline || step.type === "textarea";
 
   return (
     <form
@@ -87,23 +92,42 @@ export default function StepInput({
       </AnimatePresence>
 
       <div className="relative mt-9">
-        <input
-          id={inputId}
-          type={step.type}
-          value={value}
-          onChange={(event) => {
-            setValue(event.target.value);
-            onClearError();
-          }}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          placeholder={step.placeholder}
-          autoComplete={step.autoComplete}
-          aria-labelledby={headingId}
-          aria-invalid={error ? true : undefined}
-          aria-describedby={error ? errorId : undefined}
-          className="w-full border-b border-pf-line-strong bg-transparent py-3 text-2xl font-medium text-pf-ink outline-none placeholder:text-pf-muted md:text-3xl"
-        />
+        {isMultiline ? (
+          <textarea
+            id={inputId}
+            rows={3}
+            value={value}
+            onChange={(event) => {
+              setValue(event.target.value);
+              onClearError();
+            }}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            placeholder={step.placeholder}
+            aria-labelledby={headingId}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? errorId : undefined}
+            className="w-full resize-y border-b border-pf-line-strong bg-transparent py-3 text-xl font-medium text-pf-ink outline-none placeholder:text-pf-muted md:text-2xl"
+          />
+        ) : (
+          <input
+            id={inputId}
+            type={step.type}
+            value={value}
+            onChange={(event) => {
+              setValue(event.target.value);
+              onClearError();
+            }}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            placeholder={step.placeholder}
+            autoComplete={step.autoComplete}
+            aria-labelledby={headingId}
+            aria-invalid={error ? true : undefined}
+            aria-describedby={error ? errorId : undefined}
+            className="w-full border-b border-pf-line-strong bg-transparent py-3 text-2xl font-medium text-pf-ink outline-none placeholder:text-pf-muted md:text-3xl"
+          />
+        )}
         {/* Animated active focus hairline */}
         <m.span
           aria-hidden="true"
@@ -213,7 +237,7 @@ export default function StepInput({
           loading={submitting}
           withArrow
         >
-          {submitting ? "Enviando…" : "Continuar"}
+          {submitting ? "Enviando…" : isLastStep ? "Enviar proyecto" : "Continuar"}
         </Button>
       </div>
     </form>
