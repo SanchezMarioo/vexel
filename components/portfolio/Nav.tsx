@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
+import { AnimatePresence, m } from "framer-motion";
 import { identity, navLinks } from "@/lib/portfolio/content";
+import { pfEaseOut } from "@/lib/portfolio/motion";
 import Button from "./ui/Button";
 
 const sectionIds = navLinks.map((link) => link.href.replace("#", ""));
@@ -52,19 +54,22 @@ export default function Nav() {
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-colors duration-300 ease-[var(--pf-ease)] ${
+      className={`sticky top-0 z-40 transition-all duration-300 ease-[var(--pf-ease)] ${
         scrolled
-          ? "border-b border-pf-line bg-pf-bg/80 backdrop-blur-md"
-          : "border-b border-transparent"
+          ? "border-b border-pf-line bg-pf-bg/85 backdrop-blur-md shadow-[0_4px_20px_-10px_oklch(0_0_0/0.05)]"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
       <nav
         aria-label="Principal"
         className="pf-container flex h-16 items-center justify-between gap-6"
       >
-        <a href="#inicio" className="pf-display text-lg leading-none text-pf-ink">
+        <a
+          href="#inicio"
+          className="group pf-display text-lg leading-none text-pf-ink transition-transform duration-200 hover:scale-105 active:scale-95"
+        >
           {identity.name}
-          <span className="text-pf-ink">.</span>
+          <span className="text-pf-ink transition-colors group-hover:text-emerald-500">.</span>
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">
@@ -76,14 +81,14 @@ export default function Nav() {
                 <a
                   href={link.href}
                   aria-current={isActive ? "true" : undefined}
-                  className={`relative rounded-[var(--pf-radius-sm)] px-3 py-2 text-sm transition-colors duration-200 ${
+                  className={`relative rounded-[var(--pf-radius-sm)] px-3 py-2 text-sm font-medium transition-colors duration-200 ${
                     isActive ? "text-pf-ink" : "text-pf-ink-soft hover:text-pf-ink"
                   }`}
                 >
                   {link.label}
                   <span
                     aria-hidden="true"
-                    className={`absolute inset-x-3 -bottom-px h-px origin-left bg-pf-ink transition-transform duration-300 ease-[var(--pf-ease-out)] ${
+                    className={`absolute inset-x-3 -bottom-px h-[2px] origin-left bg-pf-ink transition-transform duration-300 ease-[var(--pf-ease-out)] ${
                       isActive ? "scale-x-100" : "scale-x-0"
                     }`}
                   />
@@ -94,8 +99,8 @@ export default function Nav() {
         </ul>
 
         <div className="hidden md:block">
-          <Button href="#contacto" size="sm" variant="ink">
-            Hablemos
+          <Button href="/empezar" size="sm" variant="ink" withArrow>
+            Empezar
           </Button>
         </div>
 
@@ -105,7 +110,7 @@ export default function Nav() {
           aria-expanded={open}
           aria-controls="mobile-menu"
           aria-label={open ? "Cerrar menú" : "Abrir menú"}
-          className="flex h-10 w-10 items-center justify-center rounded-[var(--pf-radius-sm)] text-pf-ink md:hidden"
+          className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-[var(--pf-radius-sm)] text-pf-ink transition-colors hover:bg-pf-surface md:hidden"
         >
           <span className="relative block h-3.5 w-5">
             <span
@@ -122,31 +127,37 @@ export default function Nav() {
         </button>
       </nav>
 
-      {open ? (
-        <div
-          id="mobile-menu"
-          className="border-t border-pf-line bg-pf-bg md:hidden"
-        >
-          <ul className="pf-container flex flex-col py-4">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={() => setOpen(false)}
-                  className="block border-b border-pf-line py-3 text-base text-pf-ink-soft hover:text-pf-ink"
-                >
-                  {link.label}
-                </a>
+      <AnimatePresence>
+        {open ? (
+          <m.div
+            id="mobile-menu"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25, ease: pfEaseOut }}
+            className="overflow-hidden border-t border-pf-line bg-pf-bg/95 backdrop-blur-md md:hidden"
+          >
+            <ul className="pf-container flex flex-col py-4">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className="block border-b border-pf-line py-3.5 text-base font-medium text-pf-ink-soft transition-colors hover:text-pf-ink"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+              <li className="pt-5 pb-2">
+                <Button href="/empezar" variant="primary" className="w-full" withArrow>
+                  Empezar
+                </Button>
               </li>
-            ))}
-            <li className="pt-4">
-              <Button href="#contacto" variant="primary" className="w-full" withArrow>
-                Hablemos
-              </Button>
-            </li>
-          </ul>
-        </div>
-      ) : null}
+            </ul>
+          </m.div>
+        ) : null}
+      </AnimatePresence>
     </header>
   );
 }

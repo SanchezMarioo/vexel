@@ -74,13 +74,17 @@ export default function Contact() {
           </m.p>
 
           <m.div variants={fadeUp} className="mt-8 flex flex-wrap gap-3">
-            <CalButton calLink={identity.calUrl} variant="ink" withArrow>
+            <Button href="/empezar" variant="solid" withArrow>
+              Cuéntanos tu proyecto
+            </Button>
+            <CalButton calLink={identity.calUrl} variant="outline">
               Agendar una llamada
             </CalButton>
-            <Button href={`mailto:${identity.email}`} variant="outline">
-              Escríbenos un email
-            </Button>
           </m.div>
+
+          <m.p variants={fadeUp} className="mt-4 text-sm text-pf-muted">
+            Dos minutos, una pregunta cada vez. O usa el formulario si ya lo tienes claro.
+          </m.p>
 
           <m.p variants={fadeUp} className="mt-6 text-sm text-pf-muted">
             ¿Prefieres el correo directo?{" "}
@@ -193,15 +197,19 @@ export default function Contact() {
               <div className="mt-5">
                 <label
                   htmlFor="contact-consent"
-                  className="flex items-start gap-3 text-sm text-pf-ink-soft"
+                  className="group flex cursor-pointer items-start gap-3 text-sm text-pf-ink-soft select-none"
                 >
-                  <input
-                    id="contact-consent"
-                    type="checkbox"
-                    aria-invalid={errors.consent ? true : undefined}
-                    className="mt-0.5 h-4 w-4 flex-shrink-0 accent-pf-ink"
-                    {...register("consent")}
-                  />
+                  <span className="relative mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-[2px] border border-pf-line-strong bg-pf-surface transition-colors group-hover:border-pf-ink">
+                    <input
+                      id="contact-consent"
+                      type="checkbox"
+                      aria-invalid={errors.consent ? true : undefined}
+                      className="sr-only"
+                      {...register("consent")}
+                    />
+                    {/* Visual checked indicator */}
+                    <span className="hidden h-2 w-2 rounded-[1px] bg-pf-ink has-[:checked]:block" />
+                  </span>
                   <span>
                     He leído y acepto la{" "}
                     <Link
@@ -214,14 +222,21 @@ export default function Contact() {
                   </span>
                 </label>
                 {errors.consent ? (
-                  <p role="alert" className="mt-2 text-sm text-pf-danger">
+                  <p role="alert" className="mt-2 text-sm font-medium text-pf-danger">
                     {errors.consent.message}
                   </p>
                 ) : null}
               </div>
 
               <div className="mt-7">
-                <Button type="submit" variant="primary" size="lg" disabled={isSubmitting} withArrow>
+                <Button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  disabled={isSubmitting}
+                  loading={isSubmitting}
+                  withArrow
+                >
                   {isSubmitting ? "Enviando…" : "Enviar mensaje"}
                 </Button>
               </div>

@@ -56,6 +56,10 @@ interface CalButtonProps {
   size?: Size;
   withArrow?: boolean;
   className?: string;
+  /** Datos precargados en el formulario de Cal.com (nombre, email). */
+  prefill?: { name?: string; email?: string };
+  /** Se dispara al abrir el overlay de Cal.com (analytics del funnel). */
+  onOpen?: () => void;
 }
 
 const NAMESPACE = "book";
@@ -71,6 +75,23 @@ function initCalApi() {
     .then(({ getCalApi }) => getCalApi({ namespace: NAMESPACE }))
     .then((cal) => {
       cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
+      // Reserva REAL confirmada en Cal.com (no un simple clic): se reemite
+      // como evento DOM para que el funnel pueda registrar meeting_booked.
+      try {
+        (
+          cal as unknown as (
+            cmd: string,
+            cfg: { action: string; callback: () => void },
+          ) => void
+        )("on", {
+          action: "bookingSuccessful",
+          callback: () => {
+            window.dispatchEvent(new CustomEvent("cal:booking-successful"));
+          },
+        });
+      } catch {
+        // Best-effort: sin listener, la reserva simplemente no se reporta.
+      }
     });
   return calApiPromise;
 }
@@ -82,6 +103,8 @@ export default function CalButton({
   size = "md",
   withArrow = false,
   className = "",
+  prefill,
+  onOpen,
 }: CalButtonProps) {
   const ref = useRef<HTMLButtonElement>(null);
 
@@ -107,7 +130,12 @@ export default function CalButton({
     };
   }, []);
 
-  const classes = `group cursor-pointer inline-flex select-none items-center justify-center gap-2.5 rounded-[var(--pf-radius)] font-medium leading-none transition-[transform,background-color,border-color,color] duration-150 ease-[var(--pf-ease-quart)] active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100 ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
+  const classes = `group cursor-pointer inline-flex select-none items-center justify-center gap-2.5 rounded-[var(--pf-radius)] font-medium leading-none transition-[transform,background-color,border-color,color,box-shadow] duration-200 ease-[var(--pf-ease-quart)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-2 ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
+
+  const hasPrefill = Boolean(prefill?.name || prefill?.email);
+  const calConfig = hasPrefill
+    ? JSON.stringify({ layout: "month_view", prefill })
+    : JSON.stringify({ layout: "month_view" });
 
   return (
     <button
@@ -115,7 +143,8 @@ export default function CalButton({
       type="button"
       data-cal-namespace={NAMESPACE}
       data-cal-link={calLink}
-      data-cal-config='{"layout":"month_view"}'
+      data-cal-config={calConfig}
+      onClick={() => onOpen?.()}
       className={classes}
     >
       <span>{children}</span>

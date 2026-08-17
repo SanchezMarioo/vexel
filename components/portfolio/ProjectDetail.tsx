@@ -196,7 +196,7 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
           precio y plazo cerrados antes de empezar.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Button href="/#contacto" variant="primary" size="lg" withArrow>
+          <Button href="/empezar" variant="primary" size="lg" withArrow>
             Cuéntanos tu proyecto
           </Button>
           <Button href="/proyectos" variant="outline" size="lg">

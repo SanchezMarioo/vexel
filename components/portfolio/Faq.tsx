@@ -44,11 +44,13 @@ export default function Faq() {
                       aria-expanded={isOpen}
                       aria-controls={panelId}
                       onClick={() => setOpenIndex(isOpen ? null : index)}
-                      className="-mx-3 flex w-[calc(100%+1.5rem)] items-center justify-between gap-6 px-3 py-5 text-left transition-colors duration-200 ease-[var(--pf-ease-out)] hover:bg-pf-surface motion-reduce:transition-none"
+                      className={`-mx-3 flex w-[calc(100%+1.5rem)] cursor-pointer items-center justify-between gap-6 rounded-[var(--pf-radius)] px-3 py-5 text-left transition-all duration-200 ease-[var(--pf-ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pf-ink focus-visible:ring-offset-2 motion-reduce:transition-none ${
+                        isOpen ? "bg-pf-surface" : "hover:bg-pf-surface/60"
+                      }`}
                     >
                       <span
                         className={`text-lg text-pf-ink ${
-                          isOpen ? "font-medium" : ""
+                          isOpen ? "font-semibold text-pf-ink-strong" : ""
                         }`}
                       >
                         {faq.question}
@@ -57,10 +59,10 @@ export default function Faq() {
                         aria-hidden="true"
                         animate={{ rotate: isOpen ? 45 : 0 }}
                         transition={panelTransition}
-                        className="flex h-4 w-4 flex-shrink-0 items-center justify-center text-pf-ink-strong"
+                        className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-pf-ink-strong transition-colors"
                       >
                         <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4" aria-hidden="true">
-                          <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                          <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                         </svg>
                       </m.span>
                     </button>
@@ -78,7 +80,7 @@ export default function Faq() {
                         transition={panelTransition}
                         className="overflow-hidden"
                       >
-                        <p className="pf-prose pb-6 pr-10 text-pf-ink-soft">{faq.answer}</p>
+                        <p className="pf-prose pb-6 pr-10 text-pf-ink-soft leading-relaxed">{faq.answer}</p>
                       </m.div>
                     ) : null}
                   </AnimatePresence>
