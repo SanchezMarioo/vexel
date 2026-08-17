@@ -44,7 +44,12 @@ export async function POST(request: Request) {
   }
 
   try {
-    const payload = await request.json();
+    const rawBody = await request.text();
+    if (rawBody.length > MAX_BODY_BYTES) {
+      return errorResponse("La solicitud es demasiado grande.", 413);
+    }
+
+    const payload = JSON.parse(rawBody);
     const data = funnelSchema.parse(payload);
 
     // Honeypot: un visitante real nunca lo rellena. Fingir éxito y descartar.
@@ -73,14 +78,28 @@ export async function POST(request: Request) {
       );
     }
 
-    const emailResults = await Promise.allSettled([
-      sendClientLeadEmail({ lead, leadId, createdAt, score }),
-      sendInternalLeadEmail({ lead, leadId, createdAt, score }),
-    ]);
+    const emailTasks: Array<{ type: "client" | "internal"; promise: Promise<{ ok: boolean; reason?: string }> }> = [];
+
+    // Solo se envía email de confirmación al cliente en la primera entrega.
+    // Si edita sus respuestas en el resumen (actualización), no lo molestamos de nuevo.
+    if (!lead.actualizacion) {
+      emailTasks.push({
+        type: "client",
+        promise: sendClientLeadEmail({ lead, leadId, createdAt, score }),
+      });
+    }
+
+    // El email interno siempre se envía para que el equipo reciba la última versión.
+    emailTasks.push({
+      type: "internal",
+      promise: sendInternalLeadEmail({ lead, leadId, createdAt, score }),
+    });
+
+    const emailResults = await Promise.allSettled(emailTasks.map((task) => task.promise));
     emailResults.forEach((result, index) => {
       if (result.status === "rejected" || !result.value.ok) {
         console.error("[funnel] email not sent", {
-          type: index === 0 ? "client" : "internal",
+          type: emailTasks[index].type,
           reason: result.status === "rejected" ? "unexpected failure" : result.value.reason,
           leadId,
         });

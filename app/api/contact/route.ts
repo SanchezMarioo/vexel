@@ -4,6 +4,8 @@ import { checkRateLimit } from "@/lib/security/rate-limit";
 import { getClientIp, hasTrustedOrigin, isJsonContentType } from "@/lib/security/request";
 import { secureJson } from "@/lib/security/response";
 
+import { sanitizeForSheet } from "@/lib/funnel/deliver";
+
 export const runtime = "nodejs";
 
 function errorResponse(message: string, status: number) {
@@ -46,8 +48,6 @@ export async function POST(request: Request) {
     // Sin webhook configurado (otro entorno): registrar para no perder el mensaje.
     if (!webhookUrl) {
       console.info("[contact] mensaje recibido (sin webhook configurado)", {
-        name: data.name,
-        email: data.email,
         length: data.message.length,
       });
       return secureJson({ ok: true }, { status: 201 });
@@ -60,9 +60,12 @@ export async function POST(request: Request) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          nombre: data.name,
-          email: data.email,
-          descripcion: data.message,
+          ...(process.env.GOOGLE_SHEETS_WEBHOOK_SECRET
+            ? { secret: process.env.GOOGLE_SHEETS_WEBHOOK_SECRET }
+            : {}),
+          nombre: sanitizeForSheet(data.name),
+          email: sanitizeForSheet(data.email),
+          descripcion: sanitizeForSheet(data.message),
         }),
         signal: AbortSignal.timeout(10000),
       });

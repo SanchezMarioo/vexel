@@ -58,11 +58,12 @@ export default function PrivacidadPage() {
       <LegalSection title="5. Destinatarios y encargados del tratamiento">
         <p>
           No vendemos ni cedemos tus datos a terceros. Para prestar el servicio nos apoyamos en
-          proveedores que actúan como encargados del tratamiento (alojamiento web, gestión de
-          mensajes del formulario, base de datos y agenda de llamadas), entre ellos
-          [PROVEEDORES: p. ej. Vercel, Google, Supabase, Cal.com]. Algunos pueden estar ubicados
-          fuera del Espacio Económico Europeo, en cuyo caso se aplican las garantías previstas por el
-          RGPD.
+          proveedores que actúan como encargados del tratamiento (alojamiento web, analítica técnica
+          sin cookies, almacenamiento de solicitudes, envío de notificaciones por correo y agenda de
+          llamadas), entre ellos Vercel Inc., Google LLC, Resend Inc. y Cal.com Inc. Algunos pueden
+          estar ubicados fuera del Espacio Económico Europeo, en cuyo caso se aplican las garantías
+          adecuadas previstas por el RGPD (como Cláusulas Contractuales Tipo de la Comisión Europea
+          o marcos de adecuación aplicables).
         </p>
       </LegalSection>
 

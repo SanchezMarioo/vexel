@@ -175,15 +175,11 @@ export default function Funnel() {
     trackFunnelEvent("lead_form_view");
     const draft = readDraft();
     if (draft) {
-      // Restauración única de estado persistido: no hay fuente externa que
-      // suscribir, así que setState en el effect es el patrón correcto aquí.
+      // Restauración única de estado persistido tras montaje para evitar hydration mismatch.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setAnswers(draft.answers);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveIndex(draft.activeIndex);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setConsent(draft.consent);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setView("questions");
     }
   }, []);
