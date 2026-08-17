@@ -4,7 +4,7 @@ import { sendClientLeadEmail, sendInternalLeadEmail } from "@/lib/funnel/email";
 import { buildLead } from "@/lib/funnel/lead";
 import { funnelSchema } from "@/lib/funnel/schema";
 import { scoreLead } from "@/lib/funnel/score";
-import { checkRateLimit } from "@/lib/security/rate-limit";
+import { checkRateLimitUpstash } from "@/lib/security/rate-limit";
 import { getClientIp, hasTrustedOrigin, isJsonContentType } from "@/lib/security/request";
 import { secureJson } from "@/lib/security/response";
 
@@ -32,12 +32,8 @@ export async function POST(request: Request) {
 
   const clientIp = getClientIp(request);
 
-  const rateLimit = checkRateLimit({
-    bucket: "funnel:ip",
-    key: clientIp,
-    limit: 5,
-    windowMs: 60 * 60 * 1000,
-  });
+  // Rate limiting distribuido con Upstash (fallback a in-memory en desarrollo)
+  const rateLimit = await checkRateLimitUpstash(`funnel:ip:${clientIp}`);
 
   if (!rateLimit.ok) {
     return errorResponse("Demasiados envíos en poco tiempo. Inténtalo más tarde.", 429);
