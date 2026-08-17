@@ -20,12 +20,21 @@ export async function deliverFunnelLead(
   input: FunnelDelivery,
 ): Promise<{ ok: boolean; message?: string }> {
   const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+  const webhookSecret = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET;
+  
+  // En producción, el secret es OBLIGATORIO para evitar acceso no autorizado
+  const isProduction = process.env.NODE_ENV === "production";
+  if (isProduction && !webhookSecret) {
+    console.error("[funnel] GOOGLE_SHEETS_WEBHOOK_SECRET no configurado en producción");
+    return { 
+      ok: false, 
+      message: "Configuración incompleta. Contacta con soporte." 
+    };
+  }
 
   if (!webhookUrl) {
     console.info("[funnel] lead recibido (sin webhook configurado)", {
       lead_id: input.leadId,
-      nombre: input.lead.nombre,
-      email: input.lead.email,
       score: input.score.value,
       tier: input.score.tier,
     });
@@ -39,9 +48,7 @@ export async function deliverFunnelLead(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        ...(process.env.GOOGLE_SHEETS_WEBHOOK_SECRET
-          ? { secret: process.env.GOOGLE_SHEETS_WEBHOOK_SECRET }
-          : {}),
+        secret: webhookSecret,
         lead_id: leadId,
         created_at: createdAt,
         fecha: createdAt,

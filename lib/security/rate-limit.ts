@@ -1,15 +1,16 @@
 import "server-only";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 /**
- * ⚠️  IN-MEMORY RATE LIMITER — DEVELOPMENT / SINGLE-INSTANCE ONLY
+ * ✅ DISTRIBUTED RATE LIMITER — PRODUCTION READY (VERCEL SERVERLESS)
  *
- * This store lives in the Node.js process memory. It resets on every deploy,
- * cold start, or server restart, and each serverless function invocation gets
- * its own empty map.
+ * Uses Upstash Redis as a distributed store so rate limits are enforced
+ * consistently across all serverless function invocations.
  *
- * **For production on Vercel (serverless) replace with a distributed store:**
- *   - @upstash/ratelimit + @upstash/redis  (recommended, ~5 min setup)
- *   - Vercel KV
+ * Required environment variables:
+ *   - UPSTASH_REDIS_REST_URL
+ *   - UPSTASH_REDIS_REST_TOKEN
  *
  * @see https://upstash.com/docs/redis/sdks/ratelimit-ts/overview
  */
@@ -65,6 +66,9 @@ export interface RateLimitResult {
   resetAt: number;
 }
 
+/**
+ * Fallback in-memory rate limiter for development when Upstash is not configured.
+ */
 export function checkRateLimit(input: RateLimitInput): RateLimitResult {
   const now = Date.now();
   const store = getStore();
@@ -92,5 +96,38 @@ export function checkRateLimit(input: RateLimitInput): RateLimitResult {
     ok: existing.count <= input.limit,
     remaining: Math.max(0, input.limit - existing.count),
     resetAt: existing.resetAt,
+  };
+}
+
+/**
+ * Distributed rate limiter using Upstash Redis.
+ * Falls back to in-memory if environment variables are not configured.
+ */
+const ratelimit =
+  process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
+    ? new Ratelimit({
+        redis: Redis.fromEnv(),
+        limiter: Ratelimit.slidingWindow(5, "60 m"),
+        prefix: "xync:ratelimit",
+      })
+    : null;
+
+export async function checkRateLimitUpstash(identifier: string): Promise<RateLimitResult> {
+  // Fallback to in-memory if Upstash is not configured (development)
+  if (!ratelimit) {
+    console.warn("[rate-limit] Upstash not configured, falling back to in-memory");
+    return checkRateLimit({
+      bucket: "fallback",
+      key: identifier,
+      limit: 5,
+      windowMs: 60 * 60 * 1000,
+    });
+  }
+
+  const { success, limit, reset, remaining } = await ratelimit.limit(identifier);
+  return {
+    ok: success,
+    remaining,
+    resetAt: reset,
   };
 }
