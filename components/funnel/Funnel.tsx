@@ -164,6 +164,8 @@ export default function Funnel() {
   const [honeypot, setHoneypot] = useState("");
   const activeRef = useRef<HTMLDivElement>(null);
 
+  const [direction, setDirection] = useState<1 | -1>(1);
+
   const sequence = useMemo(() => stepSequence(answers), [answers]);
   const activeStepId = sequence[Math.min(activeIndex, sequence.length - 1)];
   const step = steps[activeStepId];
@@ -210,6 +212,7 @@ export default function Funnel() {
   /** Responder: aplica el patch y limpia todo lo que cuelga río abajo. */
   function answerStep(stepId: StepId, patch: Partial<FunnelAnswers>) {
     trackFunnelEvent("lead_form_step_completed", { step: stepId });
+    setDirection(1);
     setAnswers((prev) => {
       const merged = { ...prev, ...patch };
       const seq = stepSequence(merged);
@@ -237,6 +240,7 @@ export default function Funnel() {
     const index = sequence.indexOf(stepId);
     if (index === -1) return;
 
+    setDirection(-1);
     setAnswers((prev) => {
       const seq = stepSequence(prev);
       const next: FunnelAnswers = { ...prev };
@@ -254,6 +258,7 @@ export default function Funnel() {
   }
 
   function goBack() {
+    setDirection(-1);
     setActiveIndex((index) => Math.max(0, index - 1));
     setFieldError(null);
     setConsentError(null);
@@ -405,14 +410,33 @@ export default function Funnel() {
     );
   }
 
+  const progressRatio = Math.min(1, Math.max(0, (activeIndex + 1) / total));
+
   return (
-    <div className="mx-auto w-full max-w-[44rem] flex-1 px-6 pb-32 pt-10 md:pt-14">
-      <div className="pf-mono flex items-center justify-between text-xs text-pf-muted">
+    <div className="mx-auto w-full max-w-[44rem] flex-1 px-6 pb-32 pt-8 md:pt-12">
+      {/* Barra de progreso sutil y fluida */}
+      <div
+        role="progressbar"
+        aria-valuenow={activeIndex + 1}
+        aria-valuemin={1}
+        aria-valuemax={total}
+        aria-label={`Progreso: paso ${activeIndex + 1} de ${total}`}
+        className="relative h-[2px] w-full overflow-hidden rounded-full bg-pf-line"
+      >
+        <m.div
+          className="h-full bg-pf-ink"
+          initial={false}
+          animate={{ width: `${progressRatio * 100}%` }}
+          transition={{ duration: 0.35, ease: pfEaseOut }}
+        />
+      </div>
+
+      <div className="pf-mono mt-4 flex items-center justify-between text-xs text-pf-muted">
         {activeIndex > 0 ? (
           <button
             type="button"
             onClick={goBack}
-            className="inline-flex items-center gap-1.5 transition-colors duration-150 hover:text-pf-ink"
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--pf-radius-sm)] py-1 pr-2 transition-colors duration-150 hover:text-pf-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-pf-ink"
           >
             <ArrowLeftIcon />
             Anterior
@@ -420,7 +444,7 @@ export default function Funnel() {
         ) : (
           <span aria-hidden="true" />
         )}
-        <span>
+        <span className="font-medium tabular-nums">
           {String(activeIndex + 1).padStart(2, "0")}/{String(total).padStart(2, "0")} · {phaseFor(activeIndex, total)}
         </span>
       </div>
@@ -433,14 +457,30 @@ export default function Funnel() {
         />
       </div>
 
-      <AnimatePresence mode="popLayout" initial={false}>
+      <AnimatePresence mode="popLayout" initial={false} custom={direction}>
         <m.div
           key={activeStepId}
           ref={activeRef}
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -18 }}
-          transition={{ duration: 0.4, ease: pfEaseOut }}
+          custom={direction}
+          variants={{
+            enter: (dir: number) => ({
+              opacity: 0,
+              x: dir > 0 ? 18 : -18,
+            }),
+            center: {
+              opacity: 1,
+              x: 0,
+              transition: { duration: 0.32, ease: pfEaseOut },
+            },
+            exit: (dir: number) => ({
+              opacity: 0,
+              x: dir > 0 ? -18 : 18,
+              transition: { duration: 0.2, ease: pfEaseOut },
+            }),
+          }}
+          initial="enter"
+          animate="center"
+          exit="exit"
           className="mt-10 scroll-mt-10"
         >
           {step.kind === "choice" ? (

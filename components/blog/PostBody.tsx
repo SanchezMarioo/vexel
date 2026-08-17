@@ -10,20 +10,20 @@ import InlineText from "./InlineText";
  * Componente de servidor: el cuerpo no se anima por bloques (la lectura
  * manda; solo la cabecera del artículo tiene reveal).
  */
-function getBlockKey(block: BlogBlock) {
+function getBlockKey(block: BlogBlock, index: number) {
   switch (block.type) {
     case "paragraph":
     case "heading":
     case "quote":
-      return `${block.type}:${block.text}`;
+      return `${block.type}:${index}:${block.text.slice(0, 40)}`;
     case "list":
-      return `${block.type}:${block.style}:${block.items.join("\u001f")}`;
+      return `${block.type}:${index}:${block.style}`;
     case "evidence":
-      return `${block.type}:${block.projectSlug}`;
+      return `${block.type}:${index}:${block.projectSlug}`;
     case "image":
-      return `${block.type}:${block.src}`;
+      return `${block.type}:${index}:${block.src}`;
     case "code":
-      return `${block.type}:${block.language}:${block.code}`;
+      return `${block.type}:${index}:${block.language}`;
   }
 }
 
@@ -55,7 +55,7 @@ function Block({ block }: { block: BlogBlock }) {
         return (
           <ol className="pf-prose mt-6 flex flex-col gap-3">
             {block.items.map((item, index) => (
-              <li key={item} className="flex gap-3.5 text-base leading-relaxed text-pf-ink-soft md:text-[1.0625rem]">
+              <li key={`${index}-${item.slice(0, 20)}`} className="flex gap-3.5 text-base leading-relaxed text-pf-ink-soft md:text-[1.0625rem]">
                 <span aria-hidden="true" className="pf-mono pt-0.5 text-sm text-pf-muted">
                   {index + 1}.
                 </span>
@@ -69,8 +69,8 @@ function Block({ block }: { block: BlogBlock }) {
       }
       return (
         <ul className="pf-prose mt-6 flex flex-col gap-3">
-          {block.items.map((item) => (
-            <li key={item} className="flex items-start gap-3 text-base leading-relaxed md:text-[1.0625rem]">
+          {block.items.map((item, index) => (
+            <li key={`${index}-${item.slice(0, 20)}`} className="flex items-start gap-3 text-base leading-relaxed md:text-[1.0625rem]">
               <span aria-hidden="true" className="mt-[0.6em] h-1.5 w-1.5 shrink-0 rounded-full bg-pf-ink-strong" />
               <span className="text-pf-ink">
                 <InlineText text={item} />
@@ -158,8 +158,8 @@ function Block({ block }: { block: BlogBlock }) {
 export default function PostBody({ blocks }: { blocks: BlogBlock[] }) {
   return (
     <div>
-      {blocks.map((block) => (
-        <Block key={getBlockKey(block)} block={block} />
+      {blocks.map((block, index) => (
+        <Block key={getBlockKey(block, index)} block={block} />
       ))}
     </div>
   );

@@ -15,18 +15,25 @@ interface StepChoiceProps {
 
 function CheckIcon() {
   return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="h-5 w-5 flex-shrink-0"
+    <m.span
+      initial={{ scale: 0.6, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.2, ease: pfEaseOut }}
+      className="grid h-6 w-6 place-items-center rounded-full bg-pf-bg text-pf-ink"
     >
-      <path d="m5 13 4 4L19 7" />
-    </svg>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+        className="h-3.5 w-3.5"
+      >
+        <path d="m5 13 4 4L19 7" />
+      </svg>
+    </m.span>
   );
 }
 
@@ -65,7 +72,7 @@ export default function StepChoice({ step, selected, detail, onAnswer }: StepCho
     advanceTimerRef.current = window.setTimeout(() => {
       setPendingOption(null);
       onAnswer(option.id);
-    }, 120);
+    }, 140);
   }
 
   function confirmDetail() {
@@ -98,21 +105,44 @@ export default function StepChoice({ step, selected, detail, onAnswer }: StepCho
           const isSelected =
             (selected === option.id || pendingOption === option.id) &&
             (!option.needsDetail || !showDetail);
-            return (
+          return (
             <button
               key={option.id}
               type="button"
               onClick={() => choose(option)}
               disabled={pendingOption !== null}
               aria-pressed={isSelected}
-              className={`flex w-full items-center justify-between gap-4 border-b border-pf-line px-2 py-5 text-left text-lg font-medium leading-snug transition-colors duration-150 ease-[var(--pf-ease-quart)] ${
+              className={`group flex w-full cursor-pointer items-center justify-between gap-4 border-b border-pf-line px-3 py-5 text-left text-lg font-medium leading-snug transition-all duration-200 ease-[var(--pf-ease-quart)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pf-ink focus-visible:ring-offset-2 motion-reduce:transition-none ${
                 isSelected
-                  ? "bg-pf-ink text-pf-bg"
-                  : "text-pf-ink hover:bg-pf-ink hover:text-pf-bg"
+                  ? "bg-pf-ink text-pf-bg shadow-[0_2px_10px_-2px_oklch(0_0_0/0.2)]"
+                  : "text-pf-ink hover:bg-pf-surface hover:pl-4"
               }`}
             >
-              <span>{option.label}</span>
-              {isSelected ? <CheckIcon /> : null}
+              <span className="flex items-center gap-3">
+                <span
+                  aria-hidden="true"
+                  className={`inline-block h-1.5 w-1.5 rounded-full transition-all duration-200 ${
+                    isSelected ? "bg-pf-bg scale-125" : "bg-pf-line-strong group-hover:bg-pf-ink"
+                  }`}
+                />
+                <span>{option.label}</span>
+              </span>
+              {isSelected ? (
+                <CheckIcon />
+              ) : (
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  className="h-4 w-4 opacity-0 transition-all duration-200 ease-[var(--pf-ease-out)] group-hover:translate-x-0.5 group-hover:opacity-60"
+                >
+                  <path d="M5 12h14m-6-6 6 6-6 6" />
+                </svg>
+              )}
             </button>
           );
         })}

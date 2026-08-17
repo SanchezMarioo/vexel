@@ -89,9 +89,11 @@ export default function Projects() {
               <Link
                 href={`/proyectos/${featured.slug}`}
                 aria-label={`Ver el caso: ${featured.title}`}
-                className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line"
+                className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line shadow-[0_4px_20px_-8px_oklch(0_0_0/0.08)] transition-all duration-300 hover:shadow-[0_16px_36px_-12px_oklch(0_0_0/0.18)]"
               >
-                <ImageSlot image={featured.image} />
+                <div className="overflow-hidden transition-transform duration-500 ease-[var(--pf-ease-out)] group-hover:scale-[1.02] motion-reduce:group-hover:scale-100">
+                  <ImageSlot image={featured.image} />
+                </div>
                 <span className="absolute inset-0 bg-pf-ink/0 transition-colors duration-300 group-hover:bg-pf-ink/5" />
               </Link>
             </m.div>
@@ -125,9 +127,11 @@ export default function Projects() {
                 <Link
                   href={`/proyectos/${project.slug}`}
                   aria-label={`Ver el caso: ${project.title}`}
-                  className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line"
+                  className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line shadow-[0_4px_16px_-8px_oklch(0_0_0/0.06)] transition-all duration-300 hover:shadow-[0_14px_30px_-10px_oklch(0_0_0/0.15)]"
                 >
-                  <ImageSlot image={project.image} />
+                  <div className="overflow-hidden transition-transform duration-500 ease-[var(--pf-ease-out)] group-hover:scale-[1.02] motion-reduce:group-hover:scale-100">
+                    <ImageSlot image={project.image} />
+                  </div>
                   <span className="absolute inset-0 bg-pf-ink/0 transition-colors duration-300 group-hover:bg-pf-ink/5" />
                 </Link>
                 <div className="mt-5">

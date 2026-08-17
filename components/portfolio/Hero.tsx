@@ -47,17 +47,6 @@ export default function Hero() {
             </Button>
           </m.div>
 
-          <m.p
-            variants={fadeUp}
-            className="mt-7 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-pf-muted"
-          >
-            <span className="flex items-center gap-2 text-pf-muted">
-              <span className="inline-block h-2 w-2 rounded-full bg-pf-ink-strong" />
-              {identity.availability}
-            </span>
-            <span aria-hidden="true" className="hidden sm:inline">·</span>
-            <span>{identity.responseTime}</span>
-          </m.p>
         </m.div>
 
         {/* Visual: el resultado que entrego, no el código. */}
@@ -69,30 +58,37 @@ export default function Hero() {
         >
           <m.div
             variants={heroLcpSafe}
-            className="overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line bg-pf-surface"
+            className="group overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line bg-pf-surface shadow-[0_8px_30px_-15px_oklch(0_0_0/0.12)] transition-shadow duration-300 hover:shadow-[0_20px_45px_-18px_oklch(0_0_0/0.2)]"
           >
             <div className="flex items-center gap-2 border-b border-pf-line bg-[oklch(0.93_0_0)] px-4 py-3">
               <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.75_0_0)]" />
               <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.75_0_0)]" />
               <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.75_0_0)]" />
-              <Link href="https://lumen.xync.es/" className="pf-mono ml-3 truncate rounded-[var(--pf-radius-sm)] bg-pf-subtle px-3 py-1 text-xs text-pf-muted">
+              <Link
+                href="https://lumen.xync.es/"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="pf-mono ml-3 truncate rounded-[var(--pf-radius-sm)] bg-pf-subtle px-3 py-1 text-xs text-pf-muted transition-colors hover:text-pf-ink"
+              >
                 lumen.xync.es
               </Link>
             </div>
-            <ImageSlot
-              priority
-              image={{
-                src: "/portfolio/hero-images.webp",
-                alt: "Tienda online de muebles Lumen, desarrollada por Xync, estudio de desarrollo web en Salamanca",
-                width: 1200,
-                height: 820,
-              }}
-            />
+            <div className="overflow-hidden">
+              <ImageSlot
+                priority
+                image={{
+                  src: "/portfolio/hero-images.webp",
+                  alt: "Tienda online de muebles Lumen, desarrollada por Xync, estudio de desarrollo web en Salamanca",
+                  width: 1200,
+                  height: 820,
+                }}
+              />
+            </div>
           </m.div>
 
           <m.div
             variants={popIn}
-            className="absolute -bottom-4 -left-2 flex items-center gap-2.5 rounded-[var(--pf-radius)] border border-pf-line bg-pf-bg px-4 py-3 shadow-[0_8px_24px_-12px_oklch(0_0_0_/_0.35)] sm:-left-5"
+            className="absolute -bottom-4 -left-2 flex items-center gap-2.5 rounded-[var(--pf-radius)] border border-pf-line bg-pf-bg px-4 py-3 shadow-[0_12px_28px_-10px_oklch(0_0_0_/_0.25)] transition-transform duration-200 hover:-translate-y-0.5 sm:-left-5"
           >
             <span className="grid h-7 w-7 place-items-center rounded-full bg-pf-ink text-pf-bg">
               <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg>

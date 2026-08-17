@@ -32,13 +32,18 @@ export default function Transcript({ stepIds, answers, onEdit }: TranscriptProps
             type="button"
             onClick={() => onEdit(stepId)}
             aria-label={`Editar respuesta: ${steps[stepId].record}`}
-            className="group flex w-full flex-col gap-1 border-b border-pf-line px-1 py-4 text-left"
+            className="group flex w-full cursor-pointer items-center justify-between border-b border-pf-line px-2 py-4 text-left transition-all duration-200 hover:bg-pf-surface hover:pl-3 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-pf-ink"
           >
-            <span className="pf-mono text-xs uppercase tracking-wide text-pf-muted">
-              {steps[stepId].record}
-            </span>
-            <span className="text-lg font-medium leading-snug text-pf-ink underline-offset-4 group-hover:underline">
-              {answerLabel(stepId, answers)}
+            <div className="flex flex-col gap-1 pr-4">
+              <span className="pf-mono text-xs uppercase tracking-wide text-pf-muted">
+                {steps[stepId].record}
+              </span>
+              <span className="text-lg font-medium leading-snug text-pf-ink underline-offset-4 group-hover:underline">
+                {answerLabel(stepId, answers)}
+              </span>
+            </div>
+            <span className="pf-mono text-xs text-pf-muted opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100">
+              Editar →
             </span>
           </button>
         </m.div>

@@ -44,24 +44,24 @@ export default function Process() {
           />
 
           {processSteps.map((step, index) => (
-            <m.li key={step.title} variants={fadeUp} className="relative">
-              <span className="pf-mono relative z-10 grid h-10 w-10 place-items-center rounded-full bg-pf-ink text-sm font-medium text-pf-bg">
+            <m.li key={step.title} variants={fadeUp} className="group relative">
+              <span className="pf-mono relative z-10 grid h-10 w-10 place-items-center rounded-full bg-pf-ink text-sm font-medium text-pf-bg shadow-[0_4px_12px_-2px_oklch(0_0_0/0.25)] transition-transform duration-200 ease-[var(--pf-ease-quart)] group-hover:scale-110 motion-reduce:group-hover:scale-100">
                 {index + 1}
               </span>
-              <h3 className="pf-display mt-5 text-xl text-pf-ink">{step.title}</h3>
+              <h3 className="pf-display mt-5 text-xl text-pf-ink transition-colors group-hover:text-pf-ink-strong">{step.title}</h3>
 
               <dl className="mt-4 space-y-3 text-sm">
                 <div>
                   <dt className="pf-mono text-xs uppercase tracking-wide text-pf-ink">Tú</dt>
-                  <dd className="mt-1 text-pf-ink-soft">{step.you}</dd>
+                  <dd className="mt-1 text-pf-ink-soft leading-relaxed">{step.you}</dd>
                 </div>
                 <div>
                   <dt className="pf-mono text-xs uppercase tracking-wide text-pf-muted">Yo</dt>
-                  <dd className="mt-1 text-pf-ink-soft">{step.me}</dd>
+                  <dd className="mt-1 text-pf-ink-soft leading-relaxed">{step.me}</dd>
                 </div>
                 <div>
                   <dt className="pf-mono text-xs uppercase tracking-wide text-pf-muted">Cuándo</dt>
-                  <dd className="mt-1 text-pf-ink">{step.when}</dd>
+                  <dd className="mt-1 text-pf-ink font-medium">{step.when}</dd>
                 </div>
               </dl>
             </m.li>

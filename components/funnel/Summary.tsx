@@ -19,8 +19,7 @@ interface SummaryProps {
  * Cierre del funnel: pantalla invertida (negro) — el único evento de color de
  * todo el flujo marca el cambio de estado: la conversación terminó, ahora toca
  * decidir. Confirma la recepción, muestra el resumen editable y ofrece la
- * llamada de 20 minutos como acelerador, nunca como obligación ("Prefiero
- * esperar" es una respuesta válida con salida elegante).
+ * llamada de 20 minutos como acelerador, nunca como obligación.
  */
 export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
   const [deferred, setDeferred] = useState(false);
@@ -41,28 +40,42 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.38, ease: pfEaseOut }}
-      className="pf-invert"
+      className="pf-invert flex-1"
     >
       <div className="mx-auto w-full max-w-[44rem] px-6 py-20 md:py-28">
         <m.div initial="hidden" animate="visible" variants={stagger(0.09)}>
-          <m.div variants={fadeUp} className="flex items-center gap-3">
-            <span className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-pf-inverse-ink text-pf-inverse-bg">
+          {/* Badge de confirmación con check dibujado animado */}
+          <m.div variants={fadeUp} className="flex items-center gap-3.5">
+            <m.span
+              initial={{ scale: 0.7, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3, ease: pfEaseOut }}
+              className="relative grid h-10 w-10 flex-shrink-0 place-items-center rounded-full bg-pf-inverse-ink text-pf-inverse-bg shadow-[0_0_20px_rgba(255,255,255,0.25)]"
+            >
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 aria-hidden="true"
                 className="h-5 w-5"
               >
-                <path d="m5 13 4 4L19 7" />
+                <m.path
+                  d="m5 13 4 4L19 7"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 0.45, ease: pfEaseOut, delay: 0.15 }}
+                />
               </svg>
-            </span>
-            <p className="text-pf-inverse-ink">
+            </m.span>
+            <p className="text-base text-pf-inverse-ink/90 sm:text-lg">
               Hemos recibido tu proyecto. {identity.responseTime.toLowerCase()} a{" "}
-              <span className="font-medium">{answers.email}</span>.
+              <span className="font-semibold text-pf-inverse-ink underline decoration-pf-inverse-ink/30 underline-offset-4">
+                {answers.email}
+              </span>
+              .
             </p>
           </m.div>
 
@@ -88,20 +101,35 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
                 type="button"
                 onClick={() => onEdit(stepId)}
                 aria-label={`Editar respuesta: ${steps[stepId].record}`}
-                className="group flex w-full flex-col gap-1 border-b border-pf-inverse-ink/15 px-1 py-4 text-left"
+                className="group flex w-full cursor-pointer items-center justify-between border-b border-pf-inverse-ink/15 px-2 py-4 text-left transition-all duration-200 hover:bg-pf-inverse-ink/5 hover:pl-3 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-pf-inverse-ink"
               >
-                <span className="pf-mono text-xs uppercase tracking-wide text-pf-inverse-ink/50">
-                  {steps[stepId].record}
-                </span>
-                <span className="text-lg font-medium leading-snug text-pf-inverse-ink underline-offset-4 group-hover:underline">
-                  {answerLabel(stepId, answers)}
+                <div className="flex flex-col gap-1 pr-4">
+                  <span className="pf-mono text-xs uppercase tracking-wide text-pf-inverse-ink/50">
+                    {steps[stepId].record}
+                  </span>
+                  <span className="text-lg font-medium leading-snug text-pf-inverse-ink underline-offset-4 group-hover:underline">
+                    {answerLabel(stepId, answers)}
+                  </span>
+                </div>
+                <span className="pf-mono text-xs text-pf-inverse-ink/40 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100">
+                  Editar →
                 </span>
               </button>
             ))}
           </m.div>
 
-          <m.div variants={fadeUp} className="mt-12">
-            <h3 className="pf-display text-pf-inverse-ink" style={{ fontSize: "clamp(1.6rem, 3.4vw, 2.4rem)" }}>
+          <m.div
+            variants={fadeUp}
+            className="mt-14 rounded-[var(--pf-radius-lg)] border border-pf-inverse-ink/20 bg-pf-inverse-ink/[0.03] p-6 sm:p-8"
+          >
+            <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-pf-inverse-ink/60 pf-mono">
+              <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              Paso opcional
+            </div>
+            <h3
+              className="pf-display mt-3 text-pf-inverse-ink"
+              style={{ fontSize: "clamp(1.6rem, 3.4vw, 2.4rem)" }}
+            >
               ¿Quieres acelerar el proceso?
             </h3>
             <p className="mt-4 max-w-prose text-lg leading-relaxed text-pf-inverse-ink/80">
@@ -110,16 +138,28 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
             </p>
 
             {booked ? (
-              <p className="pf-mono mt-8 text-sm uppercase tracking-wide text-pf-inverse-ink">
-                Reserva confirmada. Te enviamos los detalles a tu email.
-              </p>
+              <div className="mt-8 flex items-center gap-3 rounded-[var(--pf-radius)] border border-pf-inverse-ink/30 bg-pf-inverse-ink/10 p-4">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  className="h-5 w-5 text-emerald-400"
+                  aria-hidden="true"
+                >
+                  <path d="m5 13 4 4L19 7" />
+                </svg>
+                <p className="pf-mono text-sm uppercase tracking-wide text-pf-inverse-ink">
+                  Reserva confirmada. Te enviamos los detalles a tu email.
+                </p>
+              </div>
             ) : deferred ? (
               <p className="mt-8 max-w-prose text-lg leading-relaxed text-pf-inverse-ink/80">
                 Perfecto. Te escribimos a{" "}
-                <span className="font-medium">{answers.email}</span> con los siguientes pasos.
+                <span className="font-medium text-pf-inverse-ink">{answers.email}</span> con los siguientes pasos.
               </p>
             ) : (
-              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
                 <CalButton
                   calLink={identity.calUrl}
                   variant="inverse-primary"
@@ -133,9 +173,9 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
                 <button
                   type="button"
                   onClick={() => setDeferred(true)}
-                  className="text-pf-inverse-ink/70 underline-offset-4 transition-colors hover:text-pf-inverse-ink hover:underline"
+                  className="cursor-pointer text-sm text-pf-inverse-ink/70 underline-offset-4 transition-colors hover:text-pf-inverse-ink hover:underline"
                 >
-                  Prefiero esperar
+                  Prefiero esperar al email
                 </button>
               </div>
             )}

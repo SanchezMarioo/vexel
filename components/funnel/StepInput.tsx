@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { AnimatePresence, m } from "framer-motion";
 import Button from "@/components/portfolio/ui/Button";
 import type { InputStep } from "@/lib/funnel/content";
+import { pfEaseOut } from "@/lib/portfolio/motion";
 
 interface StepInputProps {
   step: InputStep;
@@ -22,9 +24,8 @@ interface StepInputProps {
 
 /**
  * Paso de texto libre (nombre, email): la pregunta es el label, el campo es
- * tipografía grande sobre una sola hairline — sin caja, sin borde, sin gris.
- * El paso de email lleva el consentimiento RGPD y envía el lead. El draft es
- * local: el componente se remonta en cada paso (key del padre).
+ * tipografía grande sobre una sola hairline animada.
+ * El paso de email lleva el consentimiento RGPD y envía el lead.
  */
 export default function StepInput({
   step,
@@ -41,6 +42,7 @@ export default function StepInput({
   onSubmit,
 }: StepInputProps) {
   const [value, setValue] = useState(initialValue);
+  const [isFocused, setIsFocused] = useState(false);
   const headingId = `funnel-question-${step.id}`;
   const inputId = `funnel-${step.id}`;
   const errorId = `${inputId}-error`;
@@ -63,58 +65,103 @@ export default function StepInput({
         {step.question}
       </h2>
 
-      {serverError ? (
-        <div
-          role="alert"
-          className="mt-6 rounded-[var(--pf-radius)] border border-pf-danger px-4 py-3 text-sm text-pf-danger"
-        >
-          <p>{serverError}</p>
-          <p className="mt-1">
-            Si sigue fallando, escríbenos directamente a{" "}
-            <a href="mailto:contacto@xync.es" className="underline underline-offset-4">
-              contacto@xync.es
-            </a>
-            .
-          </p>
-        </div>
-      ) : null}
+      <AnimatePresence>
+        {serverError ? (
+          <m.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            role="alert"
+            className="mt-6 rounded-[var(--pf-radius)] border border-pf-danger bg-pf-danger/5 px-4 py-3 text-sm text-pf-danger"
+          >
+            <p>{serverError}</p>
+            <p className="mt-1">
+              Si sigue fallando, escríbenos directamente a{" "}
+              <a href="mailto:contacto@xync.es" className="underline underline-offset-4">
+                contacto@xync.es
+              </a>
+              .
+            </p>
+          </m.div>
+        ) : null}
+      </AnimatePresence>
 
-      <input
-        id={inputId}
-        type={step.type}
-        value={value}
-        onChange={(event) => {
-          setValue(event.target.value);
-          onClearError();
-        }}
-        placeholder={step.placeholder}
-        autoComplete={step.autoComplete}
-        aria-labelledby={headingId}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={error ? errorId : undefined}
-        className="mt-9 w-full border-b border-pf-line-strong bg-transparent py-3 text-2xl font-medium text-pf-ink outline-none transition-colors placeholder:text-pf-muted focus:border-pf-ink md:text-3xl"
-      />
+      <div className="relative mt-9">
+        <input
+          id={inputId}
+          type={step.type}
+          value={value}
+          onChange={(event) => {
+            setValue(event.target.value);
+            onClearError();
+          }}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          placeholder={step.placeholder}
+          autoComplete={step.autoComplete}
+          aria-labelledby={headingId}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : undefined}
+          className="w-full border-b border-pf-line-strong bg-transparent py-3 text-2xl font-medium text-pf-ink outline-none placeholder:text-pf-muted md:text-3xl"
+        />
+        {/* Animated active focus hairline */}
+        <m.span
+          aria-hidden="true"
+          className="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-pf-ink"
+          initial={false}
+          animate={{ scaleX: isFocused ? 1 : 0 }}
+          transition={{ duration: 0.25, ease: pfEaseOut }}
+        />
+      </div>
 
-      {error ? (
-        <p id={errorId} role="alert" className="mt-3 text-sm text-pf-danger">
-          {error}
-        </p>
-      ) : null}
+      <AnimatePresence>
+        {error ? (
+          <m.p
+            id={errorId}
+            role="alert"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2, ease: pfEaseOut }}
+            className="mt-3 text-sm font-medium text-pf-danger"
+          >
+            {error}
+          </m.p>
+        ) : null}
+      </AnimatePresence>
 
       {step.withConsent ? (
         <div className="mt-8">
           <label
             htmlFor="funnel-consent"
-            className="flex items-start gap-3 text-sm text-pf-ink-soft"
+            className="group flex cursor-pointer items-start gap-3 text-sm text-pf-ink-soft select-none"
           >
-            <input
-              id="funnel-consent"
-              type="checkbox"
-              checked={consent}
-              onChange={(event) => onConsentChange(event.target.checked)}
-              aria-invalid={consentError ? true : undefined}
-              className="mt-0.5 h-4 w-4 flex-shrink-0 accent-pf-ink"
-            />
+            <span className="relative mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-[2px] border border-pf-line-strong bg-pf-bg transition-colors group-hover:border-pf-ink">
+              <input
+                id="funnel-consent"
+                type="checkbox"
+                checked={consent}
+                onChange={(event) => onConsentChange(event.target.checked)}
+                aria-invalid={consentError ? true : undefined}
+                className="sr-only"
+              />
+              {consent ? (
+                <m.svg
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-3 w-3 text-pf-ink"
+                  aria-hidden="true"
+                >
+                  <path d="m5 13 4 4L19 7" />
+                </m.svg>
+              ) : null}
+            </span>
             <span>
               He leído y acepto la{" "}
               <Link
@@ -128,11 +175,19 @@ export default function StepInput({
               .
             </span>
           </label>
-          {consentError ? (
-            <p role="alert" className="mt-2 text-sm text-pf-danger">
-              {consentError}
-            </p>
-          ) : null}
+          <AnimatePresence>
+            {consentError ? (
+              <m.p
+                role="alert"
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                className="mt-2 text-sm font-medium text-pf-danger"
+              >
+                {consentError}
+              </m.p>
+            ) : null}
+          </AnimatePresence>
         </div>
       ) : null}
 
@@ -150,7 +205,14 @@ export default function StepInput({
       </div>
 
       <div className="mt-9">
-        <Button type="submit" variant="primary" size="lg" disabled={submitting} withArrow>
+        <Button
+          type="submit"
+          variant="primary"
+          size="lg"
+          disabled={submitting}
+          loading={submitting}
+          withArrow
+        >
           {submitting ? "Enviando…" : "Continuar"}
         </Button>
       </div>

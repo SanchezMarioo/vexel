@@ -130,7 +130,7 @@ export default function CalButton({
     };
   }, []);
 
-  const classes = `group cursor-pointer inline-flex select-none items-center justify-center gap-2.5 rounded-[var(--pf-radius)] font-medium leading-none transition-[transform,background-color,border-color,color] duration-150 ease-[var(--pf-ease-quart)] active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100 ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
+  const classes = `group cursor-pointer inline-flex select-none items-center justify-center gap-2.5 rounded-[var(--pf-radius)] font-medium leading-none transition-[transform,background-color,border-color,color,box-shadow] duration-200 ease-[var(--pf-ease-quart)] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-2 ${sizeStyles[size]} ${variantStyles[variant]} ${className}`;
 
   const hasPrefill = Boolean(prefill?.name || prefill?.email);
   const calConfig = hasPrefill
