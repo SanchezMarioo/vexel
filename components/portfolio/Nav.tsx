@@ -106,7 +106,7 @@ export default function Nav() {
             withArrow
             aria-label="Empezar un proyecto con Xync"
           >
-            Empezar
+            Empezar proyecto
           </Button>
         </div>
 
