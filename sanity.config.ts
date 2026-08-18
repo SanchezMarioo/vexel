@@ -3,6 +3,7 @@ import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { sanityApiVersion, sanityDataset, sanityProjectId } from "./sanity/env";
 import { schemaTypes } from "./sanity/schemas";
+import { structure } from "./sanity/structure";
 
 /**
  * Studio embebido en /studio. Sin credenciales en código: projectId/dataset
@@ -15,6 +16,6 @@ export default defineConfig({
   projectId: sanityProjectId || "placeholder",
   dataset: sanityDataset,
   apiVersion: sanityApiVersion,
-  plugins: [structureTool(), visionTool()],
+  plugins: [structureTool({ structure }), visionTool()],
   schema: { types: schemaTypes },
 });

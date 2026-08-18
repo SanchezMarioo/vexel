@@ -17,16 +17,22 @@ export function scoreLead(lead: NormalizedLead): LeadScore {
   const reasons: string[] = [];
 
   switch (lead.presupuesto) {
+    case "mas-5000":
     case "mas-6000":
       value += 40;
       reasons.push("inversión alta");
       break;
+    case "2500-5000":
     case "3000-6000":
       value += 30;
       reasons.push("inversión media-alta");
       break;
+    case "1000-2500":
     case "1000-3000":
       value += 20;
+      break;
+    case "500-1000":
+      value += 10;
       break;
     default:
       value += 5;

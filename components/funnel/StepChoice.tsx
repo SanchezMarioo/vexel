@@ -112,7 +112,7 @@ export default function StepChoice({ step, selected, detail, onAnswer }: StepCho
               onClick={() => choose(option)}
               disabled={pendingOption !== null}
               aria-pressed={isSelected}
-              className={`group flex w-full cursor-pointer items-center justify-between gap-4 border-b border-pf-line px-3 py-5 text-left text-lg font-medium leading-snug transition-all duration-200 ease-[var(--pf-ease-quart)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pf-ink focus-visible:ring-offset-2 motion-reduce:transition-none ${
+              className={`group flex w-full cursor-pointer items-center justify-between gap-4 border-b border-pf-line px-3 py-5 text-left text-lg font-medium leading-snug transition-[background-color,color,padding,box-shadow] duration-200 ease-[var(--pf-ease-quart)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pf-ink focus-visible:ring-offset-2 motion-reduce:transition-none ${
                 isSelected
                   ? "bg-pf-ink text-pf-bg shadow-[0_2px_10px_-2px_oklch(0_0_0/0.2)]"
                   : "text-pf-ink hover:bg-pf-surface hover:pl-4"
@@ -121,7 +121,7 @@ export default function StepChoice({ step, selected, detail, onAnswer }: StepCho
               <span className="flex items-center gap-3">
                 <span
                   aria-hidden="true"
-                  className={`inline-block h-1.5 w-1.5 rounded-full transition-all duration-200 ${
+                  className={`inline-block h-1.5 w-1.5 rounded-full transition-[background-color,transform] duration-200 ${
                     isSelected ? "bg-pf-bg scale-125" : "bg-pf-line-strong group-hover:bg-pf-ink"
                   }`}
                 />
@@ -138,7 +138,7 @@ export default function StepChoice({ step, selected, detail, onAnswer }: StepCho
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   aria-hidden="true"
-                  className="h-4 w-4 opacity-0 transition-all duration-200 ease-[var(--pf-ease-out)] group-hover:translate-x-0.5 group-hover:opacity-60"
+                  className="h-4 w-4 opacity-0 transition-[opacity,transform] duration-200 ease-[var(--pf-ease-out)] group-hover:translate-x-0.5 group-hover:opacity-60"
                 >
                   <path d="M5 12h14m-6-6 6 6-6 6" />
                 </svg>

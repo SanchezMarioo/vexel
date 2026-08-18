@@ -199,19 +199,14 @@ export default function StepInput({
               .
             </span>
           </label>
-          <AnimatePresence>
-            {consentError ? (
-              <m.p
-                role="alert"
-                initial={{ opacity: 0, y: -4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                className="mt-2 text-sm font-medium text-pf-danger"
-              >
-                {consentError}
-              </m.p>
-            ) : null}
-          </AnimatePresence>
+          {consentError ? (
+            <p
+              role="alert"
+              className="mt-2 text-sm font-medium text-pf-danger"
+            >
+              {consentError}
+            </p>
+          ) : null}
         </div>
       ) : null}
 

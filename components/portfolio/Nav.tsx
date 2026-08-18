@@ -29,7 +29,7 @@ export default function Nav() {
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
 
-    if (sections.length === 0) return;
+    if (sections.length === 0) return () => {};
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -54,7 +54,7 @@ export default function Nav() {
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-all duration-300 ease-[var(--pf-ease)] ${
+      className={`sticky top-0 z-40 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 ease-[var(--pf-ease)] ${
         scrolled
           ? "border-b border-pf-line bg-pf-bg/85 backdrop-blur-md shadow-[0_4px_20px_-10px_oklch(0_0_0/0.05)]"
           : "border-b border-transparent bg-transparent"
@@ -120,12 +120,12 @@ export default function Nav() {
         >
           <span className="relative block h-3.5 w-5">
             <span
-              className={`absolute left-0 block h-[2px] w-5 bg-current transition-all duration-300 ease-[var(--pf-ease)] ${
+              className={`absolute left-0 block h-[2px] w-5 bg-current transition-[top,transform] duration-300 ease-[var(--pf-ease)] ${
                 open ? "top-1.5 rotate-45" : "top-0"
               }`}
             />
             <span
-              className={`absolute bottom-0 left-0 block h-[2px] w-5 bg-current transition-all duration-300 ease-[var(--pf-ease)] ${
+              className={`absolute bottom-0 left-0 block h-[2px] w-5 bg-current transition-[bottom,transform] duration-300 ease-[var(--pf-ease)] ${
                 open ? "bottom-1.5 -rotate-45" : ""
               }`}
             />
@@ -137,9 +137,9 @@ export default function Nav() {
         {open ? (
           <m.div
             id="mobile-menu"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25, ease: pfEaseOut }}
             className="overflow-hidden border-t border-pf-line bg-pf-bg/95 backdrop-blur-md md:hidden"
           >

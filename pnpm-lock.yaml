@@ -17,9 +17,6 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.4.0
         version: 5.5.7(react-hook-form@7.83.0(react@19.2.4))(valibot@1.4.2(typescript@5.9.3))(zod@4.4.3)
-      '@sanity/icons':
-        specifier: ^5.2.1
-        version: 5.2.1(react@19.2.4)
       '@sanity/image-url':
         specifier: ^2.1.1
         version: 2.1.1
@@ -65,9 +62,6 @@ importers:
       server-only:
         specifier: ^0.0.1
         version: 0.0.1
-      styled-components:
-        specifier: ^6.4.4
-        version: 6.4.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       zod:
         specifier: ^4.3.6
         version: 4.4.3

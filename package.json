@@ -13,7 +13,6 @@
     "dependencies": {
         "@calcom/embed-react": "^1.5.3",
         "@hookform/resolvers": "^5.4.0",
-        "@sanity/icons": "^5.2.1",
         "@sanity/image-url": "^2.1.1",
         "@sanity/vision": "^5.31.1",
         "@upstash/ratelimit": "^2.0.8",
@@ -29,7 +28,6 @@
         "react-hook-form": "^7.79.0",
         "sanity": "^5.31.1",
         "server-only": "^0.0.1",
-        "styled-components": "^6.4.4",
         "zod": "^4.3.6"
     },
     "devDependencies": {

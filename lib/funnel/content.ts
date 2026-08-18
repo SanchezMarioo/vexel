@@ -41,11 +41,16 @@ export const WEB_ACTUAL_IDS = [
 ] as const;
 
 export const PRESUPUESTO_IDS = [
+  "menos-500",
+  "500-1000",
+  "1000-2500",
+  "2500-5000",
+  "mas-5000",
+  "no-claro",
   "menos-1000",
   "1000-3000",
   "3000-6000",
   "mas-6000",
-  "no-claro",
 ] as const;
 
 export const PLAZO_IDS = [
@@ -473,11 +478,4 @@ export function answerLabel(stepId: StepId, answers: FunnelAnswers): string {
   }
 
   return option.label;
-}
-
-/**
- * Texto de la respuesta para el payload enviado al backend/sheet.
- */
-export function answerValue(stepId: StepId, answers: FunnelAnswers): string {
-  return answerLabel(stepId, answers);
 }

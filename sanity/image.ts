@@ -40,17 +40,3 @@ export function urlForOgImage(source: SanityImageSource): string {
     .dpr(1)
     .url();
 }
-
-/** Loader personalizado de next/image para imágenes de Sanity CDN. */
-export function sanityImageLoader({
-  src,
-  width,
-}: {
-  src: string;
-  width: number;
-  quality?: number;
-}): string {
-  // src ya es una URL de cdn.sanity.io: pedimos el ancho exacto a la CDN.
-  const separator = src.includes("?") ? "&" : "?";
-  return `${src}${separator}w=${width}&auto=format&q=80`;
-}

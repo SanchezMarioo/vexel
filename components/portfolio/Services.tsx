@@ -38,7 +38,7 @@ export default function Services() {
             <m.li
               key={service.id}
               variants={fadeUp}
-              className="group grid gap-5 border-b border-pf-line px-3 py-9 transition-all duration-300 ease-[var(--pf-ease-out)] hover:bg-pf-surface/60 hover:px-5 md:grid-cols-12 md:gap-8 rounded-[var(--pf-radius)]"
+              className="group grid gap-5 border-b border-pf-line px-3 py-9 transition-[background-color,padding] duration-300 ease-[var(--pf-ease-out)] hover:bg-pf-surface/60 hover:px-5 md:grid-cols-12 md:gap-8 rounded-[var(--pf-radius)]"
             >
               <div className="md:col-span-5">
                 <h3 className="pf-display text-2xl leading-tight text-pf-ink transition-transform duration-300 ease-[var(--pf-ease-out)] group-hover:translate-x-1 md:text-[1.7rem]">

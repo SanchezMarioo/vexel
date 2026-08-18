@@ -398,11 +398,6 @@ export function pickRelatedPosts(all: BlogPost[], slug: string, limit = 3): Blog
   return [...sameCategory, ...rest].slice(0, limit);
 }
 
-/** Relacionados del contenido local (azúcar sobre pickRelatedPosts). */
-export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {
-  return pickRelatedPosts(getPostsByDate(), slug, limit);
-}
-
 const WORDS_PER_MINUTE = 200;
 
 function countWords(text: string): number {
@@ -446,12 +441,14 @@ export function getWordCount(post: BlogPost): number {
   return resolveWordCount(post);
 }
 
+const postDateFormatter = new Intl.DateTimeFormat("es", {
+  day: "numeric",
+  month: "long",
+  year: "numeric",
+  timeZone: "UTC",
+});
+
 /** Fecha larga en español, estable en servidor (zona UTC fija). */
 export function formatPostDate(isoDate: string): string {
-  return new Intl.DateTimeFormat("es", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(`${isoDate}T00:00:00Z`));
+  return postDateFormatter.format(new Date(`${isoDate}T00:00:00Z`));
 }

@@ -70,20 +70,6 @@ export const POST_BY_SLUG_QUERY = groq`
   }
 `;
 
-/** Slugs publicados (generateStaticParams). */
-export const POST_SLUGS_QUERY = groq`
-  *[_type == "post" && defined(slug.current)].slug.current
-`;
-
-/** Categorías con recuento de artículos. */
-export const CATEGORIES_QUERY = groq`
-  *[_type == "category"] | order(title asc) {
-    title,
-    "slug": slug.current,
-    "postCount": count(*[_type == "post" && references(^._id)])
-  }
-`;
-
 const SERVICE_CARD_FIELDS = groq`
   _id,
   "slug": slug.current,
@@ -138,9 +124,4 @@ export const SERVICE_BY_SLUG_QUERY = groq`
       "height": asset->metadata.dimensions.height
     }
   }
-`;
-
-/** Slugs publicados para precargar páginas conocidas durante el build. */
-export const SERVICE_SLUGS_QUERY = groq`
-  *[_type == "service" && status == "published" && defined(slug.current)].slug.current
 `;

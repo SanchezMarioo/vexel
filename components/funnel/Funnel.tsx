@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, m } from "framer-motion";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useReducer, useRef } from "react";
 import Button from "@/components/portfolio/ui/Button";
 import { getAttribution } from "@/lib/funnel/attribution";
 import {
@@ -29,6 +29,34 @@ interface FunnelDraft {
   activeIndex: number;
   consent: boolean;
 }
+
+interface FunnelState {
+  view: View;
+  answers: FunnelAnswers;
+  activeIndex: number;
+  consent: boolean;
+  fieldError: string | null;
+  consentError: string | null;
+  serverError: string | null;
+  submitting: boolean;
+  honeypot: string;
+  direction: 1 | -1;
+}
+
+type FunnelAction =
+  | { type: "RESTORE_DRAFT"; payload: FunnelDraft }
+  | { type: "START_QUESTIONS" }
+  | { type: "ANSWER_STEP"; payload: { stepId: StepId; patch: Partial<FunnelAnswers> } }
+  | { type: "EDIT_STEP"; payload: { index: number } }
+  | { type: "GO_BACK" }
+  | { type: "SET_FIELD_ERROR"; payload: string | null }
+  | { type: "SET_CONSENT_ERROR"; payload: string | null }
+  | { type: "SET_SERVER_ERROR"; payload: string | null }
+  | { type: "SET_CONSENT"; payload: boolean }
+  | { type: "SET_HONEYPOT"; payload: string }
+  | { type: "SUBMIT_START" }
+  | { type: "SUBMIT_SUCCESS"; payload: FunnelAnswers }
+  | { type: "SUBMIT_ERROR"; payload: string };
 
 function readDraft(): FunnelDraft | null {
   try {
@@ -153,6 +181,177 @@ function choicePatch(
   }
 }
 
+const initialFunnelState: FunnelState = {
+  view: "intro",
+  answers: {},
+  activeIndex: 0,
+  consent: false,
+  fieldError: null,
+  consentError: null,
+  serverError: null,
+  submitting: false,
+  honeypot: "",
+  direction: 1,
+};
+
+function funnelReducer(state: FunnelState, action: FunnelAction): FunnelState {
+  switch (action.type) {
+    case "RESTORE_DRAFT":
+      return {
+        ...state,
+        answers: action.payload.answers,
+        activeIndex: action.payload.activeIndex,
+        consent: action.payload.consent,
+        view: "questions",
+      };
+    case "START_QUESTIONS":
+      return {
+        ...state,
+        view: "questions",
+      };
+    case "ANSWER_STEP": {
+      const { stepId, patch } = action.payload;
+      const merged = { ...state.answers, ...patch };
+      const seq = stepSequence(merged);
+      const index = seq.indexOf(stepId);
+      const nextAnswers: FunnelAnswers = { ...merged };
+
+      for (const later of seq.slice(index + 1)) {
+        const fieldKey = FIELD_BY_STEP[later];
+        if (fieldKey) delete nextAnswers[fieldKey];
+      }
+      if (stepId === "situacion" && nextAnswers.situacion !== "otra") {
+        delete nextAnswers.situacionDetalle;
+      }
+      if (stepId === "tipo") {
+        if (nextAnswers.tipo !== "tienda") delete nextAnswers.catalogo;
+        if (nextAnswers.tipo !== "arreglar" && nextAnswers.tipo !== "redisenar") delete nextAnswers.webActual;
+      }
+
+      return {
+        ...state,
+        direction: 1,
+        answers: nextAnswers,
+        fieldError: null,
+        activeIndex: state.activeIndex + 1,
+      };
+    }
+    case "EDIT_STEP": {
+      const { index } = action.payload;
+      const seq = stepSequence(state.answers);
+      const nextAnswers: FunnelAnswers = { ...state.answers };
+      for (const later of seq.slice(index + 1)) {
+        const fieldKey = FIELD_BY_STEP[later];
+        if (fieldKey) delete nextAnswers[fieldKey];
+      }
+      return {
+        ...state,
+        direction: -1,
+        answers: nextAnswers,
+        fieldError: null,
+        consentError: null,
+        serverError: null,
+        activeIndex: index,
+        view: "questions",
+      };
+    }
+    case "GO_BACK":
+      return {
+        ...state,
+        direction: -1,
+        activeIndex: Math.max(0, state.activeIndex - 1),
+        fieldError: null,
+        consentError: null,
+        serverError: null,
+      };
+    case "SET_FIELD_ERROR":
+      return { ...state, fieldError: action.payload };
+    case "SET_CONSENT_ERROR":
+      return { ...state, consentError: action.payload };
+    case "SET_SERVER_ERROR":
+      return { ...state, serverError: action.payload };
+    case "SET_CONSENT":
+      return { ...state, consent: action.payload, consentError: null };
+    case "SET_HONEYPOT":
+      return { ...state, honeypot: action.payload };
+    case "SUBMIT_START":
+      return { ...state, submitting: true, serverError: null };
+    case "SUBMIT_SUCCESS":
+      return {
+        ...state,
+        submitting: false,
+        answers: action.payload,
+        view: "summary",
+      };
+    case "SUBMIT_ERROR":
+      return {
+        ...state,
+        submitting: false,
+        serverError: action.payload,
+      };
+    default:
+      return state;
+  }
+}
+
+function FunnelIntro({ onStart }: { onStart: () => void }) {
+  return (
+    <section className="mx-auto flex w-full max-w-[44rem] flex-1 flex-col justify-center px-6 py-24 md:py-32">
+      <m.div initial="hidden" animate="visible" variants={stagger(0.12, 0.05)}>
+        <m.h1
+          variants={heroLcpSafe}
+          className="pf-display text-pf-ink-strong"
+          style={{ fontSize: "clamp(2.4rem, 5.4vw, 4.4rem)" }}
+        >
+          Ya has visto lo que hacemos. Ahora cuéntanos qué necesitas.
+        </m.h1>
+        <m.p variants={fadeUp} className="mt-6 max-w-prose text-lg leading-relaxed text-pf-ink-soft">
+          Un par de minutos, una pregunta cada vez. Sin compromiso: al terminar decides si
+          reservamos una llamada.
+        </m.p>
+        <m.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
+          <Button
+            type="button"
+            variant="solid"
+            size="lg"
+            withArrow
+            onClick={onStart}
+          >
+            Empezar
+          </Button>
+          <p className="text-sm text-pf-muted">
+            ¿Prefieres el email directo?{" "}
+            <a
+              href={`mailto:${identity.email}`}
+              className="text-pf-ink underline-offset-4 hover:underline"
+            >
+              {identity.email}
+            </a>
+          </p>
+        </m.div>
+        <noscript>
+          <div className="mt-10 border border-pf-line-strong p-6 text-pf-ink">
+            <p className="leading-relaxed">
+              Este proceso necesita JavaScript. Si prefieres no activarlo, escríbenos a{" "}
+              <a href={`mailto:${identity.email}`} className="underline underline-offset-4">
+                {identity.email}
+              </a>{" "}
+              o reserva una llamada directamente en{" "}
+              <a
+                href={`https://cal.com/${identity.calUrl}`}
+                className="underline underline-offset-4"
+              >
+                cal.com/{identity.calUrl}
+              </a>
+              .
+            </p>
+          </div>
+        </noscript>
+      </m.div>
+    </section>
+  );
+}
+
 /**
  * Funnel de captación de Xync: una transcripción acumulada. Una pregunta
  * activa cada vez; lo respondido se pliega hacia arriba como registro visible
@@ -160,19 +359,22 @@ function choicePatch(
  * con el resumen, la cualificación y la reserva en Cal.com.
  */
 export default function Funnel() {
-  const [view, setView] = useState<View>("intro");
-  const [answers, setAnswers] = useState<FunnelAnswers>({});
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [consent, setConsent] = useState(false);
-  const [fieldError, setFieldError] = useState<string | null>(null);
-  const [consentError, setConsentError] = useState<string | null>(null);
-  const [serverError, setServerError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-  const [sentOnce, setSentOnce] = useState(false);
-  const [honeypot, setHoneypot] = useState("");
-  const activeRef = useRef<HTMLDivElement>(null);
+  const [state, dispatch] = useReducer(funnelReducer, initialFunnelState);
+  const {
+    view,
+    answers,
+    activeIndex,
+    consent,
+    fieldError,
+    consentError,
+    serverError,
+    submitting,
+    honeypot,
+    direction,
+  } = state;
 
-  const [direction, setDirection] = useState<1 | -1>(1);
+  const sentOnceRef = useRef(false);
+  const activeRef = useRef<HTMLDivElement>(null);
 
   const sequence = useMemo(() => stepSequence(answers), [answers]);
   const activeStepId = sequence[Math.min(activeIndex, sequence.length - 1)];
@@ -185,12 +387,7 @@ export default function Funnel() {
     trackFunnelEvent("lead_form_view");
     const draft = readDraft();
     if (draft) {
-      // Restauración única de estado persistido tras montaje para evitar hydration mismatch.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setAnswers(draft.answers);
-      setActiveIndex(draft.activeIndex);
-      setConsent(draft.consent);
-      setView("questions");
+      dispatch({ type: "RESTORE_DRAFT", payload: draft });
     }
   }, []);
 
@@ -220,28 +417,7 @@ export default function Funnel() {
   /** Responder: aplica el patch y limpia todo lo que cuelga río abajo. */
   function answerStep(stepId: StepId, patch: Partial<FunnelAnswers>) {
     trackFunnelEvent("lead_form_step_completed", { step: stepId });
-    setDirection(1);
-    setAnswers((prev) => {
-      const merged = { ...prev, ...patch };
-      const seq = stepSequence(merged);
-      const index = seq.indexOf(stepId);
-      const next: FunnelAnswers = { ...merged };
-
-      for (const later of seq.slice(index + 1)) {
-        const fieldKey = FIELD_BY_STEP[later];
-        if (fieldKey) delete next[fieldKey];
-      }
-      if (stepId === "situacion" && next.situacion !== "otra") {
-        delete next.situacionDetalle;
-      }
-      if (stepId === "tipo") {
-        if (next.tipo !== "tienda") delete next.catalogo;
-        if (next.tipo !== "arreglar" && next.tipo !== "redisenar") delete next.webActual;
-      }
-      return next;
-    });
-    setFieldError(null);
-    setActiveIndex((index) => index + 1);
+    dispatch({ type: "ANSWER_STEP", payload: { stepId, patch } });
   }
 
   /** Volver desde el registro o el resumen: conserva el valor, limpia lo posterior. */
@@ -249,36 +425,21 @@ export default function Funnel() {
     const index = sequence.indexOf(stepId);
     if (index === -1) return;
 
-    setDirection(-1);
-    setAnswers((prev) => {
-      const seq = stepSequence(prev);
-      const next: FunnelAnswers = { ...prev };
-      for (const later of seq.slice(index + 1)) {
-        const fieldKey = FIELD_BY_STEP[later];
-        if (fieldKey) delete next[fieldKey];
-      }
-      return next;
-    });
-    setFieldError(null);
-    setConsentError(null);
-    setServerError(null);
-    setActiveIndex(index);
-    setView("questions");
+    dispatch({ type: "EDIT_STEP", payload: { index } });
     scrollToTop();
   }
 
   function goBack() {
-    setDirection(-1);
-    setActiveIndex((index) => Math.max(0, index - 1));
-    setFieldError(null);
-    setConsentError(null);
-    setServerError(null);
+    dispatch({ type: "GO_BACK" });
   }
 
   async function handleFinalSubmit(finalAnswers: FunnelAnswers) {
-    setConsentError(null);
+    dispatch({ type: "SET_CONSENT_ERROR", payload: null });
     if (!consent) {
-      setConsentError("Debes aceptar la política de privacidad para enviar.");
+      dispatch({
+        type: "SET_CONSENT_ERROR",
+        payload: "Debes aceptar la política de privacidad para enviar.",
+      });
       return;
     }
 
@@ -297,7 +458,7 @@ export default function Funnel() {
       email: finalAnswers.email,
       telefono: finalAnswers.telefono,
       consent,
-      actualizacion: sentOnce,
+      actualizacion: sentOnceRef.current,
       company: honeypot,
       ...getAttribution(),
     };
@@ -305,16 +466,25 @@ export default function Funnel() {
     const parsed = funnelSchema.safeParse(payload);
     if (!parsed.success) {
       const issue = parsed.error.issues[0];
-      const message = issue?.message ?? "Revisa tus respuestas.";
-      if (issue?.path[0] === "email") setFieldError(message);
-      else if (issue?.path[0] === "nombre") setFieldError(message);
-      else if (issue?.path[0] === "consent") setConsentError(message);
-      else setServerError(message);
+      const field = issue?.path[0] as string | undefined;
+      const message = issue?.message ?? "Revisa tus respuestas antes de enviar.";
+      if (field === "email") dispatch({ type: "SET_FIELD_ERROR", payload: message });
+      else if (field === "nombre") dispatch({ type: "SET_FIELD_ERROR", payload: message });
+      else if (field === "telefono") dispatch({ type: "SET_FIELD_ERROR", payload: message });
+      else if (field === "consent") dispatch({ type: "SET_CONSENT_ERROR", payload: message });
+      else {
+        const stepIndex = sequence.findIndex((stepId) => FIELD_BY_STEP[stepId] === field);
+        if (stepIndex !== -1) {
+          dispatch({ type: "EDIT_STEP", payload: { index: stepIndex } });
+          dispatch({ type: "SET_FIELD_ERROR", payload: message });
+        } else {
+          dispatch({ type: "SET_SERVER_ERROR", payload: message });
+        }
+      }
       return;
     }
 
-    setSubmitting(true);
-    setServerError(null);
+    dispatch({ type: "SUBMIT_START" });
     trackFunnelEvent("lead_form_submit");
     try {
       const res = await fetch("/api/funnel", {
@@ -325,20 +495,23 @@ export default function Funnel() {
       const data = (await res.json()) as { ok: boolean; message?: string };
 
       if (!res.ok || !data.ok) {
-        setServerError(data.message ?? "No pudimos enviar tus respuestas. Inténtalo de nuevo.");
+        dispatch({
+          type: "SUBMIT_ERROR",
+          payload: data.message ?? "No pudimos enviar tus respuestas. Inténtalo de nuevo.",
+        });
         return;
       }
 
-      setAnswers(finalAnswers);
-      setSentOnce(true);
-      setView("summary");
+      sentOnceRef.current = true;
+      dispatch({ type: "SUBMIT_SUCCESS", payload: finalAnswers });
       clearDraft();
       trackFunnelEvent("lead_form_success");
       scrollToTop();
     } catch {
-      setServerError("Error de conexión. Revisa tu red e inténtalo de nuevo.");
-    } finally {
-      setSubmitting(false);
+      dispatch({
+        type: "SUBMIT_ERROR",
+        payload: "Error de conexión. Revisa tu red e inténtalo de nuevo.",
+      });
     }
   }
 
@@ -347,40 +520,47 @@ export default function Funnel() {
 
     if (activeStepId === "nombre") {
       if (trimmed.length < 2) {
-        setFieldError("Dime tu nombre.");
+        dispatch({ type: "SET_FIELD_ERROR", payload: "Dime tu nombre." });
         return;
       }
       if (trimmed.length > 80) {
-        setFieldError("Ese nombre es demasiado largo.");
+        dispatch({ type: "SET_FIELD_ERROR", payload: "Ese nombre es demasiado largo." });
         return;
       }
       if (/[<>]/.test(trimmed)) {
-        setFieldError("El nombre contiene caracteres no permitidos.");
+        dispatch({ type: "SET_FIELD_ERROR", payload: "El nombre contiene caracteres no permitidos." });
         return;
       }
     } else if (activeStepId === "email") {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(trimmed)) {
-        setFieldError("Introduce un email válido.");
+        dispatch({ type: "SET_FIELD_ERROR", payload: "Introduce un email válido." });
         return;
       }
       if (!consent) {
-        setConsentError("Debes aceptar la política de privacidad para enviar.");
+        dispatch({
+          type: "SET_CONSENT_ERROR",
+          payload: "Debes aceptar la política de privacidad para enviar.",
+        });
         return;
       }
     } else if (activeStepId === "descripcion") {
       if (trimmed.length > 2000) {
-        setFieldError("El texto es demasiado largo.");
+        dispatch({ type: "SET_FIELD_ERROR", payload: "El texto es demasiado largo." });
         return;
       }
     } else if (activeStepId === "empresa") {
       if (trimmed.length > 120) {
-        setFieldError("El nombre de la empresa es demasiado largo.");
+        dispatch({ type: "SET_FIELD_ERROR", payload: "El nombre de la empresa es demasiado largo." });
         return;
       }
     } else if (activeStepId === "telefono") {
+      if (trimmed.length > 0 && !/^[+0-9\s().-]{6,30}$/.test(trimmed)) {
+        dispatch({ type: "SET_FIELD_ERROR", payload: "Introduce un número de teléfono válido o déjalo en blanco." });
+        return;
+      }
       if (trimmed.length > 40) {
-        setFieldError("El teléfono es demasiado largo.");
+        dispatch({ type: "SET_FIELD_ERROR", payload: "El número de teléfono es demasiado largo." });
         return;
       }
     }
@@ -402,63 +582,13 @@ export default function Funnel() {
 
   if (view === "intro") {
     return (
-      <section className="mx-auto flex w-full max-w-[44rem] flex-1 flex-col justify-center px-6 py-24 md:py-32">
-        <m.div initial="hidden" animate="visible" variants={stagger(0.12, 0.05)}>
-          <m.h1
-            variants={heroLcpSafe}
-            className="pf-display text-pf-ink-strong"
-            style={{ fontSize: "clamp(2.4rem, 5.4vw, 4.4rem)" }}
-          >
-            Ya has visto lo que hacemos. Ahora cuéntanos qué necesitas.
-          </m.h1>
-          <m.p variants={fadeUp} className="mt-6 max-w-prose text-lg leading-relaxed text-pf-ink-soft">
-            Un par de minutos, una pregunta cada vez. Sin compromiso: al terminar decides si
-            reservamos una llamada.
-          </m.p>
-          <m.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
-            <Button
-              type="button"
-              variant="solid"
-              size="lg"
-              withArrow
-              onClick={() => {
-                trackFunnelEvent("lead_form_start");
-                setView("questions");
-                scrollToTop();
-              }}
-            >
-              Empezar
-            </Button>
-            <p className="text-sm text-pf-muted">
-              ¿Prefieres el email directo?{" "}
-              <a
-                href={`mailto:${identity.email}`}
-                className="text-pf-ink underline-offset-4 hover:underline"
-              >
-                {identity.email}
-              </a>
-            </p>
-          </m.div>
-          <noscript>
-            <div className="mt-10 border border-pf-line-strong p-6 text-pf-ink">
-              <p className="leading-relaxed">
-                Este proceso necesita JavaScript. Si prefieres no activarlo, escríbenos a{" "}
-                <a href={`mailto:${identity.email}`} className="underline underline-offset-4">
-                  {identity.email}
-                </a>{" "}
-                o reserva una llamada directamente en{" "}
-                <a
-                  href={`https://cal.com/${identity.calUrl}`}
-                  className="underline underline-offset-4"
-                >
-                  cal.com/{identity.calUrl}
-                </a>
-                .
-              </p>
-            </div>
-          </noscript>
-        </m.div>
-      </section>
+      <FunnelIntro
+        onStart={() => {
+          trackFunnelEvent("lead_form_start");
+          dispatch({ type: "START_QUESTIONS" });
+          scrollToTop();
+        }}
+      />
     );
   }
 
@@ -476,9 +606,9 @@ export default function Funnel() {
         className="relative h-[2px] w-full overflow-hidden rounded-full bg-pf-line"
       >
         <m.div
-          className="h-full bg-pf-ink"
+          className="h-full w-full origin-left bg-pf-ink"
           initial={false}
-          animate={{ width: `${progressRatio * 100}%` }}
+          animate={{ scaleX: progressRatio }}
           transition={{ duration: 0.35, ease: pfEaseOut }}
         />
       </div>
@@ -557,12 +687,11 @@ export default function Funnel() {
               submitting={submitting}
               isLastStep={activeIndex === sequence.length - 1}
               honeypot={honeypot}
-              onClearError={() => setFieldError(null)}
+              onClearError={() => dispatch({ type: "SET_FIELD_ERROR", payload: null })}
               onConsentChange={(value) => {
-                setConsent(value);
-                setConsentError(null);
+                dispatch({ type: "SET_CONSENT", payload: value });
               }}
-              onHoneypotChange={setHoneypot}
+              onHoneypotChange={(val) => dispatch({ type: "SET_HONEYPOT", payload: val })}
               onSubmit={handleInputStep}
             />
           )}

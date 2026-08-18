@@ -24,14 +24,34 @@ const utmField = optionalText(150);
  */
 export const funnelSchema = z
   .object({
-    situacion: z.enum(SITUACION_IDS),
+    situacion: z.enum(SITUACION_IDS, {
+      message: "Selecciona una opción sobre tu situación actual.",
+    }),
     situacionDetalle: z.string().trim().max(500, "Con una línea nos vale.").optional(),
-    tipo: z.enum(TIPO_IDS),
-    objetivo: z.enum(OBJETIVO_IDS).optional(),
-    catalogo: z.enum(CATALOGO_IDS).optional(),
-    webActual: z.enum(WEB_ACTUAL_IDS).optional(),
-    presupuesto: z.enum(PRESUPUESTO_IDS),
-    plazo: z.enum(PLAZO_IDS),
+    tipo: z.enum(TIPO_IDS, {
+      message: "Selecciona qué tipo de proyecto necesitas.",
+    }),
+    objetivo: z
+      .enum(OBJETIVO_IDS, {
+        message: "Selecciona el objetivo de tu web.",
+      })
+      .optional(),
+    catalogo: z
+      .enum(CATALOGO_IDS, {
+        message: "Selecciona el tamaño aproximado de tu catálogo.",
+      })
+      .optional(),
+    webActual: z
+      .enum(WEB_ACTUAL_IDS, {
+        message: "Selecciona el estado de tu web actual.",
+      })
+      .optional(),
+    presupuesto: z.enum(PRESUPUESTO_IDS, {
+      message: "Selecciona un rango de presupuesto orientativo.",
+    }),
+    plazo: z.enum(PLAZO_IDS, {
+      message: "Selecciona el plazo estimado para tu proyecto.",
+    }),
     descripcion: z.string().trim().max(2000, "El texto es demasiado largo.").optional(),
     nombre: z
       .string()
@@ -45,7 +65,11 @@ export const funnelSchema = z
       .trim()
       .email("Introduce un email válido.")
       .max(320, "El email es demasiado largo."),
-    telefono: z.string().trim().max(40, "El teléfono es demasiado largo.").optional(),
+    telefono: z
+      .string()
+      .trim()
+      .max(40, "El número de teléfono o móvil es demasiado largo.")
+      .optional(),
     // RGPD: consentimiento explícito obligatorio para tratar los datos del lead.
     consent: z
       .boolean()

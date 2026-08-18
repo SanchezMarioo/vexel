@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, m, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { useId, useState } from "react";
 
 type FaqItem = { question: string; answer: string };
@@ -39,22 +39,18 @@ function ServiceFaqItem({ item }: { item: FaqItem }) {
           </m.span>
         </button>
       </h3>
-      <AnimatePresence initial={false}>
-        {open ? (
-          <m.div
-            id={panelId}
-            role="region"
-            aria-labelledby={buttonId}
-            initial={reducedMotion ? false : { height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={reducedMotion ? { opacity: 0 } : { height: 0, opacity: 0 }}
-            transition={itemTransition}
-            className="overflow-hidden"
-          >
-            <p className="pf-prose pt-4 text-pf-ink-soft">{item.answer}</p>
-          </m.div>
-        ) : null}
-      </AnimatePresence>
+      <div
+        id={panelId}
+        role="region"
+        aria-labelledby={buttonId}
+        className={`grid transition-[grid-template-rows,opacity] duration-250 ease-[var(--pf-ease-out)] motion-reduce:transition-none ${
+          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+        }`}
+      >
+        <div className="overflow-hidden">
+          <p className="pf-prose pt-4 text-pf-ink-soft">{item.answer}</p>
+        </div>
+      </div>
     </div>
   );
 }

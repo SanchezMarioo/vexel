@@ -91,7 +91,7 @@ export default function Projects() {
               <Link
                 href={`/proyectos/${featured.slug}`}
                 aria-label={`Ver el caso: ${featured.title}`}
-                className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line shadow-[0_4px_20px_-8px_oklch(0_0_0/0.08)] transition-all duration-300 hover:shadow-[0_16px_36px_-12px_oklch(0_0_0/0.18)]"
+                className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line shadow-[0_4px_20px_-8px_oklch(0_0_0/0.08)] transition-shadow duration-300 hover:shadow-[0_16px_36px_-12px_oklch(0_0_0/0.18)]"
               >
                 <div className="overflow-hidden transition-transform duration-500 ease-[var(--pf-ease-out)] group-hover:scale-[1.02] motion-reduce:group-hover:scale-100">
                   <ImageSlot image={featured.image} />
@@ -129,7 +129,7 @@ export default function Projects() {
                 <Link
                   href={`/proyectos/${project.slug}`}
                   aria-label={`Ver el caso: ${project.title}`}
-                  className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line shadow-[0_4px_16px_-8px_oklch(0_0_0/0.06)] transition-all duration-300 hover:shadow-[0_14px_30px_-10px_oklch(0_0_0/0.15)]"
+                  className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line shadow-[0_4px_16px_-8px_oklch(0_0_0/0.06)] transition-shadow duration-300 hover:shadow-[0_14px_30px_-10px_oklch(0_0_0/0.15)]"
                 >
                   <div className="overflow-hidden transition-transform duration-500 ease-[var(--pf-ease-out)] group-hover:scale-[1.02] motion-reduce:group-hover:scale-100">
                     <ImageSlot image={project.image} />

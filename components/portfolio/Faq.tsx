@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, m, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { faqs } from "@/lib/portfolio/content";
 
@@ -44,7 +44,7 @@ export default function Faq() {
                       aria-expanded={isOpen}
                       aria-controls={panelId}
                       onClick={() => setOpenIndex(isOpen ? null : index)}
-                      className={`-mx-3 flex w-[calc(100%+1.5rem)] cursor-pointer items-center justify-between gap-6 rounded-[var(--pf-radius)] px-3 py-5 text-left transition-all duration-200 ease-[var(--pf-ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pf-ink focus-visible:ring-offset-2 motion-reduce:transition-none ${
+                      className={`-mx-3 flex w-[calc(100%+1.5rem)] cursor-pointer items-center justify-between gap-6 rounded-[var(--pf-radius)] px-3 py-5 text-left transition-colors duration-200 ease-[var(--pf-ease-out)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pf-ink focus-visible:ring-offset-2 motion-reduce:transition-none ${
                         isOpen ? "bg-pf-surface" : "hover:bg-pf-surface/60"
                       }`}
                     >
@@ -67,23 +67,18 @@ export default function Faq() {
                       </m.span>
                     </button>
                   </h3>
-                  <AnimatePresence initial={false} mode="wait">
-                    {isOpen ? (
-                      <m.div
-                        key={faq.question}
-                        id={panelId}
-                        role="region"
-                        aria-labelledby={buttonId}
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: reducedMotion ? "auto" : 0, opacity: 0 }}
-                        transition={panelTransition}
-                        className="overflow-hidden"
-                      >
-                        <p className="pf-prose pb-6 pr-10 text-pf-ink-soft leading-relaxed">{faq.answer}</p>
-                      </m.div>
-                    ) : null}
-                  </AnimatePresence>
+                  <div
+                    id={panelId}
+                    role="region"
+                    aria-labelledby={buttonId}
+                    className={`grid transition-[grid-template-rows,opacity] duration-250 ease-[var(--pf-ease-out)] motion-reduce:transition-none ${
+                      isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <p className="pf-prose pb-6 pr-10 text-pf-ink-soft leading-relaxed">{faq.answer}</p>
+                    </div>
+                  </div>
                 </li>
               );
             })}

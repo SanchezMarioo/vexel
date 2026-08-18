@@ -101,7 +101,7 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
                 type="button"
                 onClick={() => onEdit(stepId)}
                 aria-label={`Editar respuesta: ${steps[stepId].record}`}
-                className="group flex w-full cursor-pointer items-center justify-between border-b border-pf-inverse-ink/15 px-2 py-4 text-left transition-all duration-200 hover:bg-pf-inverse-ink/5 hover:pl-3 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-pf-inverse-ink"
+                className="group flex w-full cursor-pointer items-center justify-between border-b border-pf-inverse-ink/15 px-2 py-4 text-left transition-[background-color,padding] duration-200 hover:bg-pf-inverse-ink/5 hover:pl-3 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-pf-inverse-ink"
               >
                 <div className="flex flex-col gap-1 pr-4">
                   <span className="pf-mono text-xs uppercase tracking-wide text-pf-inverse-ink/50">
@@ -111,7 +111,7 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
                     {answerLabel(stepId, answers)}
                   </span>
                 </div>
-                <span className="pf-mono text-xs text-pf-inverse-ink/40 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100">
+                <span className="pf-mono text-xs text-pf-inverse-ink/40 opacity-0 transition-[opacity,transform] duration-200 group-hover:translate-x-0 group-hover:opacity-100">
                   Editar →
                 </span>
               </button>

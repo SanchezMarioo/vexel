@@ -17,21 +17,33 @@ import { urlForImage } from "@/sanity/image";
  * ya entiende: enlaces [texto](url), **negrita** y *cursiva*.
  */
 
-function serializeSpan(span: SanitySpan, block: SanityPtBlock): string {
-  const marks = span.marks ?? [];
-  const linkMark = block.markDefs?.find(
-    (def) => def._type === "link" && marks.includes(def._key) && def.href,
-  );
-
+function serializeSpan(span: SanitySpan, linkDefsMap: Map<string, string>): string {
+  const marks = span.marks ? new Set(span.marks) : null;
   let text = span.text;
-  if (marks.includes("strong")) text = `**${text}**`;
-  if (marks.includes("em")) text = `*${text}*`;
-  if (linkMark?.href) text = `[${text}](${linkMark.href})`;
+  if (!marks || marks.size === 0) return text;
+
+  if (marks.has("strong")) text = `**${text}**`;
+  if (marks.has("em")) text = `*${text}*`;
+  for (const mark of marks) {
+    const href = linkDefsMap.get(mark);
+    if (href) {
+      text = `[${text}](${href})`;
+      break;
+    }
+  }
   return text;
 }
 
 function serializeBlockText(block: SanityPtBlock): string {
-  return (block.children ?? []).map((span) => serializeSpan(span, block)).join("");
+  const linkDefsMap = new Map<string, string>();
+  if (block.markDefs) {
+    for (const def of block.markDefs) {
+      if (def._type === "link" && def._key && def.href) {
+        linkDefsMap.set(def._key, def.href);
+      }
+    }
+  }
+  return (block.children ?? []).map((span) => serializeSpan(span, linkDefsMap)).join("");
 }
 
 function mapImage(block: SanityPtImage): BlogBlock | null {

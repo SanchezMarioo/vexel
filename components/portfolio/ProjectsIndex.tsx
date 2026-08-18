@@ -73,7 +73,7 @@ function IndexRow({ project }: { project: Project }) {
         strokeLinecap="round"
         strokeLinejoin="round"
         aria-hidden="true"
-        className="pointer-events-none absolute right-0 top-9 hidden h-5 w-5 text-pf-muted transition-all duration-300 ease-[var(--pf-ease-out)] group-hover:text-pf-ink lg:block"
+        className="pointer-events-none absolute right-0 top-9 hidden h-5 w-5 text-pf-muted transition-colors duration-300 ease-[var(--pf-ease-out)] group-hover:text-pf-ink lg:block"
       >
         <path d="M7 17 17 7M8 7h9v9" />
       </svg>
