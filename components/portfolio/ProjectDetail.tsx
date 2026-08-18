@@ -37,7 +37,7 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
     <div className="pf-container pb-24 pt-10 md:pb-32 md:pt-14">
       {/* Migas */}
       <m.nav
-        initial="hidden"
+        initial={false}
         animate="visible"
         variants={fadeUp}
         aria-label="Ruta de navegación"
@@ -56,7 +56,7 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
 
       {/* 1 · HERO */}
       <m.header
-        initial="hidden"
+        initial={false}
         animate="visible"
         variants={stagger(0.1, 0.03)}
         className="mt-6"
@@ -95,7 +95,11 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
           variants={heroLcpSafe}
           className="mt-10 overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line md:mt-12"
         >
-          <ImageSlot image={project.image} priority />
+          <ImageSlot
+            image={project.image}
+            priority
+            sizes="(min-width: 1280px) 1152px, (min-width: 1024px) 960px, 100vw"
+          />
         </m.div>
       </m.header>
 
@@ -149,7 +153,10 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
                 variants={maskReveal}
                 className="overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line"
               >
-                <ImageSlot image={captureImage(project, src, index)} />
+                <ImageSlot
+                  image={captureImage(project, src, index)}
+                  sizes="(min-width: 640px) 50vw, 100vw"
+                />
               </m.div>
             ))}
           </m.div>

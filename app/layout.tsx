@@ -107,8 +107,12 @@ export default function RootLayout({
         <StructuredData />
         {children}
         <ClientEffects />
-        <Analytics />
-        <SpeedInsights />
+        {process.env.NODE_ENV === "production" && Boolean(process.env.VERCEL) ? (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        ) : null}
       </body>
     </html>
   );

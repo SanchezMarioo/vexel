@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import Lenis from "lenis";
 import { captureEntryPoint } from "@/lib/funnel/attribution";
 
 export default function ClientEffects() {
@@ -10,13 +9,48 @@ export default function ClientEffects() {
     // sus UTMs) antes de que el usuario navegue a /empezar.
     captureEntryPoint();
 
-    const lenis = new Lenis({
-      lerp: 0.07,
-      wheelMultiplier: 0.92,
-      smoothWheel: true,
-      syncTouch: false,
-      allowNestedScroll: true,
-    });
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    let lenisInstance: import("lenis").default | null = null;
+    let rafId = 0;
+    let destroyed = false;
+
+    const initLenis = async () => {
+      const { default: Lenis } = await import("lenis");
+      if (destroyed) return;
+
+      const lenis = new Lenis({
+        lerp: 0.07,
+        wheelMultiplier: 0.92,
+        smoothWheel: true,
+        syncTouch: false,
+        allowNestedScroll: true,
+      });
+      lenisInstance = lenis;
+
+      const raf = (time: number) => {
+        if (destroyed) return;
+        lenis.raf(time);
+        rafId = requestAnimationFrame(raf);
+      };
+      rafId = requestAnimationFrame(raf);
+    };
+
+    // Inicialización no bloqueante tras el primer paint
+    if ("requestIdleCallback" in window) {
+      (window as unknown as { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(
+        () => {
+          void initLenis();
+        },
+      );
+    } else {
+      setTimeout(() => {
+        void initLenis();
+      }, 50);
+    }
 
     const onAnchorClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
@@ -41,24 +75,23 @@ export default function ClientEffects() {
         return;
       }
 
-      event.preventDefault();
-      lenis.scrollTo(nextTarget, { offset: -96, duration: 1.3 });
+      if (lenisInstance) {
+        event.preventDefault();
+        lenisInstance.scrollTo(nextTarget, { offset: -96, duration: 1.3 });
+      }
     };
 
     document.addEventListener("click", onAnchorClick);
 
-    // Bucle de animación nativo para Lenis (sin GSAP).
-    let rafId = 0;
-    const raf = (time: number) => {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    };
-    rafId = requestAnimationFrame(raf);
-
     return () => {
-      cancelAnimationFrame(rafId);
+      destroyed = true;
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
       document.removeEventListener("click", onAnchorClick);
-      lenis.destroy();
+      if (lenisInstance) {
+        lenisInstance.destroy();
+      }
     };
   }, []);
 

@@ -27,7 +27,7 @@ export default function Footer() {
           </div>
 
           <nav aria-label="Pie de página" className="md:col-span-3 md:col-start-7">
-            <p className="pf-mono text-xs uppercase tracking-wide text-pf-bg/45">Navegación</p>
+            <p className="pf-mono text-xs uppercase tracking-wide text-pf-bg/70">Navegación</p>
             <ul className="mt-4 flex flex-col gap-2.5">
               {navLinks.map((link) => (
                 <li key={link.href}>
@@ -35,7 +35,7 @@ export default function Footer() {
                     // Prefijamos "/" a las anclas para que el enlace lleve a la
                     // home + sección desde cualquier ruta (también en subpáginas).
                     href={link.href.startsWith("#") ? `/${link.href}` : link.href}
-                    className="text-pf-bg/75 transition-colors hover:text-pf-bg"
+                    className="text-pf-bg/80 transition-colors hover:text-pf-bg"
                   >
                     {link.label}
                   </a>
@@ -46,7 +46,7 @@ export default function Footer() {
 
           {socials.length > 0 ? (
             <div className="md:col-span-3">
-              <p className="pf-mono text-xs uppercase tracking-wide text-pf-bg/45">Sígueme</p>
+              <p className="pf-mono text-xs uppercase tracking-wide text-pf-bg/70">Sígueme</p>
               <ul className="mt-4 flex flex-col gap-2.5">
                 {socials.map((social) => (
                   <li key={social.label}>
@@ -54,7 +54,7 @@ export default function Footer() {
                       href={social.href}
                       target="_blank"
                       rel="noreferrer noopener"
-                      className="text-pf-bg/75 transition-colors hover:text-pf-bg"
+                      className="text-pf-bg/80 transition-colors hover:text-pf-bg"
                     >
                       {social.label}
                     </a>
@@ -65,7 +65,7 @@ export default function Footer() {
           ) : null}
         </div>
 
-        <div className="mt-14 flex flex-col gap-3 border-t border-pf-bg/15 pt-6 text-sm text-pf-bg/50 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-3 border-t border-pf-bg/15 pt-6 text-sm text-pf-bg/70 sm:flex-row sm:items-center sm:justify-between">
           <p>
             © {year} {identity.name}. Todos los derechos reservados.
           </p>
