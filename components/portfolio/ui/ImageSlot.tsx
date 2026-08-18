@@ -7,11 +7,17 @@ import type { ProjectImage } from "@/lib/portfolio/content";
 interface ImageSlotProps {
   image: ProjectImage;
   className?: string;
-  /** Marca la imagen como LCP: carga con prioridad y sin lazy (úsalo solo en el Hero). */
+  /** Marca la imagen como LCP: carga con prioridad y sin lazy. */
   priority?: boolean;
+  sizes?: string;
 }
 
-export default function ImageSlot({ image, className = "", priority = false }: ImageSlotProps) {
+export default function ImageSlot({
+  image,
+  className = "",
+  priority = false,
+  sizes = "(min-width: 1024px) 50vw, (min-width: 768px) 70vw, 100vw",
+}: ImageSlotProps) {
   const [hasError, setHasError] = useState(false);
   const showPlaceholder = hasError || !image.src;
 
@@ -19,18 +25,15 @@ export default function ImageSlot({ image, className = "", priority = false }: I
     <div
       className={`relative flex items-center justify-center overflow-hidden bg-pf-subtle ${className}`}
       style={{ aspectRatio: `${image.width} / ${image.height}` }}
-      role="img"
-      aria-label={image.alt}
     >
       {!showPlaceholder ? (
         <Image
           src={image.src}
           alt={image.alt}
           fill
-          sizes="(min-width: 1024px) 50vw, 100vw"
+          priority={priority}
+          sizes={sizes}
           className="object-cover"
-          loading={priority ? "eager" : "lazy"}
-          fetchPriority={priority ? "high" : "auto"}
           onError={() => setHasError(true)}
         />
       ) : null}

@@ -19,7 +19,7 @@ export default function BlogIndex({ posts }: { posts: BlogPost[] }) {
   return (
     <div className="pf-container py-20 md:py-28">
       {/* Masthead */}
-      <m.div initial="hidden" animate="visible" className="max-w-4xl">
+      <m.div initial={false} animate="visible" className="max-w-4xl">
         <m.h1
           variants={heroLcpSafe}
           className="pf-display text-pf-ink-strong"
@@ -42,7 +42,7 @@ export default function BlogIndex({ posts }: { posts: BlogPost[] }) {
           {/* Artículo destacado: la respuesta entera, no un teaser. Reveal sin
               gate de opacidad — es contenido citable, visible desde el inicio. */}
           <m.article
-            initial="hidden"
+            initial={false}
             animate="visible"
             variants={heroLcpSafe}
             className="mt-14 border-t-2 border-pf-ink pt-10 md:mt-20 md:pt-12"
@@ -70,6 +70,7 @@ export default function BlogIndex({ posts }: { posts: BlogPost[] }) {
             </p>
             <Link
               href={`/blog/${featured.slug}`}
+              aria-label={`Leer el artículo completo: ${featured.title}`}
               className="group mt-7 inline-flex items-center gap-2 text-base font-medium text-pf-ink underline-offset-4 hover:underline"
             >
               Leer el artículo completo

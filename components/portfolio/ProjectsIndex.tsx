@@ -14,7 +14,7 @@ function leadProblem(problem: string): string {
   return first ?? problem;
 }
 
-function IndexRow({ project }: { project: Project }) {
+function IndexRow({ project, priority = false }: { project: Project; priority?: boolean }) {
   return (
     <m.li
       initial="hidden"
@@ -51,7 +51,11 @@ function IndexRow({ project }: { project: Project }) {
         {/* Preview: en línea en móvil (siempre visible), flotante al hover en desktop */}
         <div className="mt-5 lg:pointer-events-none lg:absolute lg:right-0 lg:top-1/2 lg:mt-0 lg:w-[clamp(11rem,16vw,15rem)] lg:-translate-y-1/2">
           <div className="overflow-hidden rounded-[var(--pf-radius)] border border-pf-line lg:translate-x-3 lg:scale-95 lg:border-0 lg:opacity-0 lg:shadow-[0_18px_40px_-22px_oklch(0_0_0/0.45)] lg:transition lg:duration-500 lg:ease-[var(--pf-ease-out)] lg:will-change-transform lg:group-hover:translate-x-0 lg:group-hover:scale-100 lg:group-hover:opacity-100">
-            <ImageSlot image={project.image} />
+            <ImageSlot
+              image={project.image}
+              priority={priority}
+              sizes="(min-width: 1024px) 240px, (min-width: 640px) 50vw, 100vw"
+            />
           </div>
         </div>
 
@@ -86,7 +90,7 @@ export default function ProjectsIndex() {
     <div className="pf-container py-20 md:py-28">
       {/* Masthead */}
       <m.div
-        initial="hidden"
+        initial={false}
         animate="visible"
         className="max-w-4xl"
       >
@@ -109,8 +113,8 @@ export default function ProjectsIndex() {
 
       {/* Índice */}
       <ul className="mt-14 md:mt-20">
-        {projects.map((project) => (
-          <IndexRow key={project.slug} project={project} />
+        {projects.map((project, index) => (
+          <IndexRow key={project.slug} project={project} priority={index === 0} />
         ))}
       </ul>
 

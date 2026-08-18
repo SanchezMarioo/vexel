@@ -92,6 +92,9 @@ export default function StepInput({
       </AnimatePresence>
 
       <div className="relative mt-9">
+        <label htmlFor={inputId} className="sr-only">
+          {step.question}
+        </label>
         {isMultiline ? (
           <textarea
             id={inputId}

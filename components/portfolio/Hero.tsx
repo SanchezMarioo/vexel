@@ -12,7 +12,7 @@ export default function Hero() {
     <section id="inicio" className="relative overflow-hidden bg-pf-bg">
       <div className="pf-container relative grid items-center gap-12 pb-20 pt-16 md:pt-20 lg:grid-cols-12 lg:gap-10 lg:pb-28 lg:pt-24">
         <m.div
-          initial="hidden"
+          initial={false}
           animate="visible"
           variants={stagger(0.12, 0.05)}
           className="lg:col-span-6"
@@ -62,7 +62,7 @@ export default function Hero() {
 
         {/* Visual: el resultado que entrego, no el código. */}
         <m.div
-          initial="hidden"
+          initial={false}
           animate="visible"
           variants={stagger(0.12, 0.1)}
           className="relative lg:col-span-6"
@@ -87,6 +87,7 @@ export default function Hero() {
             <div className="overflow-hidden">
               <ImageSlot
                 priority
+                sizes="(min-width: 1024px) 580px, 100vw"
                 image={{
                   src: "/portfolio/hero-images.webp",
                   alt: "Tienda online de muebles Lumen, desarrollada por Xync, estudio de desarrollo web en Salamanca",

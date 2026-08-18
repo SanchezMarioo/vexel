@@ -94,7 +94,10 @@ export default function Projects() {
                 className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line shadow-[0_4px_20px_-8px_oklch(0_0_0/0.08)] transition-shadow duration-300 hover:shadow-[0_16px_36px_-12px_oklch(0_0_0/0.18)]"
               >
                 <div className="overflow-hidden transition-transform duration-500 ease-[var(--pf-ease-out)] group-hover:scale-[1.02] motion-reduce:group-hover:scale-100">
-                  <ImageSlot image={featured.image} />
+                  <ImageSlot
+                    image={featured.image}
+                    sizes="(min-width: 1024px) 60vw, 100vw"
+                  />
                 </div>
                 <span className="absolute inset-0 bg-pf-ink/0 transition-colors duration-300 group-hover:bg-pf-ink/5" />
               </Link>
@@ -132,7 +135,10 @@ export default function Projects() {
                   className="group relative block overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line shadow-[0_4px_16px_-8px_oklch(0_0_0/0.06)] transition-shadow duration-300 hover:shadow-[0_14px_30px_-10px_oklch(0_0_0/0.15)]"
                 >
                   <div className="overflow-hidden transition-transform duration-500 ease-[var(--pf-ease-out)] group-hover:scale-[1.02] motion-reduce:group-hover:scale-100">
-                    <ImageSlot image={project.image} />
+                    <ImageSlot
+                      image={project.image}
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                    />
                   </div>
                   <span className="absolute inset-0 bg-pf-ink/0 transition-colors duration-300 group-hover:bg-pf-ink/5" />
                 </Link>
