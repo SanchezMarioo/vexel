@@ -41,6 +41,8 @@ interface CommonProps {
   withArrow?: boolean;
   className?: string;
   loading?: boolean;
+  "aria-label"?: string;
+  title?: string;
 }
 
 type ButtonProps = CommonProps & {
@@ -48,6 +50,8 @@ type ButtonProps = CommonProps & {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   onClick?: () => void;
+  "aria-expanded"?: boolean;
+  "aria-controls"?: string;
 };
 
 type AnchorProps = CommonProps & {
@@ -129,6 +133,8 @@ export default function Button(props: Props) {
         href={props.href}
         target={props.target ?? (external ? "_blank" : undefined)}
         rel={props.rel ?? (external ? "noreferrer noopener" : undefined)}
+        aria-label={props["aria-label"]}
+        title={props.title}
         className={classes}
       >
         {inner}
@@ -141,7 +147,11 @@ export default function Button(props: Props) {
       type={props.type ?? "button"}
       disabled={isDisabled}
       onClick={props.onClick}
+      aria-label={props["aria-label"]}
+      aria-expanded={props["aria-expanded"]}
+      aria-controls={props["aria-controls"]}
       aria-busy={loading ? "true" : undefined}
+      title={props.title}
       className={classes}
     >
       {inner}

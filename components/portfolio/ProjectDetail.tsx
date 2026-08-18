@@ -196,10 +196,21 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
           precio y plazo cerrados antes de empezar.
         </p>
         <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Button href="/empezar" variant="primary" size="lg" withArrow>
+          <Button
+            href="/empezar"
+            variant="primary"
+            size="lg"
+            withArrow
+            aria-label="Cuéntanos tu proyecto para empezar"
+          >
             Cuéntanos tu proyecto
           </Button>
-          <Button href="/proyectos" variant="outline" size="lg">
+          <Button
+            href="/proyectos"
+            variant="outline"
+            size="lg"
+            aria-label="Ver todos los proyectos realizados"
+          >
             Ver todos los proyectos
           </Button>
         </div>

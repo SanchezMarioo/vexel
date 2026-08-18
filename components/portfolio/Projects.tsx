@@ -34,6 +34,7 @@ function ProjectLinks({ project }: { project: Project }) {
     <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2">
       <Link
         href={`/proyectos/${project.slug}`}
+        aria-label={`Ver el caso de estudio de ${project.title}`}
         className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-pf-ink underline-offset-4 hover:underline"
       >
         Ver el caso
@@ -44,6 +45,7 @@ function ProjectLinks({ project }: { project: Project }) {
           href={project.liveUrl}
           target="_blank"
           rel="noreferrer noopener"
+          aria-label={`Visitar el sitio web en vivo de ${project.title}`}
           className="group/live inline-flex items-center gap-1.5 text-sm text-pf-ink-soft underline-offset-4 transition-colors hover:text-pf-ink hover:underline"
         >
           Ver en vivo

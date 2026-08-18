@@ -1,11 +1,12 @@
 import "server-only";
+import { cache } from "react";
 import { sanityFetch, SERVICES_CACHE_TAG } from "@/sanity/client";
 import { isSanityConfigured } from "@/sanity/env";
 import { SERVICES_QUERY } from "@/sanity/queries";
 import type { SanityServiceCard } from "@/sanity/types";
 import { mapSanityServiceCard } from "./mappers";
 
-export async function getServices(preview = false) {
+export const getServices = cache(async function getServices(preview = false) {
   if (!isSanityConfigured) return [];
 
   try {
@@ -19,4 +20,4 @@ export async function getServices(preview = false) {
     console.error("[services] Error listando páginas de servicio de Sanity.", error);
     return [];
   }
-}
+});

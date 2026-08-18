@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import type { BlogPost } from "@/lib/content/blog";
 import { getPostsByDate as getLocalPosts } from "@/lib/content/blog";
 import { sanityFetch } from "@/sanity/client";
@@ -14,7 +15,7 @@ import { mapSanityCard } from "./mappers";
  * falla (red, token, dataset inexistente), cae al contenido local de
  * lib/content/blog.ts para que el sitio nunca se rompa.
  */
-export async function getPosts(preview = false): Promise<BlogPost[]> {
+export const getPosts = cache(async function getPosts(preview = false): Promise<BlogPost[]> {
   if (!isSanityConfigured) {
     return getLocalPosts();
   }
@@ -26,4 +27,4 @@ export async function getPosts(preview = false): Promise<BlogPost[]> {
     console.error("[blog] Error leyendo artículos de Sanity; usando contenido local.", error);
     return getLocalPosts();
   }
-}
+});

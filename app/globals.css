@@ -3,12 +3,9 @@
 :root {
   --vx-black: #050505;
   --vx-violet: #7b61ff;
-  --vx-violet-hover: #6a50f0;
   --vx-text-heading: #ffffff;
   --vx-text-body: rgba(255, 255, 255, 0.7);
   --vx-text-label: rgba(255, 255, 255, 0.4);
-  --vx-card-bg: rgba(12, 12, 14, 0.72);
-  --vx-card-border: rgba(255, 255, 255, 0.14);
   --vx-ease: cubic-bezier(0.32, 0.72, 0, 1);
   --font-display-family: var(--font-pf-display), var(--font-geist-sans), sans-serif;
 }
@@ -88,16 +85,6 @@ body::before {
   scroll-margin-top: 6rem;
 }
 
-.vx-section {
-  padding-top: 8rem;
-  padding-bottom: 8rem;
-}
-
-.vx-glass-card {
-  border: 1px solid var(--vx-card-border);
-  background: var(--vx-card-bg);
-}
-
 .font-display {
   font-family: var(--font-display-family);
 }
@@ -117,18 +104,6 @@ body::before {
 .text-muted,
 .text-label {
   color: var(--vx-text-label);
-}
-
-.bg-card {
-  background-color: var(--vx-card-bg);
-}
-
-.border-card-border {
-  border-color: var(--vx-card-border);
-}
-
-.ring-offset-background {
-  --tw-ring-offset-color: var(--vx-black);
 }
 
 @media (prefers-reduced-motion: reduce) {

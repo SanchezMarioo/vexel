@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import type { BlogPost } from "@/lib/content/blog";
 import { getPosts } from "./getPosts";
 
@@ -7,7 +8,7 @@ import { getPosts } from "./getPosts";
  * si ninguno lo está, el más reciente publicado. Devuelve también el resto
  * (ordenado por fecha) para componer el índice sin duplicarlo.
  */
-export async function getFeaturedPost(
+export const getFeaturedPost = cache(async function getFeaturedPost(
   preview = false,
 ): Promise<{ featured: BlogPost | null; rest: BlogPost[] }> {
   const posts = await getPosts(preview);
@@ -27,4 +28,4 @@ export async function getFeaturedPost(
     featured,
     rest: posts.filter((_, index) => index !== featuredIndex),
   };
-}
+});

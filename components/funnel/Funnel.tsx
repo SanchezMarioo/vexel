@@ -65,12 +65,16 @@ function clearDraft() {
 const FIELD_BY_STEP: Record<StepId, keyof FunnelAnswers> = {
   situacion: "situacion",
   tipo: "tipo",
+  objetivo: "objetivo",
   catalogo: "catalogo",
   "web-actual": "webActual",
   presupuesto: "presupuesto",
   plazo: "plazo",
+  descripcion: "descripcion",
   nombre: "nombre",
+  empresa: "empresa",
   email: "email",
+  telefono: "telefono",
 };
 
 function prefersReducedMotion() {
@@ -107,6 +111,8 @@ function choiceValue(answers: FunnelAnswers, stepId: StepId): string | undefined
       return answers.situacion;
     case "tipo":
       return answers.tipo;
+    case "objetivo":
+      return answers.objetivo;
     case "catalogo":
       return answers.catalogo;
     case "web-actual":
@@ -132,6 +138,8 @@ function choicePatch(
         : { situacion: optionId };
     case "tipo":
       return { tipo: optionId };
+    case "objetivo":
+      return { objetivo: optionId };
     case "catalogo":
       return { catalogo: optionId };
     case "web-actual":
@@ -220,7 +228,8 @@ export default function Funnel() {
       const next: FunnelAnswers = { ...merged };
 
       for (const later of seq.slice(index + 1)) {
-        delete next[FIELD_BY_STEP[later]];
+        const fieldKey = FIELD_BY_STEP[later];
+        if (fieldKey) delete next[fieldKey];
       }
       if (stepId === "situacion" && next.situacion !== "otra") {
         delete next.situacionDetalle;
@@ -245,7 +254,8 @@ export default function Funnel() {
       const seq = stepSequence(prev);
       const next: FunnelAnswers = { ...prev };
       for (const later of seq.slice(index + 1)) {
-        delete next[FIELD_BY_STEP[later]];
+        const fieldKey = FIELD_BY_STEP[later];
+        if (fieldKey) delete next[fieldKey];
       }
       return next;
     });
@@ -265,24 +275,7 @@ export default function Funnel() {
     setServerError(null);
   }
 
-  function submitNombre(value: string) {
-    const nombre = value.trim();
-    if (nombre.length < 2) {
-      setFieldError("Dime tu nombre.");
-      return;
-    }
-    if (nombre.length > 80) {
-      setFieldError("Ese nombre es demasiado largo.");
-      return;
-    }
-    if (/[<>]/.test(nombre)) {
-      setFieldError("El nombre contiene caracteres no permitidos.");
-      return;
-    }
-    answerStep("nombre", { nombre });
-  }
-
-  async function submitEmail(emailValue: string) {
+  async function handleFinalSubmit(finalAnswers: FunnelAnswers) {
     setConsentError(null);
     if (!consent) {
       setConsentError("Debes aceptar la política de privacidad para enviar.");
@@ -290,15 +283,19 @@ export default function Funnel() {
     }
 
     const payload = {
-      situacion: answers.situacion,
-      situacionDetalle: answers.situacionDetalle,
-      tipo: answers.tipo,
-      catalogo: answers.catalogo,
-      webActual: answers.webActual,
-      presupuesto: answers.presupuesto,
-      plazo: answers.plazo,
-      nombre: answers.nombre,
-      email: emailValue.trim(),
+      situacion: finalAnswers.situacion,
+      situacionDetalle: finalAnswers.situacionDetalle,
+      tipo: finalAnswers.tipo,
+      objetivo: finalAnswers.objetivo,
+      catalogo: finalAnswers.catalogo,
+      webActual: finalAnswers.webActual,
+      presupuesto: finalAnswers.presupuesto,
+      plazo: finalAnswers.plazo,
+      descripcion: finalAnswers.descripcion,
+      nombre: finalAnswers.nombre,
+      empresa: finalAnswers.empresa,
+      email: finalAnswers.email,
+      telefono: finalAnswers.telefono,
       consent,
       actualizacion: sentOnce,
       company: honeypot,
@@ -310,6 +307,7 @@ export default function Funnel() {
       const issue = parsed.error.issues[0];
       const message = issue?.message ?? "Revisa tus respuestas.";
       if (issue?.path[0] === "email") setFieldError(message);
+      else if (issue?.path[0] === "nombre") setFieldError(message);
       else if (issue?.path[0] === "consent") setConsentError(message);
       else setServerError(message);
       return;
@@ -331,7 +329,7 @@ export default function Funnel() {
         return;
       }
 
-      setAnswers((prev) => ({ ...prev, email: emailValue.trim() }));
+      setAnswers(finalAnswers);
       setSentOnce(true);
       setView("summary");
       clearDraft();
@@ -341,6 +339,60 @@ export default function Funnel() {
       setServerError("Error de conexión. Revisa tu red e inténtalo de nuevo.");
     } finally {
       setSubmitting(false);
+    }
+  }
+
+  function handleInputStep(value: string) {
+    const trimmed = value.trim();
+
+    if (activeStepId === "nombre") {
+      if (trimmed.length < 2) {
+        setFieldError("Dime tu nombre.");
+        return;
+      }
+      if (trimmed.length > 80) {
+        setFieldError("Ese nombre es demasiado largo.");
+        return;
+      }
+      if (/[<>]/.test(trimmed)) {
+        setFieldError("El nombre contiene caracteres no permitidos.");
+        return;
+      }
+    } else if (activeStepId === "email") {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(trimmed)) {
+        setFieldError("Introduce un email válido.");
+        return;
+      }
+      if (!consent) {
+        setConsentError("Debes aceptar la política de privacidad para enviar.");
+        return;
+      }
+    } else if (activeStepId === "descripcion") {
+      if (trimmed.length > 2000) {
+        setFieldError("El texto es demasiado largo.");
+        return;
+      }
+    } else if (activeStepId === "empresa") {
+      if (trimmed.length > 120) {
+        setFieldError("El nombre de la empresa es demasiado largo.");
+        return;
+      }
+    } else if (activeStepId === "telefono") {
+      if (trimmed.length > 40) {
+        setFieldError("El teléfono es demasiado largo.");
+        return;
+      }
+    }
+
+    const fieldKey = FIELD_BY_STEP[activeStepId];
+    const nextAnswers: FunnelAnswers = { ...answers, [fieldKey]: trimmed };
+
+    const isLastStep = activeIndex === sequence.length - 1;
+    if (isLastStep) {
+      handleFinalSubmit(nextAnswers);
+    } else {
+      answerStep(activeStepId, { [fieldKey]: trimmed });
     }
   }
 
@@ -503,6 +555,7 @@ export default function Funnel() {
               consentError={consentError}
               serverError={serverError}
               submitting={submitting}
+              isLastStep={activeIndex === sequence.length - 1}
               honeypot={honeypot}
               onClearError={() => setFieldError(null)}
               onConsentChange={(value) => {
@@ -510,7 +563,7 @@ export default function Funnel() {
                 setConsentError(null);
               }}
               onHoneypotChange={setHoneypot}
-              onSubmit={activeStepId === "nombre" ? submitNombre : submitEmail}
+              onSubmit={handleInputStep}
             />
           )}
         </m.div>
