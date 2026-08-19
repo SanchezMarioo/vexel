@@ -59,6 +59,10 @@ if (!isDev) {
 }
 
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
+  experimental: {
+    optimizePackageImports: ["@clerk/nextjs", "framer-motion", "lenis"],
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [

@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Bricolage_Grotesque } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { ClerkProvider } from "@clerk/nextjs";
 import ClientEffects from "@/components/ClientEffects";
 import StructuredData from "@/components/StructuredData";
 import { siteUrl } from "@/lib/site-url";
@@ -100,24 +99,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html
-        lang="es"
-        className={`${geistSans.variable} ${geistMono.variable} ${bricolage.variable} h-full antialiased`}
-      >
-        <body className="min-h-full flex flex-col bg-background text-body">
-          <StructuredData />
-          {children}
-          <ClientEffects />
-          {process.env.NODE_ENV === "production" && Boolean(process.env.VERCEL) ? (
-            <>
-              <Analytics />
-              <SpeedInsights />
-            </>
-          ) : null}
-        </body>
-      </html>
-    </ClerkProvider>
+    <html
+      lang="es"
+      className={`${geistSans.variable} ${geistMono.variable} ${bricolage.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col bg-background text-body">
+        <StructuredData />
+        {children}
+        <ClientEffects />
+        {process.env.NODE_ENV === "production" && Boolean(process.env.VERCEL) ? (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        ) : null}
+      </body>
+    </html>
   );
 }
 

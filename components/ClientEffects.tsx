@@ -10,7 +10,8 @@ export default function ClientEffects() {
     captureEntryPoint();
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion) {
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+    if (prefersReducedMotion || isTouch) {
       return;
     }
 
