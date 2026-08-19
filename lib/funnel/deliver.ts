@@ -1,5 +1,7 @@
 import "server-only";
 
+import { insertLeadInSupabase } from "@/lib/supabase/server";
+import type { LeadInsert } from "@/lib/supabase/types";
 import type { NormalizedLead } from "./lead";
 import type { LeadScore } from "./score";
 
@@ -11,40 +13,64 @@ export interface FunnelDelivery {
 }
 
 /**
- * Entrega del lead en Google Sheets vía Apps Script (server→server, sin CORS),
- * la misma integración que usa /api/contact. PRIORIDAD: guardar el lead está
- * por encima de todo lo demás; si no hay webhook configurado (p. ej. en local)
- * se registra en consola y se confirma, igual que hace el formulario clásico.
+ * Guarda el lead en Supabase (fuente principal y definitiva de persistencia para Xync).
  */
-const DANGEROUS_FORMULA_CHARS = /^[=+\-@\t\r]/;
+export async function deliverToSupabase(
+  input: FunnelDelivery,
+): Promise<{ ok: boolean; error?: string }> {
+  const { lead, leadId, createdAt, score } = input;
 
-export function sanitizeForSheet(value: string | undefined): string {
-  if (!value) return "";
-  const trimmed = value.trim();
-  if (DANGEROUS_FORMULA_CHARS.test(trimmed)) {
-    return `'${trimmed}`;
-  }
-  return trimmed;
+  const leadPayload: LeadInsert = {
+    id: leadId,
+    created_at: createdAt,
+    status: "nuevo",
+    nombre: lead.nombre,
+    empresa: lead.empresa || null,
+    email: lead.email,
+    telefono: lead.telefono || null,
+    descripcion: lead.descripcion || null,
+    situacion: lead.labels.situacion || lead.situacion,
+    situacion_detalle: lead.situacionDetalle || null,
+    tipo: lead.labels.tipo || lead.tipo,
+    objetivo: lead.labels.objetivo || lead.objetivo || null,
+    catalogo: lead.labels.catalogo || lead.catalogo || null,
+    web_actual: lead.labels.webActual || lead.webActual || null,
+    presupuesto: lead.labels.presupuesto || lead.presupuesto,
+    plazo: lead.labels.plazo || lead.plazo,
+    landing_page: lead.landing_page || null,
+    form_page: lead.form_page || null,
+    current_url: lead.current_url || null,
+    referrer: lead.referrer || null,
+    utm_source: lead.utm_source || null,
+    utm_medium: lead.utm_medium || null,
+    utm_campaign: lead.utm_campaign || null,
+    utm_content: lead.utm_content || null,
+    utm_term: lead.utm_term || null,
+    score_value: score.value,
+    score_tier: score.tier,
+    score_reasons: score.reasons,
+    is_update: lead.actualizacion ?? false,
+    notes: "",
+    raw_answers: lead as unknown as Record<string, unknown>,
+  };
+
+  return insertLeadInSupabase(leadPayload);
 }
 
+/**
+ * Orquestador principal de entrega del lead del funnel.
+ * Supabase es la fuente principal de almacenamiento.
+ */
 export async function deliverFunnelLead(
   input: FunnelDelivery,
 ): Promise<{ ok: boolean; message?: string }> {
-  const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
-  const webhookSecret = process.env.GOOGLE_SHEETS_WEBHOOK_SECRET;
-  
-  // En producción, el secret es OBLIGATORIO para evitar acceso no autorizado
-  const isProduction = process.env.NODE_ENV === "production";
-  if (isProduction && !webhookSecret) {
-    console.error("[funnel] GOOGLE_SHEETS_WEBHOOK_SECRET no configurado en producción");
-    return { 
-      ok: false, 
-      message: "Configuración incompleta. Contacta con soporte." 
-    };
-  }
+  const hasSupabaseConfig = Boolean(
+    process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY,
+  );
 
-  if (!webhookUrl) {
-    console.info("[funnel] lead recibido (sin webhook configurado)", {
+  // En local sin Supabase configurado, registramos en consola para desarrollo
+  if (!hasSupabaseConfig) {
+    console.info("[funnel] lead recibido en desarrollo (Supabase no configurado)", {
       lead_id: input.leadId,
       score: input.score.value,
       tier: input.score.tier,
@@ -52,60 +78,13 @@ export async function deliverFunnelLead(
     return { ok: true };
   }
 
-  const { lead, leadId, createdAt, score } = input;
+  const result = await deliverToSupabase(input);
 
-  try {
-    const sheetRes = await fetch(webhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        secret: webhookSecret,
-        lead_id: leadId,
-        created_at: createdAt,
-        fecha: createdAt,
-        status: "nuevo",
-        actualizacion: lead.actualizacion ? "sí" : "no",
-        nombre: sanitizeForSheet(lead.nombre),
-        empresa: sanitizeForSheet(lead.empresa),
-        email: sanitizeForSheet(lead.email),
-        telefono: sanitizeForSheet(lead.telefono),
-        descripcion: sanitizeForSheet(lead.descripcion),
-        situacion: sanitizeForSheet(lead.labels.situacion),
-        situacion_detalle: sanitizeForSheet(lead.situacionDetalle),
-        tipo: sanitizeForSheet(lead.labels.tipo),
-        objetivo: sanitizeForSheet(lead.labels.objetivo),
-        catalogo: sanitizeForSheet(lead.labels.catalogo),
-        web_actual: sanitizeForSheet(lead.labels.webActual),
-        presupuesto: sanitizeForSheet(lead.labels.presupuesto),
-        plazo: sanitizeForSheet(lead.labels.plazo),
-        landing_page: sanitizeForSheet(lead.landing_page),
-        form_page: sanitizeForSheet(lead.form_page),
-        current_url: sanitizeForSheet(lead.current_url),
-        referrer: sanitizeForSheet(lead.referrer),
-        utm_source: sanitizeForSheet(lead.utm_source),
-        utm_medium: sanitizeForSheet(lead.utm_medium),
-        utm_campaign: sanitizeForSheet(lead.utm_campaign),
-        utm_content: sanitizeForSheet(lead.utm_content),
-        utm_term: sanitizeForSheet(lead.utm_term),
-        lead_score: score.value,
-        lead_temperature: score.tier,
-        lead_score_reasons: score.reasons.map((r) => sanitizeForSheet(r)).join(", "),
-      }),
-      signal: AbortSignal.timeout(10000),
-    });
-
-    if (!sheetRes.ok) {
-      console.error("[funnel] Apps Script respondió con", sheetRes.status);
-      return {
-        ok: false,
-        message: "No pudimos enviar tus respuestas. Inténtalo de nuevo.",
-      };
-    }
-  } catch (deliveryError) {
-    console.error("[funnel] fallo al entregar en Sheets", deliveryError);
+  if (!result.ok) {
+    console.error("[funnel] fallo al guardar el lead en Supabase:", result.error);
     return {
       ok: false,
-      message: "No pudimos enviar tus respuestas. Inténtalo de nuevo.",
+      message: "No pudimos guardar tus respuestas. Por favor, inténtalo de nuevo en unos momentos.",
     };
   }
 

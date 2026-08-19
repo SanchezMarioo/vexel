@@ -3,8 +3,7 @@ import { contactSchema } from "@/lib/portfolio/contact-schema";
 import { checkRateLimit } from "@/lib/security/rate-limit";
 import { getClientIp, hasTrustedOrigin, isJsonContentType } from "@/lib/security/request";
 import { secureJson } from "@/lib/security/response";
-
-import { sanitizeForSheet } from "@/lib/funnel/deliver";
+import { insertLeadInSupabase } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 
@@ -38,51 +37,46 @@ export async function POST(request: Request) {
     const payload = await request.json();
     const data = contactSchema.parse(payload);
 
-    // Honeypot: a real visitor never fills this. Pretend success and drop it.
+    // Honeypot: un visitante real nunca lo rellena. Fingir éxito y descartar.
     if (data.company && data.company.trim().length > 0) {
       return secureJson({ ok: true }, { status: 200 });
     }
 
-    const webhookUrl = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
+    // Persistir el mensaje de contacto en Supabase como lead
+    const result = await insertLeadInSupabase({
+      status: "nuevo",
+      nombre: data.name,
+      email: data.email.trim().toLowerCase(),
+      descripcion: data.message,
+      situacion: "Contacto directo",
+      tipo: "contacto-directo",
+      presupuesto: "no-claro",
+      plazo: "cuanto-antes",
+      form_page: "/",
+      score_value: 50,
+      score_tier: "media",
+      score_reasons: ["Formulario de contacto directo"],
+      is_update: false,
+      notes: "Mensaje recibido desde el formulario de contacto directo de la home.",
+      empresa: null,
+      telefono: null,
+      situacion_detalle: null,
+      objetivo: null,
+      catalogo: null,
+      web_actual: null,
+      landing_page: "/",
+      current_url: "/",
+      referrer: null,
+      utm_source: null,
+      utm_medium: null,
+      utm_campaign: null,
+      utm_content: null,
+      utm_term: null,
+      raw_answers: data as unknown as Record<string, unknown>,
+    });
 
-    // Sin webhook configurado (otro entorno): registrar para no perder el mensaje.
-    if (!webhookUrl) {
-      console.info("[contact] mensaje recibido (sin webhook configurado)", {
-        length: data.message.length,
-      });
-      return secureJson({ ok: true }, { status: 201 });
-    }
-
-    // Entrega en Google Sheets vía Apps Script (server→server, sin CORS). El
-    // Apps Script espera las claves nombre / email / descripcion.
-    try {
-      const sheetRes = await fetch(webhookUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...(process.env.GOOGLE_SHEETS_WEBHOOK_SECRET
-            ? { secret: process.env.GOOGLE_SHEETS_WEBHOOK_SECRET }
-            : {}),
-          nombre: sanitizeForSheet(data.name),
-          email: sanitizeForSheet(data.email),
-          descripcion: sanitizeForSheet(data.message),
-        }),
-        signal: AbortSignal.timeout(10000),
-      });
-
-      if (!sheetRes.ok) {
-        console.error("[contact] Apps Script respondió con", sheetRes.status);
-        return errorResponse(
-          "No se pudo enviar el mensaje. Inténtalo de nuevo o escríbeme por email.",
-          502,
-        );
-      }
-    } catch (deliveryError) {
-      console.error("[contact] fallo al entregar en Sheets", deliveryError);
-      return errorResponse(
-        "No se pudo enviar el mensaje. Inténtalo de nuevo o escríbeme por email.",
-        502,
-      );
+    if (!result.ok) {
+      console.warn("[contact] aviso guardando en Supabase:", result.error);
     }
 
     return secureJson({ ok: true }, { status: 201 });

@@ -4,17 +4,18 @@ const isDev = process.env.NODE_ENV !== "production";
 
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' https://app.cal.com https://va.vercel-scripts.com${isDev ? " 'unsafe-eval' http://localhost:8400" : ""}`,
+  `script-src 'self' 'unsafe-inline' https://app.cal.com https://va.vercel-scripts.com https://*.clerk.accounts.dev https://clerk.xync.es https://*.clerk.com https://challenges.cloudflare.com${isDev ? " 'unsafe-eval' http://localhost:8400" : ""}`,
   "style-src 'self' 'unsafe-inline'",
-  // cdn.sanity.io: imágenes del blog (Portable Text, portadas OG).
-  "img-src 'self' data: blob: https://images.unsplash.com https://cdn.sanity.io",
+  // cdn.sanity.io: imágenes del blog | img.clerk.com: avatares de Clerk
+  "img-src 'self' data: blob: https://images.unsplash.com https://cdn.sanity.io https://img.clerk.com https://images.clerk.dev",
   "font-src 'self' data:",
-  // Sanity Studio: API + CDN de módulos (check de versión / auto-update).
-  `connect-src 'self' https://app.cal.com https://va.vercel-scripts.com https://*.api.sanity.io wss://*.api.sanity.io https://*.apicdn.sanity.io https://sanity-cdn.com https://*.sanity-cdn.com${isDev ? " ws: wss: http://localhost:* http://127.0.0.1:*" : ""}`,
+  // APIs: Sanity, Cal.com, Vercel, Supabase, Clerk
+  `connect-src 'self' https://app.cal.com https://va.vercel-scripts.com https://*.api.sanity.io wss://*.api.sanity.io https://*.apicdn.sanity.io https://sanity-cdn.com https://*.sanity-cdn.com https://*.supabase.co wss://*.supabase.co https://*.clerk.accounts.dev wss://*.clerk.accounts.dev https://clerk.xync.es https://*.clerk.com${isDev ? " ws: wss: http://localhost:* http://127.0.0.1:*" : ""}`,
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
-  "frame-src https://app.cal.com",
+  "frame-src https://app.cal.com https://challenges.cloudflare.com https://*.clerk.accounts.dev https://*.clerk.com",
+  "worker-src 'self' blob:",
   "frame-ancestors 'none'",
   ...(isDev ? [] : ["upgrade-insecure-requests"]),
 ].join("; ");

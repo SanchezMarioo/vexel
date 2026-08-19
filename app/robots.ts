@@ -1,20 +1,26 @@
 import type { MetadataRoute } from "next";
 import { siteUrl } from "@/lib/site-url";
 
-// Rutas privadas que ningún crawler debe indexar (paneles, API, auth, cuenta).
-const disallow = ["/api/", "/auth/", "/cuenta/", "/admin/", "/studio/"];
+// Rutas privadas que ningún crawler debe rastrear ni indexar (admin, studio, API, auth).
+const disallow = [
+  "/admin",
+  "/admin/",
+  "/studio",
+  "/studio/",
+  "/api/",
+  "/auth/",
+  "/cuenta/",
+  "/login",
+  "/sign-in",
+  "/sign-up",
+];
 
 /**
  * Crawlers de IA y de buscadores con IA a los que permitimos EXPLÍCITAMENTE el
- * acceso. La regla `*` ya los cubriría, pero una sección por user-agent es una
+ * acceso al contenido público. La regla `*` ya los cubriría, pero una sección por user-agent es una
  * señal inequívoca de intención en el ORIGEN: queremos que ChatGPT, Claude,
- * Perplexity, Gemini, Google y Bing puedan rastrear y citar el sitio.
- *
- * IMPORTANTE: si el sitio se sirve tras Cloudflare con "Block AI bots" / AI
- * Audit activado, Cloudflare AÑADE sus propias reglas `Disallow: /` a este
- * robots y, además, su WAF devuelve HTTP 403 a bots como OAI-SearchBot o
- * PerplexityBot. Eso NO se arregla aquí, sino en el panel de Cloudflare
- * (Scrape Shield / AI Crawl Control). Ver AUDIT-REPORT.md → acción externa nº1.
+ * Perplexity, Gemini, Google y Bing puedan rastrear y citar el sitio público,
+ * bloqueando siempre los paneles privados.
  */
 const aiAndSearchBots = [
   "Googlebot",

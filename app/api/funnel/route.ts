@@ -1,6 +1,6 @@
 import { ZodError } from "zod";
 import { deliverFunnelLead } from "@/lib/funnel/deliver";
-import { sendClientLeadEmail, sendInternalLeadEmail } from "@/lib/funnel/email";
+import { sendClientLeadEmail } from "@/lib/funnel/email";
 import { buildLead } from "@/lib/funnel/lead";
 import { funnelSchema } from "@/lib/funnel/schema";
 import { scoreLead } from "@/lib/funnel/score";
@@ -74,33 +74,21 @@ export async function POST(request: Request) {
       );
     }
 
-    const emailTasks: Array<{ type: "client" | "internal"; promise: Promise<{ ok: boolean; reason?: string }> }> = [];
-
-    // Solo se envía email de confirmación al cliente en la primera entrega.
-    // Si edita sus respuestas en el resumen (actualización), no lo molestamos de nuevo.
+    // Email transaccional al cliente (solo en la primera entrega, no en actualizaciones)
     if (!lead.actualizacion) {
-      emailTasks.push({
-        type: "client",
-        promise: sendClientLeadEmail({ lead, leadId, createdAt, score }),
-      });
-    }
-
-    // El email interno siempre se envía para que el equipo reciba la última versión.
-    emailTasks.push({
-      type: "internal",
-      promise: sendInternalLeadEmail({ lead, leadId, createdAt, score }),
-    });
-
-    const emailResults = await Promise.allSettled(emailTasks.map((task) => task.promise));
-    emailResults.forEach((result, index) => {
-      if (result.status === "rejected" || !result.value.ok) {
-        console.error("[funnel] email not sent", {
-          type: emailTasks[index].type,
-          reason: result.status === "rejected" ? "unexpected failure" : result.value.reason,
-          leadId,
+      sendClientLeadEmail({ lead, leadId, createdAt, score })
+        .then((result) => {
+          if (!result.ok) {
+            console.error("[funnel] client email delivery failed", {
+              reason: result.reason,
+              leadId,
+            });
+          }
+        })
+        .catch((err) => {
+          console.error("[funnel] unexpected error sending client email", err);
         });
-      }
-    });
+    }
 
     return secureJson({ ok: true, leadId }, { status: 201 });
   } catch (error) {
