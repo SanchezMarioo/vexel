@@ -28,7 +28,7 @@ export default async function AdminLoginPage() {
     }
 
     // Usuario autenticado con Clerk pero NO incluido en ADMIN_EMAILS:
-    // Mostramos pantalla explicativa con botón de SignOut para evitar loops infinitos de redirección
+    // Mostramos pantalla profesional y limpia sin revelar detalles de configuración
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4 py-12 text-foreground">
         <div className="mb-8 text-center">
@@ -40,47 +40,46 @@ export default async function AdminLoginPage() {
             <span className="text-white">.</span>
           </Link>
           <p className="mt-2 text-xs pf-mono text-muted uppercase tracking-widest">
-            Dashboard de Leads
+            Panel de Control
           </p>
         </div>
 
-        <div className="w-full max-w-md p-6 rounded-xl bg-[#0c0c0c] border border-amber-500/30 text-center space-y-4">
-          <div className="w-10 h-10 mx-auto rounded-full bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="w-full max-w-md p-7 rounded-2xl bg-[#0c0c0c] border border-white/10 text-center space-y-5 shadow-2xl">
+          <div className="w-11 h-11 mx-auto rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/70">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
               />
             </svg>
           </div>
 
-          <h2 className="text-base font-semibold text-white pf-display">
-            Acceso no autorizado
-          </h2>
-
-          <p className="text-xs text-white/70 pf-mono leading-relaxed">
-            Has iniciado sesión con el correo{" "}
-            <strong className="text-white">{userEmail || "desconocido"}</strong>, pero este correo no está en la lista de administradores permitidos.
-          </p>
-
-          <div className="p-3 bg-white/5 rounded-lg border border-white/5 text-[11px] text-white/60 pf-mono text-left space-y-1.5">
-            <div className="text-white font-medium">💡 ¿Cómo permitir este correo?</div>
-            <div>Añádelo en tu archivo <code className="text-amber-300 bg-amber-950/40 px-1 py-0.5 rounded">.env.local</code>:</div>
-            <div className="text-white/90 bg-black/60 p-2 rounded border border-white/10 select-all font-mono text-[10px] break-all">
-              ADMIN_EMAILS={userEmail || "tu-correo@gmail.com"}
-            </div>
+          <div className="space-y-2">
+            <h2 className="text-lg font-semibold text-white pf-display tracking-tight">
+              Acceso restringido
+            </h2>
+            <p className="text-xs text-white/60 pf-mono leading-relaxed">
+              La cuenta <strong className="text-white font-medium">{userEmail || "actual"}</strong> no dispone de permisos de administrador.
+            </p>
           </div>
 
-          <div className="pt-2">
+          <div className="pt-2 space-y-3">
             <SignOutButton redirectUrl="/admin/login">
               <button
                 type="button"
-                className="w-full px-4 py-2.5 rounded-lg bg-white text-black text-xs font-semibold pf-mono hover:bg-white/90 transition-colors cursor-pointer shadow-sm"
+                className="w-full px-4 py-2.5 rounded-xl bg-white text-black text-xs font-semibold pf-mono hover:bg-white/90 transition-colors cursor-pointer shadow-sm"
               >
                 Cerrar sesión e iniciar con otra cuenta
               </button>
             </SignOutButton>
+
+            <Link
+              href="/"
+              className="inline-block text-[11px] pf-mono text-white/40 hover:text-white/70 transition-colors"
+            >
+              ← Volver al sitio web
+            </Link>
           </div>
         </div>
       </div>
@@ -112,7 +111,7 @@ export default async function AdminLoginPage() {
           appearance={{
             elements: {
               rootBox: "w-full",
-              card: "bg-[#0c0c0c] border border-white/10 shadow-2xl rounded-lg text-white",
+              card: "bg-[#0c0c0c] border border-white/10 shadow-2xl rounded-2xl text-white",
               headerTitle: "text-white pf-display text-xl",
               headerSubtitle: "text-white/60 text-sm",
               socialButtonsBlockButton: "bg-white/5 border-white/10 text-white hover:bg-white/10",
