@@ -25,6 +25,10 @@ export function LeadsManager({ initialLeads, stats }: LeadsManagerProps) {
     );
   };
 
+  const handleLeadDelete = (leadId: string) => {
+    setLeadsList((prev) => prev.filter((lead) => lead.id !== leadId));
+  };
+
   const filteredLeads = useMemo(() => {
     return leadsList
       .filter((lead) => {
@@ -98,11 +102,19 @@ export function LeadsManager({ initialLeads, stats }: LeadsManagerProps) {
         <>
           {/* Vista de escritorio (Table) */}
           <div className="hidden md:block">
-            <LeadsTable leads={filteredLeads} onStatusChange={handleStatusChange} />
+            <LeadsTable
+              leads={filteredLeads}
+              onStatusChange={handleStatusChange}
+              onLeadDelete={handleLeadDelete}
+            />
           </div>
 
           {/* Vista móvil (Cards) */}
-          <LeadsMobileList leads={filteredLeads} onStatusChange={handleStatusChange} />
+          <LeadsMobileList
+            leads={filteredLeads}
+            onStatusChange={handleStatusChange}
+            onLeadDelete={handleLeadDelete}
+          />
 
           <div className="flex items-center justify-between text-[11px] pf-mono text-white/40 pt-2 px-1">
             <span>Mostrando {filteredLeads.length} de {leadsList.length} leads</span>

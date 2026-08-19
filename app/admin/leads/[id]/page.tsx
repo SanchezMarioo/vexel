@@ -8,6 +8,7 @@ import { StatusBadge } from "@/components/admin/StatusBadge";
 import { TemperatureBadge } from "@/components/admin/TemperatureBadge";
 import { StatusSelectDropdown } from "@/components/admin/StatusSelectDropdown";
 import { LeadNotesEditor } from "@/components/admin/LeadNotesEditor";
+import { DeleteLeadButton } from "@/components/admin/DeleteLeadButton";
 
 interface LeadDetailPageProps {
   params: Promise<{ id: string }>;
@@ -97,6 +98,12 @@ export default async function LeadDetailPage({ params }: LeadDetailPageProps) {
           </div>
 
           <div className="flex items-center gap-3">
+            <DeleteLeadButton
+              leadId={lead.id}
+              leadName={titleName}
+              redirectUrl="/admin/leads"
+            />
+            <div className="h-4 w-px bg-white/10 hidden sm:block" />
             <div className="text-xs pf-mono text-white/50 hidden sm:inline-block">Estado:</div>
             <StatusSelectDropdown leadId={lead.id} currentStatus={lead.status} />
           </div>

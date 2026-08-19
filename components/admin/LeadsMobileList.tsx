@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { TemperatureBadge } from "./TemperatureBadge";
 import { StatusSelectDropdown } from "./StatusSelectDropdown";
+import { DeleteLeadButton } from "./DeleteLeadButton";
 import type { Lead, LeadStatus } from "@/lib/supabase/types";
 
 interface LeadsMobileListProps {
   leads: Lead[];
   onStatusChange?: (leadId: string, newStatus: LeadStatus) => void;
+  onLeadDelete?: (leadId: string) => void;
 }
 
 function formatDate(dateStr: string) {
@@ -24,7 +26,7 @@ function formatDate(dateStr: string) {
   }
 }
 
-export function LeadsMobileList({ leads, onStatusChange }: LeadsMobileListProps) {
+export function LeadsMobileList({ leads, onStatusChange, onLeadDelete }: LeadsMobileListProps) {
   return (
     <div className="space-y-3 md:hidden">
       {leads.map((lead) => (
@@ -64,7 +66,7 @@ export function LeadsMobileList({ leads, onStatusChange }: LeadsMobileListProps)
             </div>
           </div>
 
-          {/* Footer de la tarjeta: Estado interactivo + Enlace al detalle */}
+          {/* Footer de la tarjeta: Estado interactivo + Enlace al detalle + Borrar */}
           <div className="flex items-center justify-between gap-2 pt-1">
             <StatusSelectDropdown
               leadId={lead.id}
@@ -72,8 +74,9 @@ export function LeadsMobileList({ leads, onStatusChange }: LeadsMobileListProps)
               onStatusChange={(newStatus) => onStatusChange?.(lead.id, newStatus)}
             />
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <span className="text-[10px] pf-mono text-white/40">{formatDate(lead.created_at)}</span>
+              
               <Link
                 href={`/admin/leads/${lead.id}`}
                 className="p-1.5 rounded-lg bg-white/5 text-white/60 hover:text-white transition-colors"
@@ -83,6 +86,13 @@ export function LeadsMobileList({ leads, onStatusChange }: LeadsMobileListProps)
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </Link>
+
+              <DeleteLeadButton
+                leadId={lead.id}
+                leadName={lead.empresa || lead.nombre}
+                variant="icon"
+                onDeleted={onLeadDelete}
+              />
             </div>
           </div>
         </div>

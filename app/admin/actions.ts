@@ -2,7 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/admin/auth";
-import { updateLeadStatusInSupabase, updateLeadNotesInSupabase } from "@/lib/supabase/server";
+import {
+  updateLeadStatusInSupabase,
+  updateLeadNotesInSupabase,
+  deleteLeadFromSupabase,
+} from "@/lib/supabase/server";
 import type { LeadStatus } from "@/lib/supabase/types";
 
 /**
@@ -33,6 +37,22 @@ export async function updateLeadNotesAction(id: string, notes: string) {
   if (result.ok) {
     revalidatePath(`/admin/leads/${id}`);
     revalidatePath("/admin/leads");
+  }
+
+  return result;
+}
+
+/**
+ * Server Action para eliminar un lead definitivamente.
+ */
+export async function deleteLeadAction(id: string) {
+  await requireAdmin();
+
+  const result = await deleteLeadFromSupabase(id);
+
+  if (result.ok) {
+    revalidatePath("/admin/leads");
+    revalidatePath(`/admin/leads/${id}`);
   }
 
   return result;

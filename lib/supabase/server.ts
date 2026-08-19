@@ -61,6 +61,7 @@ export async function getLeadsFromSupabase(options?: {
   search?: string;
   limit?: number;
   offset?: number;
+  tier?: string;
 }): Promise<{ leads: Lead[]; count: number; error?: string }> {
   const supabase = getSupabaseServerClient();
   if (!supabase) {
@@ -79,6 +80,10 @@ export async function getLeadsFromSupabase(options?: {
 
     if (options?.status && options.status !== "todos") {
       query = query.eq("status", options.status);
+    }
+
+    if (options?.tier && options.tier !== "all") {
+      query = query.eq("score_tier", options.tier);
     }
 
     if (options?.search && options.search.trim()) {
@@ -176,6 +181,35 @@ export async function updateLeadNotesInSupabase(
 
     return { ok: true };
   } catch (err) {
+    return { ok: false, error: err instanceof Error ? err.message : "Error desconocido" };
+  }
+}
+
+/**
+ * Elimina un lead por su ID.
+ */
+export async function deleteLeadFromSupabase(
+  id: string,
+): Promise<{ ok: boolean; error?: string }> {
+  const supabase = getSupabaseServerClient();
+  if (!supabase) {
+    return { ok: false, error: "Supabase no configurado" };
+  }
+
+  try {
+    const { error } = await supabase
+      .from("leads")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      console.error("[supabase] error eliminando lead:", error);
+      return { ok: false, error: error.message };
+    }
+
+    return { ok: true };
+  } catch (err) {
+    console.error("[supabase] excepción al eliminar lead:", err);
     return { ok: false, error: err instanceof Error ? err.message : "Error desconocido" };
   }
 }

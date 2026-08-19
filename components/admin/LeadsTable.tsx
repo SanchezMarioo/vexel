@@ -3,11 +3,13 @@
 import Link from "next/link";
 import { TemperatureBadge } from "./TemperatureBadge";
 import { StatusSelectDropdown } from "./StatusSelectDropdown";
+import { DeleteLeadButton } from "./DeleteLeadButton";
 import type { Lead, LeadStatus } from "@/lib/supabase/types";
 
 interface LeadsTableProps {
   leads: Lead[];
   onStatusChange?: (leadId: string, newStatus: LeadStatus) => void;
+  onLeadDelete?: (leadId: string) => void;
 }
 
 function formatDate(dateStr: string) {
@@ -41,7 +43,7 @@ function formatDate(dateStr: string) {
   }
 }
 
-export function LeadsTable({ leads, onStatusChange }: LeadsTableProps) {
+export function LeadsTable({ leads, onStatusChange, onLeadDelete }: LeadsTableProps) {
   return (
     <div className="w-full overflow-x-auto rounded-xl border border-white/10 bg-[#080808]">
       <table className="w-full text-left border-collapse min-w-[900px]">
@@ -54,7 +56,7 @@ export function LeadsTable({ leads, onStatusChange }: LeadsTableProps) {
             <th className="py-3 px-4">Cualificación</th>
             <th className="py-3 px-4">Estado</th>
             <th className="py-3 px-4">Fecha</th>
-            <th className="py-3 px-4 text-right">Detalle</th>
+            <th className="py-3 px-4 text-right">Acciones</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-white/5 text-xs">
@@ -134,17 +136,26 @@ export function LeadsTable({ leads, onStatusChange }: LeadsTableProps) {
                 {formatDate(lead.created_at)}
               </td>
 
-              {/* Acción / Link */}
+              {/* Acciones */}
               <td className="py-3.5 px-4 text-right whitespace-nowrap">
-                <Link
-                  href={`/admin/leads/${lead.id}`}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-medium pf-mono text-white/60 hover:text-white bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/15 transition-colors cursor-pointer"
-                >
-                  <span>Ver</span>
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
+                <div className="inline-flex items-center gap-2 justify-end">
+                  <Link
+                    href={`/admin/leads/${lead.id}`}
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-medium pf-mono text-white/60 hover:text-white bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/15 transition-colors cursor-pointer"
+                  >
+                    <span>Ver</span>
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+
+                  <DeleteLeadButton
+                    leadId={lead.id}
+                    leadName={lead.empresa || lead.nombre}
+                    variant="icon"
+                    onDeleted={onLeadDelete}
+                  />
+                </div>
               </td>
             </tr>
           ))}
