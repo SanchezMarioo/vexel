@@ -17,11 +17,14 @@ export default function Contact() {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
     defaultValues: { name: "", email: "", message: "", company: "", consent: false },
   });
+
+  const consent = watch("consent");
 
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [serverError, setServerError] = useState<string | null>(null);
@@ -204,27 +207,33 @@ export default function Contact() {
                   htmlFor="contact-consent"
                   className="group flex cursor-pointer items-start gap-3 text-sm text-pf-ink-soft select-none"
                 >
-                  <span className="relative mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-[2px] border border-pf-line-strong bg-pf-surface transition-colors group-hover:border-pf-ink has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-pf-ink has-[:focus-visible]:ring-offset-2 has-[:checked]:border-pf-ink">
+                  <span
+                    className={`relative mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-[2px] border bg-pf-surface transition-colors group-hover:border-pf-ink has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-pf-ink has-[:focus-visible]:ring-offset-2 ${
+                      consent ? "border-pf-ink" : "border-pf-line-strong"
+                    }`}
+                  >
                     <input
                       id="contact-consent"
                       type="checkbox"
                       aria-invalid={errors.consent ? true : undefined}
-                      className="peer sr-only"
+                      className="sr-only"
                       {...register("consent")}
                     />
                     {/* Visual checked indicator */}
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="pointer-events-none hidden h-3 w-3 text-pf-ink peer-checked:block"
-                      aria-hidden="true"
-                    >
-                      <path d="m5 13 4 4L19 7" />
-                    </svg>
+                    {consent ? (
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="pointer-events-none h-3 w-3 text-pf-ink"
+                        aria-hidden="true"
+                      >
+                        <path d="m5 13 4 4L19 7" />
+                      </svg>
+                    ) : null}
                   </span>
                   <span>
                     He leído y acepto la{" "}
