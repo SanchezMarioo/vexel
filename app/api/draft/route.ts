@@ -1,6 +1,14 @@
+import crypto from "crypto";
 import { draftMode } from "next/headers";
 import { redirect } from "next/navigation";
 import type { NextRequest } from "next/server";
+
+function safeCompare(a: string, b: string): boolean {
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  if (bufA.length !== bufB.length) return false;
+  return crypto.timingSafeEqual(bufA, bufB);
+}
 
 /**
  * Activa Draft Mode para previsualizar borradores de Sanity.
@@ -15,7 +23,8 @@ export async function GET(request: NextRequest) {
   const secret = searchParams.get("secret");
   const slug = searchParams.get("slug") ?? "/blog";
 
-  if (!process.env.SANITY_REVALIDATE_SECRET || secret !== process.env.SANITY_REVALIDATE_SECRET) {
+  const envSecret = process.env.SANITY_REVALIDATE_SECRET;
+  if (!envSecret || !secret || !safeCompare(secret, envSecret)) {
     return new Response("Secreto inválido", { status: 401 });
   }
 

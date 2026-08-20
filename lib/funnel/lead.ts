@@ -2,6 +2,7 @@ import "server-only";
 
 import { steps, type FunnelAnswers } from "./content";
 import type { FunnelInput } from "./schema";
+import { sanitizeTextForStorage } from "@/lib/security/sanitize";
 
 /**
  * Lead normalizado en servidor: texto recortado y acotado, email en minúsculas
@@ -46,7 +47,8 @@ export interface NormalizedLead {
 }
 
 function normalizeText(value: string | undefined) {
-  return (value ?? "").replace(/\s+/g, " ").trim();
+  const cleaned = (value ?? "").replace(/\s+/g, " ").trim();
+  return sanitizeTextForStorage(cleaned);
 }
 
 function normalizePage(value: string | undefined) {

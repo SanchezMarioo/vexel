@@ -22,12 +22,16 @@ export function getAdminEmails(): string[] {
 }
 
 /**
- * Comprueba si un correo está autorizado como administrador.
- * Si no hay ADMIN_EMAILS definidos, permite el acceso a cualquier usuario autenticado.
+ * Comprueba si un correo está autorizado como administrador contra la lista blanca.
+ * Si no hay ADMIN_EMAILS definidos o la lista está vacía, DENEGAMOS el acceso por defecto (fail-closed).
  */
 export function checkIsAdmin(email: string): boolean {
+  if (!email || !email.trim()) return false;
   const adminEmails = getAdminEmails();
-  if (adminEmails.length === 0) return true;
+  if (adminEmails.length === 0) {
+    console.error("[admin/auth] Acceso denegado: ADMIN_EMAILS no está configurado en las variables de entorno.");
+    return false;
+  }
   return adminEmails.includes(email.trim().toLowerCase());
 }
 

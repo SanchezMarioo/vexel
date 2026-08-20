@@ -1,12 +1,15 @@
 import { ZodError } from "zod";
 import { contactSchema } from "@/lib/portfolio/contact-schema";
-import { checkRateLimit } from "@/lib/security/rate-limit";
+import { checkRateLimitUpstash } from "@/lib/security/rate-limit";
 import { getClientIp, hasTrustedOrigin, isJsonContentType } from "@/lib/security/request";
 import { secureJson } from "@/lib/security/response";
+import { sanitizeTextForStorage } from "@/lib/security/sanitize";
 import { insertLeadInSupabase } from "@/lib/supabase/server";
 import { sendTelegramNotification } from "@/lib/notifications/telegram";
 
 export const runtime = "nodejs";
+
+const MAX_BODY_BYTES = 32_000;
 
 function errorResponse(message: string, status: number) {
   return secureJson({ ok: false, message }, { status });
@@ -21,21 +24,32 @@ export async function POST(request: Request) {
     return errorResponse("Content-Type no soportado.", 415);
   }
 
+  const contentLength = Number(request.headers.get("content-length"));
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return errorResponse("La solicitud es demasiado grande.", 413);
+  }
+
+  let rawBody: string;
+  try {
+    rawBody = await request.text();
+  } catch {
+    return errorResponse("No pudimos leer la solicitud.", 400);
+  }
+
+  if (rawBody.length > MAX_BODY_BYTES) {
+    return errorResponse("La solicitud es demasiado grande.", 413);
+  }
+
   const clientIp = getClientIp(request);
 
-  const rateLimit = checkRateLimit({
-    bucket: "contact:ip",
-    key: clientIp,
-    limit: 5,
-    windowMs: 60 * 60 * 1000,
-  });
+  const rateLimit = await checkRateLimitUpstash(`contact:ip:${clientIp}`);
 
   if (!rateLimit.ok) {
     return errorResponse("Demasiados mensajes en poco tiempo. Inténtalo más tarde.", 429);
   }
 
   try {
-    const payload = await request.json();
+    const payload = JSON.parse(rawBody);
     const data = contactSchema.parse(payload);
 
     // Honeypot: un visitante real nunca lo rellena. Fingir éxito y descartar.
@@ -43,12 +57,16 @@ export async function POST(request: Request) {
       return secureJson({ ok: true }, { status: 200 });
     }
 
+    const safeName = sanitizeTextForStorage(data.name);
+    const safeEmail = data.email.trim().toLowerCase();
+    const safeMessage = sanitizeTextForStorage(data.message);
+
     // Persistir el mensaje de contacto en Supabase como lead
     const result = await insertLeadInSupabase({
       status: "nuevo",
-      nombre: data.name,
-      email: data.email.trim().toLowerCase(),
-      descripcion: data.message,
+      nombre: safeName,
+      email: safeEmail,
+      descripcion: safeMessage,
       situacion: "Contacto directo",
       tipo: "contacto-directo",
       presupuesto: "no-claro",
@@ -82,9 +100,9 @@ export async function POST(request: Request) {
       try {
         await sendTelegramNotification({
           leadId: result.id,
-          nombre: data.name,
-          email: data.email,
-          proyecto: data.message,
+          nombre: safeName,
+          email: safeEmail,
+          proyecto: safeMessage,
           servicio: "Contacto directo",
           landingPage: "/",
           fuente: "Formulario web directo",

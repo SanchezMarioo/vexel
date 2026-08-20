@@ -69,6 +69,10 @@ export const funnelSchema = z
       .string()
       .trim()
       .max(40, "El número de teléfono o móvil es demasiado largo.")
+      .refine(
+        (value) => !value || /^[+0-9\s().-]{6,30}$/.test(value),
+        "Introduce un número de teléfono válido.",
+      )
       .optional(),
     // RGPD: consentimiento explícito obligatorio para tratar los datos del lead.
     consent: z
