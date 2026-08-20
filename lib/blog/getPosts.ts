@@ -16,24 +16,15 @@ import { mapSanityCard } from "./mappers";
  * lib/content/blog.ts para que el sitio nunca se rompa.
  */
 export const getPosts = cache(async function getPosts(preview = false): Promise<BlogPost[]> {
-  const local = getLocalPosts();
   if (!isSanityConfigured) {
-    return local;
+    return getLocalPosts();
   }
 
   try {
-    const sanityPosts = await sanityFetch<SanityPostCard[]>({ query: POSTS_QUERY, preview });
-    const mappedSanity = sanityPosts.map(mapSanityCard);
-
-    // Mantiene los de Sanity y añade los artículos locales que no existan en Sanity
-    const sanitySlugs = new Set(mappedSanity.map((p) => p.slug));
-    const remainingLocal = local.filter((p) => !sanitySlugs.has(p.slug));
-
-    return [...mappedSanity, ...remainingLocal].sort((a, b) =>
-      b.publishedAt.localeCompare(a.publishedAt),
-    );
+    const posts = await sanityFetch<SanityPostCard[]>({ query: POSTS_QUERY, preview });
+    return posts.map(mapSanityCard);
   } catch (error) {
-    console.error("[blog] Error leyendo artículos de Sanity; usando contenido local.", error);
-    return local;
+    console.error("[blog] Error leyendo artículos de Sanity.", error);
+    return [];
   }
 });

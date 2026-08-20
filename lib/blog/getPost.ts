@@ -23,9 +23,9 @@ export const getPost = cache(async function getPost(slug: string, preview = fals
       params: { slug },
       preview,
     });
-    return post ? mapSanityPost(post) : (getLocalPost(slug) ?? null);
+    return post ? mapSanityPost(post) : null;
   } catch (error) {
-    console.error(`[blog] Error leyendo "${slug}" de Sanity; usando contenido local.`, error);
-    return getLocalPost(slug) ?? null;
+    console.error(`[blog] Error leyendo "${slug}" de Sanity.`, error);
+    return null;
   }
 });
