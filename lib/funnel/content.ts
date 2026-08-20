@@ -76,6 +76,7 @@ export interface ChoiceStep {
   /** Línea opcional de contexto debajo de la pregunta. */
   why?: string;
   options: FunnelOption[];
+  required?: boolean;
 }
 
 export interface InputStep {
@@ -90,6 +91,7 @@ export interface InputStep {
   multiline?: boolean;
   /** El paso lleva el consentimiento RGPD debajo del campo. */
   withConsent?: boolean;
+  required?: boolean;
 }
 
 export type FunnelStep = ChoiceStep | InputStep;
@@ -136,6 +138,7 @@ export const steps: Record<StepId, FunnelStep> = {
     kind: "choice",
     record: "Situación",
     question: "¿Qué te trae por aquí?",
+    required: true,
     options: [
       {
         id: "lenta",
@@ -166,6 +169,7 @@ export const steps: Record<StepId, FunnelStep> = {
     kind: "choice",
     record: "Proyecto",
     question: "¿Qué quieres construir o mejorar?",
+    required: true,
     options: [
       {
         id: "web-nueva",
@@ -191,6 +195,7 @@ export const steps: Record<StepId, FunnelStep> = {
     kind: "choice",
     record: "Objetivo",
     question: "¿Qué quieres conseguir con el proyecto?",
+    required: true,
     options: [
       {
         id: "captar-clientes",
@@ -228,6 +233,7 @@ export const steps: Record<StepId, FunnelStep> = {
     kind: "choice",
     record: "Catálogo",
     question: "¿Cuántos productos tendría la tienda?",
+    required: true,
     options: [
       {
         id: "menos-50",
@@ -253,6 +259,7 @@ export const steps: Record<StepId, FunnelStep> = {
     kind: "choice",
     record: "Web actual",
     question: "¿Sobre qué trabajamos hoy?",
+    required: true,
     options: [
       {
         id: "wordpress",
@@ -279,6 +286,7 @@ export const steps: Record<StepId, FunnelStep> = {
     record: "Inversión",
     question: "¿Qué inversión tienes en mente?",
     why: "Nos ayuda a proponerte algo realista desde el principio. El precio definitivo dependerá del proyecto.",
+    required: true,
     options: [
       {
         id: "menos-500",
@@ -312,6 +320,7 @@ export const steps: Record<StepId, FunnelStep> = {
     kind: "choice",
     record: "Plazo",
     question: "¿Cuándo te gustaría empezar?",
+    required: true,
     options: [
       {
         id: "cuanto-antes",
@@ -342,6 +351,7 @@ export const steps: Record<StepId, FunnelStep> = {
     type: "textarea",
     autoComplete: "off",
     multiline: true,
+    required: false,
   },
 
   nombre: {
@@ -352,6 +362,7 @@ export const steps: Record<StepId, FunnelStep> = {
     placeholder: "Tu nombre",
     type: "text",
     autoComplete: "name",
+    required: true,
   },
 
   empresa: {
@@ -362,6 +373,7 @@ export const steps: Record<StepId, FunnelStep> = {
     placeholder: "Nombre de tu empresa",
     type: "text",
     autoComplete: "organization",
+    required: false,
   },
 
   email: {
@@ -373,6 +385,7 @@ export const steps: Record<StepId, FunnelStep> = {
     type: "email",
     autoComplete: "email",
     withConsent: true,
+    required: true,
   },
 
   telefono: {
@@ -383,6 +396,7 @@ export const steps: Record<StepId, FunnelStep> = {
     placeholder: "+34 600 000 000",
     type: "tel",
     autoComplete: "tel",
+    required: false,
   },
 };
 

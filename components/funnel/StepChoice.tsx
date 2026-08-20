@@ -94,6 +94,15 @@ export default function StepChoice({ step, selected, detail, onAnswer }: StepCho
         style={{ fontSize: "clamp(1.9rem, 3.8vw, 3rem)" }}
       >
         {step.question}
+        {step.required ? (
+          <span
+            className="ml-1 text-red-500 font-semibold select-none"
+            aria-hidden="true"
+            title="Campo obligatorio"
+          >
+            *
+          </span>
+        ) : null}
       </h2>
 
       {step.why ? (

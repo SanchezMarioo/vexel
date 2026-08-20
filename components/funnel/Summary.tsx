@@ -122,8 +122,7 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
             variants={fadeUp}
             className="mt-14 rounded-[var(--pf-radius-lg)] border border-pf-inverse-ink/20 bg-pf-inverse-ink/[0.03] p-6 sm:p-8"
           >
-            <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-pf-inverse-ink/60 pf-mono">
-              <span className="inline-block h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            <div className="text-xs uppercase tracking-wider text-pf-inverse-ink/60 pf-mono">
               Paso opcional
             </div>
             <h3
