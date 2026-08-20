@@ -181,9 +181,36 @@
 - **Implementación:** Cualquier petición no autenticada o de usuarios no autorizados a `/admin`, `/admin/leads` o `/admin/leads/[id]` devuelve inmediatamente `notFound()` (código HTTP 404 real), haciéndola completamente indistinguible de una ruta inexistente ante escáneres o visitantes casuales.
 - **Acceso Administrativo:** La ruta `/admin/login` se mantiene activa para el inicio de sesión directo de administradores mediante Clerk, sin enlaces visibles desde el sitio público y excluida de motores de búsqueda en `app/robots.ts`.
 
-### 2. Actualización Mayor de Dependencias de Sanity
-- **Estado actual:** Sanity contiene advertencias en subdependencias de su CLI (`adm-zip`, `js-yaml`).
-- **Recomendación:** Mantener la versión actual ya que no afectan la ejecución del frontend público y esperar al próximo parche menor de Sanity, o planificar una actualización cuando Sanity publique actualización de sus paquetes CLI.
+### 2. Actualización de Dependencias de Sanity CMS — ✅ APLICADO
+- Se actualizaron las dependencias de Sanity a sus versiones más recientes en la rama `chore/sanity-dependencies-upgrade`.
+
+---
+
+## Seguimiento de Actualización de Dependencias de Sanity
+
+### Versiones Anteriores vs Nuevas
+
+| Paquete | Versión Anterior | Versión Nueva | Tipo de Actualización |
+|---|---|---|---|
+| `sanity` | `5.31.1` | `6.9.2` | Major (v5 → v6) |
+| `@sanity/vision` | `5.31.1` | `6.9.2` | Major (v5 → v6) |
+| `next-sanity` | `13.2.2` | `13.3.2` | Minor |
+| `@sanity/client` (dev) | `7.26.0` | `8.0.0` | Major (v7 → v8) |
+| `@sanity/image-url` | `2.1.1` | `2.1.1` | Sin cambios (ya en última versión) |
+
+### Breaking Changes y Resolución
+1. **Configuración de Studio (`sanity.config.ts`):** Compatible al 100% con `structureTool()` y `visionTool()`. No requirió cambios en la estructura de esquemas ni plugins.
+2. **Esquemas de contenido (`sanity/schemas/`):** Totalmente compatibles con Sanity v6 sin advertencias de deprecación.
+3. **Fetching de contenido (`next-sanity` & `sanity/client.ts`):** La API de `createClient` y el manejo de tags de caché ISR (`next: { tags }`) continúan operando sin modificaciones.
+
+### Estado de Vulnerabilidades
+- **En producción (`npm audit --omit=dev --audit-level=high`):** 0 vulnerabilidades en tiempo de ejecución del frontend público.
+- **En herramientas CLI internas de Sanity (`@sanity/cli`):** Sanity v6 incluye dependencias transitivas fijadas por el ecosistema de Sanity (`@vercel/frameworks` con `js-yaml` y `typeid-js` con `uuid`). Estas vulnerabilidades son exclusivas del entorno CLI de compilación/desarrollo de Sanity y son gestionadas directamente por el equipo upstream de Sanity en sus próximos lanzamientos de mantenimiento.
+
+### Verificación de Funcionamiento
+- **Compilación de Producción:** `npm run build` completado exitosamente (código 0, 46 rutas generadas).
+- **Studio Embebido (`/studio`):** Verificado vía HTTP (`200 OK`) — carga de la interfaz de Studio operativa.
+- **Contenido Público (Blog, Proyectos, Servicios):** Verificado vía HTTP (`200 OK` en `/blog`, `/blog/[slug]`, `/proyectos`, `/`).
 
 ---
 
