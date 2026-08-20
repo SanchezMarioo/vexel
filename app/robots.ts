@@ -5,6 +5,7 @@ import { siteUrl } from "@/lib/site-url";
 const disallow = [
   "/admin",
   "/admin/",
+  "/admin/login",
   "/studio",
   "/studio/",
   "/api/",

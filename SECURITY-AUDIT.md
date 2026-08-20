@@ -177,10 +177,9 @@
 
 ## Decisiones que Requieren Confirmación del Usuario
 
-### 1. Comportamiento de Rutas de Administración: Redirección (307) vs Ocultación Total (404 Not Found)
-- **Estado actual:** Si un visitante no autenticado entra a `/admin/leads` o `/admin`, el servidor lo redirige (`307`) a `/admin/login` para iniciar sesión con Clerk.
-- **Opción Stealth (404):** Si prefieres que nadie fuera de tu red sepa que existe el panel de administración, se puede configurar para devolver `notFound()` (HTTP 404 real) a cualquier visitante no autenticado o no incluido en `ADMIN_EMAILS`.
-- **Trade-off:** Con 404 real, tú tendrías que acceder a una URL de login con un parámetro secreto o autenticarte primero por un enlace específico antes de poder ver `/admin`.
+### 1. Comportamiento de Rutas de Administración: Modo Stealth (404 Not Found) — ✅ APLICADO
+- **Implementación:** Cualquier petición no autenticada o de usuarios no autorizados a `/admin`, `/admin/leads` o `/admin/leads/[id]` devuelve inmediatamente `notFound()` (código HTTP 404 real), haciéndola completamente indistinguible de una ruta inexistente ante escáneres o visitantes casuales.
+- **Acceso Administrativo:** La ruta `/admin/login` se mantiene activa para el inicio de sesión directo de administradores mediante Clerk, sin enlaces visibles desde el sitio público y excluida de motores de búsqueda en `app/robots.ts`.
 
 ### 2. Actualización Mayor de Dependencias de Sanity
 - **Estado actual:** Sanity contiene advertencias en subdependencias de su CLI (`adm-zip`, `js-yaml`).

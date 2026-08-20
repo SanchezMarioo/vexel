@@ -15,6 +15,7 @@ interface LeadDetailPageProps {
 }
 
 export async function generateMetadata({ params }: LeadDetailPageProps): Promise<Metadata> {
+  await requireAdmin();
   const { id } = await params;
   const lead = await getLeadByIdFromSupabase(id);
 

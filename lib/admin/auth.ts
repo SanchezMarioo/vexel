@@ -1,7 +1,7 @@
 import "server-only";
 
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 
 export interface AdminUser {
   userId: string;
@@ -37,25 +37,26 @@ export function checkIsAdmin(email: string): boolean {
 
 /**
  * Valida que la petición provenga de una sesión activa de Clerk y pertenezca a la lista blanca de administradores.
- * Si no está autenticado o no está autorizado, redirige de forma segura sin provocar bucles.
+ * Si no está autenticado o no está autorizado, lanza notFound() para devolver un 404 real a nivel de servidor,
+ * haciendo que las rutas de administración sean indistinguibles de rutas inexistentes.
  */
 export async function requireAdmin(): Promise<AdminUser> {
   const { userId } = await auth();
 
   if (!userId) {
-    redirect("/admin/login");
+    notFound();
   }
 
   const user = await currentUser();
   if (!user) {
-    redirect("/admin/login");
+    notFound();
   }
 
   const userEmail = user.emailAddresses?.[0]?.emailAddress?.toLowerCase() ?? "";
 
   if (!checkIsAdmin(userEmail)) {
     console.warn(`[admin/auth] Acceso denegado: el correo '${userEmail}' no está en ADMIN_EMAILS.`);
-    redirect("/admin/login?error=unauthorized");
+    notFound();
   }
 
   return {

@@ -1,12 +1,8 @@
-import { auth } from "@clerk/nextjs/server";
+import { requireAdmin } from "@/lib/admin/auth";
 import { redirect } from "next/navigation";
 
 export default async function AdminRootPage() {
-  const { userId } = await auth();
-
-  if (!userId) {
-    redirect("/admin/login");
-  }
+  await requireAdmin();
 
   redirect("/admin/leads");
 }
