@@ -16,11 +16,14 @@ interface TranscriptProps {
  * pliega hacia arriba al responder (layout) y toca volver a ese punto.
  */
 export default function Transcript({ stepIds, answers, onEdit }: TranscriptProps) {
-  if (stepIds.length === 0) return null;
+  const visibleStepIds = stepIds.filter((stepId) =>
+    Boolean(answerLabel(stepId, answers).trim()),
+  );
+  if (visibleStepIds.length === 0) return null;
 
   return (
     <div className="border-t border-pf-line">
-      {stepIds.map((stepId) => (
+      {visibleStepIds.map((stepId) => (
         <m.div
           key={stepId}
           layout

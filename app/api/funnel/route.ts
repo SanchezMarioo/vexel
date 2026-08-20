@@ -8,6 +8,7 @@ import { sendTelegramLeadNotification } from "@/lib/notifications/telegram";
 import { checkRateLimitUpstash } from "@/lib/security/rate-limit";
 import { getClientIp, hasTrustedOrigin, isJsonContentType } from "@/lib/security/request";
 import { secureJson } from "@/lib/security/response";
+import { verifyTurnstileToken } from "@/lib/security/turnstile";
 
 export const runtime = "nodejs";
 
@@ -31,9 +32,40 @@ export async function POST(request: Request) {
     return errorResponse("La solicitud es demasiado grande.", 413);
   }
 
+  let rawBody: string;
+  try {
+    rawBody = await request.text();
+  } catch {
+    return errorResponse("No pudimos leer la solicitud.", 400);
+  }
+
+  if (rawBody.length > MAX_BODY_BYTES) {
+    return errorResponse("La solicitud es demasiado grande.", 413);
+  }
+
+  let payload: unknown;
+  try {
+    payload = JSON.parse(rawBody);
+  } catch {
+    return errorResponse("Body JSON inválido.", 400);
+  }
+
   const clientIp = getClientIp(request);
 
-  // Rate limiting distribuido con Upstash (fallback a in-memory en desarrollo)
+  // 1. Verificación en servidor de Cloudflare Turnstile (Anti-bot)
+  const tokenCandidate =
+    payload && typeof payload === "object" && "turnstileToken" in payload
+      ? (payload as { turnstileToken?: unknown }).turnstileToken
+      : undefined;
+
+  const turnstileToken = typeof tokenCandidate === "string" ? tokenCandidate : undefined;
+  const turnstileResult = await verifyTurnstileToken(turnstileToken, clientIp);
+
+  if (!turnstileResult.ok) {
+    return errorResponse("No hemos podido verificar el envío. Inténtalo de nuevo.", 403);
+  }
+
+  // 2. Rate limiting distribuido con Upstash (fallback a in-memory en desarrollo)
   const rateLimit = await checkRateLimitUpstash(`funnel:ip:${clientIp}`);
 
   if (!rateLimit.ok) {
@@ -41,12 +73,6 @@ export async function POST(request: Request) {
   }
 
   try {
-    const rawBody = await request.text();
-    if (rawBody.length > MAX_BODY_BYTES) {
-      return errorResponse("La solicitud es demasiado grande.", 413);
-    }
-
-    const payload = JSON.parse(rawBody);
     const data = funnelSchema.parse(payload);
 
     // Honeypot: un visitante real nunca lo rellena. Fingir éxito y descartar.

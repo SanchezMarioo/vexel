@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, m } from "framer-motion";
-import { useEffect, useMemo, useReducer, useRef } from "react";
+import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import Button from "@/components/portfolio/ui/Button";
 import { getAttribution } from "@/lib/funnel/attribution";
 import {
@@ -375,6 +375,26 @@ export default function Funnel() {
 
   const sentOnceRef = useRef(false);
   const activeRef = useRef<HTMLDivElement>(null);
+  const turnstileTokenRef = useRef<string | null>(null);
+  const [, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileResetKey, setTurnstileResetKey] = useState<number>(0);
+
+  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+  function handleTurnstileVerify(token: string) {
+    turnstileTokenRef.current = token;
+    setTurnstileToken(token);
+  }
+
+  function handleTurnstileExpire() {
+    turnstileTokenRef.current = null;
+    setTurnstileToken(null);
+  }
+
+  function handleTurnstileError() {
+    turnstileTokenRef.current = null;
+    setTurnstileToken(null);
+  }
 
   const sequence = useMemo(() => stepSequence(answers), [answers]);
   const activeStepId = sequence[Math.min(activeIndex, sequence.length - 1)];
@@ -425,6 +445,9 @@ export default function Funnel() {
     const index = sequence.indexOf(stepId);
     if (index === -1) return;
 
+    turnstileTokenRef.current = null;
+    setTurnstileToken(null);
+    setTurnstileResetKey((k) => k + 1);
     dispatch({ type: "EDIT_STEP", payload: { index } });
     scrollToTop();
   }
@@ -440,6 +463,27 @@ export default function Funnel() {
         type: "SET_CONSENT_ERROR",
         payload: "Debes aceptar la política de privacidad para enviar.",
       });
+      return;
+    }
+
+    dispatch({ type: "SUBMIT_START" });
+
+    // Si Cloudflare Turnstile está configurado, esperar brevemente si el token aún no está listo
+    let token = turnstileTokenRef.current;
+    if (turnstileSiteKey && !token) {
+      const startTime = Date.now();
+      while (!turnstileTokenRef.current && Date.now() - startTime < 3500) {
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      }
+      token = turnstileTokenRef.current;
+    }
+
+    if (turnstileSiteKey && !token) {
+      dispatch({
+        type: "SUBMIT_ERROR",
+        payload: "No hemos podido verificar el envío. Inténtalo de nuevo.",
+      });
+      setTurnstileResetKey((k) => k + 1);
       return;
     }
 
@@ -460,6 +504,7 @@ export default function Funnel() {
       consent,
       actualizacion: sentOnceRef.current,
       company: honeypot,
+      turnstileToken: token ?? undefined,
       ...getAttribution(),
     };
 
@@ -484,7 +529,6 @@ export default function Funnel() {
       return;
     }
 
-    dispatch({ type: "SUBMIT_START" });
     trackFunnelEvent("lead_form_submit");
     try {
       const res = await fetch("/api/funnel", {
@@ -495,6 +539,9 @@ export default function Funnel() {
       const data = (await res.json()) as { ok: boolean; message?: string };
 
       if (!res.ok || !data.ok) {
+        turnstileTokenRef.current = null;
+        setTurnstileToken(null);
+        setTurnstileResetKey((k) => k + 1);
         dispatch({
           type: "SUBMIT_ERROR",
           payload: data.message ?? "No pudimos enviar tus respuestas. Inténtalo de nuevo.",
@@ -508,6 +555,9 @@ export default function Funnel() {
       trackFunnelEvent("lead_form_success");
       scrollToTop();
     } catch {
+      turnstileTokenRef.current = null;
+      setTurnstileToken(null);
+      setTurnstileResetKey((k) => k + 1);
       dispatch({
         type: "SUBMIT_ERROR",
         payload: "Error de conexión. Revisa tu red e inténtalo de nuevo.",
@@ -687,11 +737,16 @@ export default function Funnel() {
               submitting={submitting}
               isLastStep={activeIndex === sequence.length - 1}
               honeypot={honeypot}
+              turnstileSiteKey={turnstileSiteKey}
+              turnstileResetKey={turnstileResetKey}
               onClearError={() => dispatch({ type: "SET_FIELD_ERROR", payload: null })}
               onConsentChange={(value) => {
                 dispatch({ type: "SET_CONSENT", payload: value });
               }}
               onHoneypotChange={(val) => dispatch({ type: "SET_HONEYPOT", payload: val })}
+              onTurnstileVerify={handleTurnstileVerify}
+              onTurnstileExpire={handleTurnstileExpire}
+              onTurnstileError={handleTurnstileError}
               onSubmit={handleInputStep}
             />
           )}

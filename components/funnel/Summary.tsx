@@ -95,27 +95,29 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
           </m.p>
 
           <m.div variants={fadeUp} className="mt-7 border-t border-pf-inverse-ink/15">
-            {stepIds.map((stepId) => (
-              <button
-                key={stepId}
-                type="button"
-                onClick={() => onEdit(stepId)}
-                aria-label={`Editar respuesta: ${steps[stepId].record}`}
-                className="group flex w-full cursor-pointer items-center justify-between border-b border-pf-inverse-ink/15 px-2 py-4 text-left transition-[background-color,padding] duration-200 hover:bg-pf-inverse-ink/5 hover:pl-3 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-pf-inverse-ink"
-              >
-                <div className="flex flex-col gap-1 pr-4">
-                  <span className="pf-mono text-xs uppercase tracking-wide text-pf-inverse-ink/50">
-                    {steps[stepId].record}
+            {stepIds
+              .filter((stepId) => Boolean(answerLabel(stepId, answers).trim()))
+              .map((stepId) => (
+                <button
+                  key={stepId}
+                  type="button"
+                  onClick={() => onEdit(stepId)}
+                  aria-label={`Editar respuesta: ${steps[stepId].record}`}
+                  className="group flex w-full cursor-pointer items-center justify-between border-b border-pf-inverse-ink/15 px-2 py-4 text-left transition-[background-color,padding] duration-200 hover:bg-pf-inverse-ink/5 hover:pl-3 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-pf-inverse-ink"
+                >
+                  <div className="flex flex-col gap-1 pr-4">
+                    <span className="pf-mono text-xs uppercase tracking-wide text-pf-inverse-ink/50">
+                      {steps[stepId].record}
+                    </span>
+                    <span className="text-lg font-medium leading-snug text-pf-inverse-ink underline-offset-4 group-hover:underline">
+                      {answerLabel(stepId, answers)}
+                    </span>
+                  </div>
+                  <span className="pf-mono text-xs text-pf-inverse-ink/40 opacity-0 transition-[opacity,transform] duration-200 group-hover:translate-x-0 group-hover:opacity-100">
+                    Editar →
                   </span>
-                  <span className="text-lg font-medium leading-snug text-pf-inverse-ink underline-offset-4 group-hover:underline">
-                    {answerLabel(stepId, answers)}
-                  </span>
-                </div>
-                <span className="pf-mono text-xs text-pf-inverse-ink/40 opacity-0 transition-[opacity,transform] duration-200 group-hover:translate-x-0 group-hover:opacity-100">
-                  Editar →
-                </span>
-              </button>
-            ))}
+                </button>
+              ))}
           </m.div>
 
           <m.div

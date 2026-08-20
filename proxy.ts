@@ -1,14 +1,6 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { clerkMiddleware } from "@clerk/nextjs/server";
 
-// Protegemos las rutas del panel de leads (/admin/leads/*)
-// /admin/login es pública y /admin redirige según la sesión activa
-const isProtectedAdminRoute = createRouteMatcher(["/admin/leads(.*)"]);
-
-export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedAdminRoute(req)) {
-    await auth.protect();
-  }
-});
+export default clerkMiddleware();
 
 export const config = {
   matcher: [

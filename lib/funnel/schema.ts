@@ -78,6 +78,8 @@ export const funnelSchema = z
     actualizacion: z.boolean().optional(),
     // Honeypot: los humanos lo dejan vacío; los bots suelen rellenarlo todo.
     company: z.string().max(200).optional(),
+    // Cloudflare Turnstile token
+    turnstileToken: z.string().optional(),
     // ── Atribución (se rellena desde el navegador al enviar) ──
     landing_page: pageField,
     form_page: pageField,

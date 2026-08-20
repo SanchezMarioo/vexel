@@ -6,6 +6,7 @@ import { AnimatePresence, m } from "framer-motion";
 import Button from "@/components/portfolio/ui/Button";
 import type { InputStep } from "@/lib/funnel/content";
 import { pfEaseOut } from "@/lib/portfolio/motion";
+import Turnstile from "./Turnstile";
 
 interface StepInputProps {
   step: InputStep;
@@ -17,9 +18,14 @@ interface StepInputProps {
   submitting: boolean;
   isLastStep?: boolean;
   honeypot: string;
+  turnstileSiteKey?: string;
+  turnstileResetKey?: number | string;
   onClearError: () => void;
   onConsentChange: (value: boolean) => void;
   onHoneypotChange: (value: string) => void;
+  onTurnstileVerify?: (token: string) => void;
+  onTurnstileExpire?: () => void;
+  onTurnstileError?: (error?: unknown) => void;
   onSubmit: (value: string) => void;
 }
 
@@ -39,9 +45,14 @@ export default function StepInput({
   submitting,
   isLastStep = false,
   honeypot,
+  turnstileSiteKey,
+  turnstileResetKey,
   onClearError,
   onConsentChange,
   onHoneypotChange,
+  onTurnstileVerify,
+  onTurnstileExpire,
+  onTurnstileError,
   onSubmit,
 }: StepInputProps) {
   const [value, setValue] = useState(initialValue);
@@ -234,6 +245,21 @@ export default function StepInput({
           onChange={(event) => onHoneypotChange(event.target.value)}
         />
       </div>
+
+      {isLastStep && turnstileSiteKey ? (
+        <div className="mt-6">
+          <Turnstile
+            siteKey={turnstileSiteKey}
+            onVerify={onTurnstileVerify ?? (() => {})}
+            onExpire={onTurnstileExpire}
+            onError={onTurnstileError}
+            resetKey={turnstileResetKey}
+            theme="light"
+            size="flexible"
+            appearance="interaction-only"
+          />
+        </div>
+      ) : null}
 
       <div className="mt-9">
         <Button
