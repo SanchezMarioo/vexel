@@ -134,20 +134,30 @@ export default async function BlogPostPage({
     ],
   };
 
+  const faqJsonLd =
+    post.faq && post.faq.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: post.faq.map((item) => ({
+            "@type": "Question",
+            name: item.question,
+            acceptedAnswer: { "@type": "Answer", text: item.answer },
+          })),
+        }
+      : null;
+
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(blogPostingJsonLd).replace(/</g, "\\u003c"),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
-        }}
-      />
+      {[blogPostingJsonLd, breadcrumbJsonLd, ...(faqJsonLd ? [faqJsonLd] : [])].map((data) => (
+        <script
+          key={data["@type"]}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(data).replace(/</g, "\\u003c"),
+          }}
+        />
+      ))}
 
       <PortfolioShell>
         <SubHeader />

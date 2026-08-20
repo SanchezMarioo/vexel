@@ -31,8 +31,20 @@ function mapCard(post: SanityPostCard): Omit<BlogPost, "content" | "cta"> {
     publishedAt: toIsoDate(post.publishedAt),
     ...(post.updatedAt ? { updatedAt: toIsoDate(post.updatedAt) } : {}),
     category: post.category ?? "General",
+    status: post.status,
     featured: post.featured,
     wordCount: post.wordCount,
+  };
+}
+
+function mapImage(image?: { url: string; alt: string; width: number; height: number; lqip?: string }) {
+  if (!image?.url || !image.width || !image.height) return undefined;
+  return {
+    src: image.url,
+    alt: image.alt,
+    width: image.width,
+    height: image.height,
+    ...(image.lqip ? { blurDataURL: image.lqip } : {}),
   };
 }
 
@@ -65,15 +77,31 @@ export function mapSanityPost(post: SanityPostFull): BlogPost {
     height: 630,
   };
 
+  const heroImage = mapImage(post.hero?.image);
+
   return {
     ...mapCard(post),
+    hero: post.hero
+      ? {
+          ...(post.hero.eyebrow ? { eyebrow: post.hero.eyebrow } : {}),
+          ...(post.hero.title ? { title: post.hero.title } : {}),
+          ...(post.hero.text ? { text: post.hero.text } : {}),
+          ...(heroImage ? { image: heroImage } : {}),
+        }
+      : null,
     content: mapPortableTextToBlocks(post.content),
+    faq: post.faq ?? [],
     cta,
     // Conteo exacto sobre los bloques mapeados (más fiel que el de la tarjeta).
     wordCount: undefined,
     ...(post.author?.name ? { authorName: post.author.name } : {}),
     ...(post.seoTitle ? { seoTitle: post.seoTitle } : {}),
-    ...(post.seoDescription ? { seoDescription: post.seoDescription } : {}),
+    ...(post.seoDescription || post.metaDescription
+      ? {
+          seoDescription: post.seoDescription || post.metaDescription,
+          metaDescription: post.metaDescription || post.seoDescription,
+        }
+      : {}),
     ogImage,
   };
 }

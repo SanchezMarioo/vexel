@@ -48,7 +48,15 @@ export interface BlogPost {
   publishedAt: string;
   updatedAt?: string;
   category: string;
+  status?: "published" | "draft";
+  hero?: {
+    eyebrow?: string;
+    title?: string;
+    text?: string;
+    image?: { src: string; alt: string; width: number; height: number; blurDataURL?: string };
+  } | null;
   content: BlogBlock[];
+  faq?: Array<{ question: string; answer: string }>;
   cta: BlogCta;
   /** Marcado en el CMS para destacarse en /blog (fallback: el más reciente). */
   featured?: boolean;
@@ -63,6 +71,7 @@ export interface BlogPost {
   /** Overrides SEO del CMS; si faltan se usa title/excerpt. */
   seoTitle?: string;
   seoDescription?: string;
+  metaDescription?: string;
   /** Imagen OG propia del artículo (CMS); si falta, la OG del sitio. */
   ogImage?: { src: string; alt: string; width: number; height: number };
 }

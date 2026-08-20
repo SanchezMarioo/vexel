@@ -13,6 +13,7 @@ const POST_CARD_FIELDS = groq`
   title,
   excerpt,
   intro,
+  status,
   publishedAt,
   "updatedAt": coalesce(updatedAt, _updatedAt),
   "featured": coalesce(featured, false),
@@ -24,15 +25,27 @@ const POST_CARD_FIELDS = groq`
 
 /** Todas las tarjetas, de más reciente a más antigua. */
 export const POSTS_QUERY = groq`
-  *[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
+  *[_type == "post" && defined(slug.current) && (status == "published" || !defined(status))] | order(publishedAt desc) {
     ${POST_CARD_FIELDS}
   }
 `;
 
-/** Artículo completo por slug (con cuerpo, autor, CTA y SEO). */
+/** Artículo completo por slug (con hero, cuerpo, faq, autor, CTA y SEO). */
 export const POST_BY_SLUG_QUERY = groq`
-  *[_type == "post" && slug.current == $slug][0] {
+  *[_type == "post" && (status == "published" || !defined(status)) && slug.current == $slug][0] {
     ${POST_CARD_FIELDS},
+    hero {
+      eyebrow,
+      title,
+      text,
+      image {
+        "url": asset->url,
+        "alt": coalesce(alt, ""),
+        "width": asset->metadata.dimensions.width,
+        "height": asset->metadata.dimensions.height,
+        "lqip": asset->metadata.lqip
+      }
+    },
     content[]{
       ...,
       markDefs,
@@ -43,6 +56,7 @@ export const POST_BY_SLUG_QUERY = groq`
         "lqip": asset->metadata.lqip
       }
     },
+    faq[]{ question, answer },
     "author": author->{
       name,
       bio,
@@ -50,7 +64,8 @@ export const POST_BY_SLUG_QUERY = groq`
     },
     "cta": cta{ title, text, label, href },
     seoTitle,
-    seoDescription,
+    "seoDescription": coalesce(seoDescription, metaDescription, excerpt),
+    metaDescription,
     "coverImage": coverImage{
       asset,
       crop,

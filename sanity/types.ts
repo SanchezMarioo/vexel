@@ -92,6 +92,7 @@ export interface SanityPostCard {
   title: string;
   excerpt: string;
   intro: string;
+  status?: "published" | "draft";
   publishedAt: string;
   updatedAt?: string;
   featured: boolean;
@@ -102,11 +103,19 @@ export interface SanityPostCard {
 
 /** Artículo completo. */
 export interface SanityPostFull extends SanityPostCard {
+  hero?: {
+    eyebrow?: string;
+    title?: string;
+    text?: string;
+    image?: SanityImage;
+  } | null;
   content: SanityPortableText | null;
+  faq?: Array<{ question: string; answer: string }> | null;
   author: SanityAuthor | null;
   cta: SanityPostCta | null;
   seoTitle?: string;
   seoDescription?: string;
+  metaDescription?: string;
   coverImage: SanityImageSource | null;
   ogImage: SanityImageSource | null;
 }
