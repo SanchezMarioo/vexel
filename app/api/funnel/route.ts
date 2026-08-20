@@ -4,6 +4,7 @@ import { sendClientLeadEmail } from "@/lib/funnel/email";
 import { buildLead } from "@/lib/funnel/lead";
 import { funnelSchema } from "@/lib/funnel/schema";
 import { scoreLead } from "@/lib/funnel/score";
+import { sendTelegramLeadNotification } from "@/lib/notifications/telegram";
 import { checkRateLimitUpstash } from "@/lib/security/rate-limit";
 import { getClientIp, hasTrustedOrigin, isJsonContentType } from "@/lib/security/request";
 import { secureJson } from "@/lib/security/response";
@@ -72,6 +73,13 @@ export async function POST(request: Request) {
         delivery.message ?? "No pudimos enviar tus respuestas. Inténtalo de nuevo.",
         502,
       );
+    }
+
+    // Notificación Telegram (secundaria, no bloqueante del lead persistido)
+    try {
+      await sendTelegramLeadNotification({ lead, leadId, createdAt, score });
+    } catch (err) {
+      console.error("[funnel] error inesperado enviando notificación Telegram:", err);
     }
 
     // Email transaccional al cliente (solo en la primera entrega, no en actualizaciones)

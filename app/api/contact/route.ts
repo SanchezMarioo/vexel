@@ -4,6 +4,7 @@ import { checkRateLimit } from "@/lib/security/rate-limit";
 import { getClientIp, hasTrustedOrigin, isJsonContentType } from "@/lib/security/request";
 import { secureJson } from "@/lib/security/response";
 import { insertLeadInSupabase } from "@/lib/supabase/server";
+import { sendTelegramNotification } from "@/lib/notifications/telegram";
 
 export const runtime = "nodejs";
 
@@ -77,6 +78,21 @@ export async function POST(request: Request) {
 
     if (!result.ok) {
       console.warn("[contact] aviso guardando en Supabase:", result.error);
+    } else if (result.id) {
+      try {
+        await sendTelegramNotification({
+          leadId: result.id,
+          nombre: data.name,
+          email: data.email,
+          proyecto: data.message,
+          servicio: "Contacto directo",
+          landingPage: "/",
+          fuente: "Formulario web directo",
+          scoreTier: "media",
+        });
+      } catch (err) {
+        console.error("[contact] error inesperado enviando notificación Telegram:", err);
+      }
     }
 
     return secureJson({ ok: true }, { status: 201 });

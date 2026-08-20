@@ -9,7 +9,10 @@
  * Importa SIEMPRE `siteUrl` desde aquí (layout, page, sitemap, robots, schema…)
  * en vez de leer la env var suelta, para que la protección sea consistente.
  */
-const RAW = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+const RAW = (
+  process.env.NEXT_PUBLIC_APP_URL ||
+  process.env.NEXT_PUBLIC_SITE_URL
+)?.replace(/\/$/, "");
 const FALLBACK = "https://www.xync.es";
 
 function normalizeSiteUrl(value: string): string {
