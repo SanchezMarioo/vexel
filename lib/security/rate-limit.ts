@@ -107,7 +107,7 @@ const ratelimit =
   process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN
     ? new Ratelimit({
         redis: Redis.fromEnv(),
-        limiter: Ratelimit.slidingWindow(5, "60 m"),
+        limiter: Ratelimit.slidingWindow(3, "60 m"),
         prefix: "xync:ratelimit",
       })
     : null;
@@ -119,7 +119,7 @@ export async function checkRateLimitUpstash(identifier: string): Promise<RateLim
     return checkRateLimit({
       bucket: "fallback",
       key: identifier,
-      limit: 5,
+      limit: 3,
       windowMs: 60 * 60 * 1000,
     });
   }
