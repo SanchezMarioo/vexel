@@ -17,7 +17,10 @@ function leadProblem(problem: string): string {
 function IndexRow({ project, priority = false }: { project: Project; priority?: boolean }) {
   return (
     <m.li
-      initial="hidden"
+      // La primera fila es above-the-fold y contiene el LCP: se sirve visible
+      // (initial={false}) para que la imagen pinte sin esperar a la hidratación
+      // — el SSR de framer-motion inyecta opacity:0 con initial="hidden".
+      initial={priority ? false : "hidden"}
       whileInView="visible"
       viewport={pfViewport}
       variants={fadeUp}

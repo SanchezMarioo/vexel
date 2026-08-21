@@ -101,7 +101,8 @@ export default function ArticleDetail({ post, related, children }: ArticleDetail
                 alt={post.hero.image.alt || post.title}
                 width={post.hero.image.width}
                 height={post.hero.image.height}
-                priority
+                fetchPriority="high"
+                loading="eager"
                 sizes="(min-width: 768px) 40vw, 100vw"
                 className="h-auto w-full object-cover transition-transform duration-700 ease-[var(--pf-ease-out)] group-hover:scale-[1.025]"
                 {...(post.hero.image.blurDataURL ? { placeholder: "blur" as const, blurDataURL: post.hero.image.blurDataURL } : {})}

@@ -120,13 +120,12 @@ export default function CalButton({
     events.forEach((event) =>
       el.addEventListener(event, warm, { once: true, passive: true }),
     );
-
-    // Respaldo: precalienta tras un idle por si se llega al botón por teclado.
-    const fallback = window.setTimeout(warm, 2500);
+    // Sin timer de respaldo: pointerenter/focus/touchstart ya cubren ratón,
+    // teclado y táctil, y precargar a los 2.5s metía ~62KB del embed en la
+    // ventana de carga inicial (penalizaba Lighthouse "unused-javascript").
 
     return () => {
       events.forEach((event) => el.removeEventListener(event, warm));
-      window.clearTimeout(fallback);
     };
   }, []);
 

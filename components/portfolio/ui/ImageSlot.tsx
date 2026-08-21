@@ -7,7 +7,13 @@ import type { ProjectImage } from "@/lib/portfolio/content";
 interface ImageSlotProps {
   image: ProjectImage;
   className?: string;
-  /** Marca la imagen como LCP: carga con prioridad y sin lazy. */
+  /**
+   * Marca la imagen como LCP: carga inmediata (el default de next/image en
+   * Next 16 es `loading="lazy"`) y con prioridad de fetch en el navegador.
+   * Nota Next 16: `priority` está deprecado; la API recomendada para el
+   * elemento LCP es `fetchPriority="high"` (+ `loading="eager"`), sin mezclar
+   * con `preload`.
+   */
   priority?: boolean;
   sizes?: string;
 }
@@ -31,7 +37,8 @@ export default function ImageSlot({
           src={image.src}
           alt={image.alt}
           fill
-          priority={priority}
+          fetchPriority={priority ? "high" : undefined}
+          loading={priority ? "eager" : undefined}
           sizes={sizes}
           className="object-cover"
           onError={() => setHasError(true)}
