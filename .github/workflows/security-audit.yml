@@ -1,0 +1,36 @@
+# Auditoría de seguridad automatizada en CI.
+#
+# NOTA (2026-08-21): usamos --audit-level=critical porque existen 4 avisos
+# "high" heredados de dependencias transitivas del toolchain CLI de Sanity
+# (adm-zip, js-yaml) que solo afectan a herramientas de desarrollo/CLI, no al
+# runtime público. Cuando Sanity publique la actualización que las resuelva,
+# SUBE este umbral a "--audit-level=high" para endurecer la puerta.
+name: Security Audit
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Cada lunes a las 06:00 UTC
+  pull_request:
+    paths:
+      - "package.json"
+      - "package-lock.json"
+      - "pnpm-lock.yaml"
+  workflow_dispatch:
+
+jobs:
+  npm-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci || pnpm install --frozen-lockfile
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=critical

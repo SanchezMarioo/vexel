@@ -1,0 +1,26 @@
+# Dependabot: actualizaciones automáticas de dependencias y acciones.
+# Documentación: https://docs.github.com/es/code-security/dependabot
+version: 2
+
+updates:
+  # Dependencias npm (producción + desarrollo)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+    groups:
+      # Agrupa parches menores para reducir ruido; las mayores se abren aparte.
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Acciones de GitHub usadas en workflows
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
