@@ -31,14 +31,14 @@ export default function Field({
     [hint ? `${id}-hint` : null, error ? `${id}-error` : null].filter(Boolean).join(" ") ||
     undefined;
 
-  const controlClasses = `w-full rounded-[var(--pf-radius)] border bg-pf-surface px-4 py-3 text-pf-ink placeholder:text-pf-muted transition-all duration-200 focus:bg-pf-bg focus:border-pf-ink focus:outline-none focus:ring-1 focus:ring-pf-ink ${
+  const controlClasses = `w-full rounded-[var(--pf-radius)] border bg-pf-surface px-4 py-3 text-pf-ink placeholder:text-pf-muted transition-all duration-200 focus:bg-pf-bg focus:border-pf-ink focus:outline-none focus:ring-1 focus:ring-pf-ink t-input ${
     error
-      ? "border-pf-danger bg-pf-danger/[0.02]"
+      ? "is-error is-shaking border-pf-danger bg-pf-danger/[0.02]"
       : "border-pf-line hover:border-pf-line-strong"
   }`;
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={`flex flex-col gap-2 t-input-wrap ${error ? "is-error" : ""}`}>
       <label htmlFor={id} className="pf-mono text-xs uppercase tracking-wide text-pf-ink">
         {label}
         {required ? <span className="text-pf-ink"> *</span> : null}
@@ -77,7 +77,7 @@ export default function Field({
       ) : null}
 
       {error ? (
-        <p id={`${id}-error`} role="alert" className="text-sm text-pf-danger">
+        <p id={`${id}-error`} role="alert" className="text-sm font-medium text-pf-danger t-error-msg">
           {error}
         </p>
       ) : null}

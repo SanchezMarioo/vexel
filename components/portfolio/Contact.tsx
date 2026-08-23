@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { m } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { identity } from "@/lib/portfolio/content";
 import { type ContactInput, contactSchema } from "@/lib/portfolio/contact-schema";
 import { fadeUp, pfViewport, stagger } from "@/lib/portfolio/motion";
@@ -17,14 +17,14 @@ export default function Contact() {
     register,
     handleSubmit,
     reset,
-    watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<ContactInput>({
     resolver: zodResolver(contactSchema),
     defaultValues: { name: "", email: "", message: "", company: "", consent: false },
   });
 
-  const consent = watch("consent");
+  const consent = useWatch({ control, name: "consent" });
 
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [serverError, setServerError] = useState<string | null>(null);
@@ -118,19 +118,20 @@ export default function Contact() {
               role="status"
               className="flex h-full min-h-[20rem] flex-col items-start justify-center rounded-[var(--pf-radius-lg)] border border-pf-line bg-pf-surface p-8"
             >
-              <span className="grid h-12 w-12 place-items-center rounded-full bg-pf-ink text-pf-bg">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                  className="h-6 w-6"
-                >
-                  <path d="m5 13 4 4L19 7" />
-                </svg>
+              <span className="grid h-12 w-12 place-items-center rounded-full bg-pf-ink text-pf-bg shadow-[0_4px_16px_-4px_oklch(0_0_0/0.3)]">
+                <span className="t-success-check" data-state="in" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-6 w-6"
+                  >
+                    <path d="m5 13 4 4L19 7" />
+                  </svg>
+                </span>
               </span>
               <h3 className="pf-display mt-5 text-2xl text-pf-ink">Mensaje recibido</h3>
               <p className="pf-prose mt-2 text-pf-ink-soft">

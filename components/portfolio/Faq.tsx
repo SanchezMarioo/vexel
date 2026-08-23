@@ -25,7 +25,7 @@ export default function Faq() {
             Preguntas frecuentes
           </h2>
           <p className="pf-prose mt-5 text-pf-ink-soft">
-            ¿No está aquí lo que buscas? Escríbeme y te respondo sin rodeos.
+            ¿No está aquí lo que buscas? Escríbenos y te respondemos sin rodeos.
           </p>
         </div>
 

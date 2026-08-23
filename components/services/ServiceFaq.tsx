@@ -24,7 +24,7 @@ function ServiceFaqItem({ item }: { item: FaqItem }) {
           aria-expanded={open}
           aria-controls={panelId}
           onClick={() => setOpen((current) => !current)}
-          className="-mx-3 flex w-[calc(100%+1.5rem)] items-center justify-between gap-6 px-3 py-1 text-left transition-colors duration-200 ease-[var(--pf-ease-out)] hover:bg-pf-surface motion-reduce:transition-none"
+          className="-mx-3 flex w-[calc(100%+1.5rem)] cursor-pointer items-center justify-between gap-6 rounded-[var(--pf-radius)] px-3 py-2 text-left transition-colors duration-200 ease-[var(--pf-ease-out)] hover:bg-pf-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pf-ink focus-visible:ring-offset-2 motion-reduce:transition-none"
         >
           <span className="text-lg font-medium text-pf-ink-strong">{item.question}</span>
           <m.span

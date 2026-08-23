@@ -96,7 +96,7 @@ export default function StepChoice({ step, selected, detail, onAnswer }: StepCho
         {step.question}
         {step.required ? (
           <span
-            className="ml-1 text-red-500 font-semibold select-none"
+            className="ml-1 text-pf-danger font-semibold select-none"
             aria-hidden="true"
             title="Campo obligatorio"
           >

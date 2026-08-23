@@ -6,6 +6,7 @@ import { AnimatePresence, m } from "framer-motion";
 import Button from "@/components/portfolio/ui/Button";
 import type { InputStep } from "@/lib/funnel/content";
 import { pfEaseOut } from "@/lib/portfolio/motion";
+import { identity } from "@/lib/portfolio/content";
 import Turnstile from "./Turnstile";
 
 interface StepInputProps {
@@ -81,7 +82,7 @@ export default function StepInput({
         {step.question}
         {step.required ? (
           <span
-            className="ml-1 text-red-500 font-semibold select-none"
+            className="ml-1 text-pf-danger font-semibold select-none"
             aria-hidden="true"
             title="Campo obligatorio"
           >
@@ -102,8 +103,8 @@ export default function StepInput({
             <p>{serverError}</p>
             <p className="mt-1">
               Si sigue fallando, escríbenos directamente a{" "}
-              <a href="mailto:contacto@xync.es" className="underline underline-offset-4">
-                contacto@xync.es
+              <a href={`mailto:${identity.email}`} className="underline underline-offset-4">
+                {identity.email}
               </a>
               .
             </p>

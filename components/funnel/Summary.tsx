@@ -139,17 +139,19 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
             </p>
 
             {booked ? (
-              <div className="mt-8 flex items-center gap-3 rounded-[var(--pf-radius)] border border-pf-inverse-ink/30 bg-pf-inverse-ink/10 p-4">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  className="h-5 w-5 text-emerald-400"
-                  aria-hidden="true"
-                >
-                  <path d="m5 13 4 4L19 7" />
-                </svg>
+              <div className="mt-8 flex items-center gap-3.5 rounded-[var(--pf-radius)] border border-pf-inverse-ink/30 bg-pf-inverse-ink/10 p-4">
+                <span className="grid h-7 w-7 flex-shrink-0 place-items-center rounded-full bg-pf-inverse-ink text-pf-inverse-bg">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    className="h-4 w-4"
+                    aria-hidden="true"
+                  >
+                    <path d="m5 13 4 4L19 7" />
+                  </svg>
+                </span>
                 <p className="pf-mono text-sm uppercase tracking-wide text-pf-inverse-ink">
                   Reserva confirmada. Te enviamos los detalles a tu email.
                 </p>

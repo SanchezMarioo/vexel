@@ -69,7 +69,7 @@ export default function Nav() {
           className="group pf-display text-lg leading-none text-pf-ink transition-transform duration-200 hover:scale-105 active:scale-95"
         >
           {identity.name}
-          <span className="text-pf-ink transition-colors group-hover:text-emerald-500">.</span>
+          <span className="text-pf-ink transition-opacity duration-200 group-hover:opacity-60">.</span>
         </a>
 
         <ul className="hidden items-center gap-1 md:flex">
