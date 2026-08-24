@@ -1,16 +1,6 @@
-"use client";
-
-import { m } from "framer-motion";
 import Link from "next/link";
 import type { Project, ProjectImage } from "@/lib/portfolio/content";
 import { isRealUrl } from "@/lib/portfolio/content";
-import {
-  fadeUp,
-  heroLcpSafe,
-  maskReveal,
-  pfViewport,
-  stagger,
-} from "@/lib/portfolio/motion";
 import Button from "./ui/Button";
 import ImageSlot from "./ui/ImageSlot";
 
@@ -36,10 +26,7 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
   return (
     <div className="pf-container pb-24 pt-10 md:pb-32 md:pt-14">
       {/* Migas */}
-      <m.nav
-        initial={false}
-        animate="visible"
-        variants={fadeUp}
+      <nav
         aria-label="Ruta de navegación"
         className="pf-mono flex flex-wrap items-center gap-2 text-xs text-pf-muted"
       >
@@ -52,26 +39,17 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
         </Link>
         <span aria-hidden="true">/</span>
         <span className="text-pf-ink-soft">{project.sector}</span>
-      </m.nav>
+      </nav>
 
       {/* 1 · HERO */}
-      <m.header
-        initial={false}
-        animate="visible"
-        variants={stagger(0.1, 0.03)}
-        className="mt-6"
-      >
-        <m.h1
-          variants={heroLcpSafe}
+      <header className="mt-6">
+        <h1
           className="pf-display text-pf-ink-strong"
           style={{ fontSize: "clamp(2.4rem, 6vw, 4.75rem)" }}
         >
           {project.title}
-        </m.h1>
-        <m.div
-          variants={fadeUp}
-          className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2"
-        >
+        </h1>
+        <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
           <p className="text-lg text-pf-ink-soft">{project.sector}</p>
           {hasLive ? (
             <>
@@ -89,77 +67,61 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
               </a>
             </>
           ) : null}
-        </m.div>
+        </div>
 
-        <m.div
-          variants={heroLcpSafe}
-          className="mt-10 overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line md:mt-12"
-        >
+        <div className="mt-10 overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line md:mt-12">
           <ImageSlot
             image={project.image}
             priority
             sizes="(min-width: 1280px) 1152px, (min-width: 1024px) 960px, 100vw"
           />
-        </m.div>
-      </m.header>
+        </div>
+      </header>
 
       {/* 2 · RESUMEN — El problema · Lo que construimos · El resultado.
           Tres columnas en fila (desktop) / apiladas (móvil). El resultado no es
           una card aparte: comparte patrón pero se destaca por peso, tamaño y una
           tinta más fuerte, porque es el dato que más le importa al cliente. */}
       <section aria-label="Resumen del proyecto" className="mt-20 md:mt-28">
-        <m.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={pfViewport}
-          variants={stagger(0.12)}
-          className="grid gap-x-12 gap-y-10 md:grid-cols-3"
-        >
-          <m.div variants={fadeUp}>
+        <div className="grid gap-x-12 gap-y-10 md:grid-cols-3">
+          <div>
             <p className="pf-mono text-xs text-pf-muted">El problema</p>
             <p className="mt-3 text-base leading-relaxed text-pf-ink-soft">
               {project.problem}
             </p>
-          </m.div>
-          <m.div variants={fadeUp}>
+          </div>
+          <div>
             <p className="pf-mono text-xs text-pf-muted">Lo que construimos</p>
             <p className="mt-3 text-base leading-relaxed text-pf-ink-soft">
               {project.built}
             </p>
-          </m.div>
-          <m.div variants={fadeUp}>
+          </div>
+          <div>
             <p className="pf-mono text-xs text-pf-ink">El resultado</p>
             <p className="mt-3 text-base leading-relaxed text-pf-ink-soft">
               {project.result}
             </p>
-          </m.div>
-        </m.div>
+          </div>
+        </div>
       </section>
 
       {/* 3 · CAPTURAS */}
       {project.images.length > 0 ? (
         <section aria-label="Capturas del proyecto" className="mt-24 md:mt-32">
           <h2 className="pf-display text-2xl text-pf-ink md:text-3xl">Por dentro</h2>
-          <m.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={pfViewport}
-            variants={stagger(0.12)}
-            className="mt-8 grid gap-4 sm:grid-cols-2"
-          >
+          <div className="mt-8 grid gap-4 sm:grid-cols-2">
             {project.images.map((src, index) => (
-              <m.div
+              <div
                 key={src}
-                variants={maskReveal}
                 className="overflow-hidden rounded-[var(--pf-radius-lg)] border border-pf-line"
               >
                 <ImageSlot
                   image={captureImage(project, src, index)}
                   sizes="(min-width: 640px) 50vw, 100vw"
                 />
-              </m.div>
+              </div>
             ))}
-          </m.div>
+          </div>
         </section>
       ) : null}
 
@@ -168,13 +130,7 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
         <h2 className="pf-display text-2xl text-pf-ink md:text-3xl">
           Con qué está construido
         </h2>
-        <m.ul
-          initial="hidden"
-          whileInView="visible"
-          viewport={pfViewport}
-          variants={fadeUp}
-          className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3"
-        >
+        <ul className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
           {project.stack.map((tech, index) => (
             <li key={tech} className="flex items-center gap-5">
               {index > 0 ? (
@@ -183,15 +139,11 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
               <span className="text-xl font-medium text-pf-ink md:text-2xl">{tech}</span>
             </li>
           ))}
-        </m.ul>
+        </ul>
       </section>
 
       {/* 5 · CTA */}
-      <m.section
-        initial="hidden"
-        whileInView="visible"
-        viewport={pfViewport}
-        variants={fadeUp}
+      <section
         aria-label="Contacto"
         className="mt-24 border-t border-pf-line pt-14 md:mt-32"
       >
@@ -221,7 +173,7 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
             Ver todos los proyectos
           </Button>
         </div>
-      </m.section>
+      </section>
 
       {/* 6 · NAVEGACIÓN anterior / siguiente */}
       <nav
@@ -260,3 +212,4 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
     </div>
   );
 }
+

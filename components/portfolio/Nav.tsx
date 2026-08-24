@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { AnimatePresence, m } from "framer-motion";
 import { identity, navLinks } from "@/lib/portfolio/content";
-import { pfEaseOut } from "@/lib/portfolio/motion";
 import Button from "./ui/Button";
 
 const sectionIds = navLinks.map((link) => link.href.replace("#", ""));
@@ -133,43 +131,37 @@ export default function Nav() {
         </button>
       </nav>
 
-      <AnimatePresence>
-        {open ? (
-          <m.div
-            id="mobile-menu"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25, ease: pfEaseOut }}
-            className="overflow-hidden border-t border-pf-line bg-pf-bg/95 backdrop-blur-md md:hidden"
-          >
-            <ul className="pf-container flex flex-col py-4">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="block border-b border-pf-line py-3.5 text-base font-medium text-pf-ink-soft transition-colors hover:text-pf-ink"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-              <li className="pt-5 pb-2">
-                <Button
-                  href="/empezar"
-                  variant="primary"
-                  className="w-full"
-                  withArrow
-                  aria-label="Empezar un proyecto con Xync"
+      {open ? (
+        <div
+          id="mobile-menu"
+          className="route-enter overflow-hidden border-t border-pf-line bg-pf-bg/95 backdrop-blur-md md:hidden"
+        >
+          <ul className="pf-container flex flex-col py-4">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  className="block border-b border-pf-line py-3.5 text-base font-medium text-pf-ink-soft transition-colors hover:text-pf-ink"
                 >
-                  Empezar proyecto
-                </Button>
+                  {link.label}
+                </a>
               </li>
-            </ul>
-          </m.div>
-        ) : null}
-      </AnimatePresence>
+            ))}
+            <li className="pt-5 pb-2">
+              <Button
+                href="/empezar"
+                variant="primary"
+                className="w-full"
+                withArrow
+                aria-label="Empezar un proyecto con Xync"
+              >
+                Empezar proyecto
+              </Button>
+            </li>
+          </ul>
+        </div>
+      ) : null}
     </header>
   );
 }

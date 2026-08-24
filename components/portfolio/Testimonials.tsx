@@ -1,8 +1,4 @@
-"use client";
-
-import { m } from "framer-motion";
 import { testimonials } from "@/lib/portfolio/content";
-import { fadeUp, pfViewport, stagger } from "@/lib/portfolio/motion";
 
 export default function Testimonials() {
   return (
@@ -11,27 +7,16 @@ export default function Testimonials() {
       className="scroll-mt-20 border-t border-pf-line bg-pf-bg py-24 md:py-32"
     >
       <div className="pf-container">
-        <m.h2
-          initial="hidden"
-          whileInView="visible"
-          viewport={pfViewport}
-          variants={fadeUp}
+        <h2
           className="pf-display max-w-3xl text-pf-ink-strong"
           style={{ fontSize: "clamp(2rem, 4.5vw, 3.4rem)" }}
         >
           ¿Qué dicen los negocios para los que hemos trabajado?
-        </m.h2>
-        <m.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={pfViewport}
-          variants={stagger(0.18)}
-          className="mt-14 grid gap-x-8 gap-y-14 md:grid-cols-2"
-        >
+        </h2>
+        <div className="mt-14 grid gap-x-8 gap-y-14 md:grid-cols-2">
           {testimonials.map((testimonial, index) => (
-            <m.figure
+            <figure
               key={testimonial.author}
-              variants={fadeUp}
               className={index % 2 === 1 ? "md:mt-20" : ""}
             >
               <span
@@ -53,10 +38,11 @@ export default function Testimonials() {
                   <span className="pf-mono ml-2 text-sm text-pf-muted">{testimonial.role}</span>
                 </span>
               </figcaption>
-            </m.figure>
+            </figure>
           ))}
-        </m.div>
+        </div>
       </div>
     </section>
   );
 }
+

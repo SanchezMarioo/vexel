@@ -1,10 +1,6 @@
-"use client";
-
-import { m } from "framer-motion";
 import Link from "next/link";
 import type { Project } from "@/lib/portfolio/content";
 import { projects } from "@/lib/portfolio/content";
-import { fadeUp, heroLcpSafe, pfViewport } from "@/lib/portfolio/motion";
 import Button from "./ui/Button";
 import ImageSlot from "./ui/ImageSlot";
 
@@ -16,16 +12,7 @@ function leadProblem(problem: string): string {
 
 function IndexRow({ project, priority = false }: { project: Project; priority?: boolean }) {
   return (
-    <m.li
-      // La primera fila es above-the-fold y contiene el LCP: se sirve visible
-      // (initial={false}) para que la imagen pinte sin esperar a la hidratación
-      // — el SSR de framer-motion inyecta opacity:0 con initial="hidden".
-      initial={priority ? false : "hidden"}
-      whileInView="visible"
-      viewport={pfViewport}
-      variants={fadeUp}
-      className="relative border-t border-pf-line last:border-b"
-    >
+    <li className="relative border-t border-pf-line last:border-b">
       <Link
         href={`/proyectos/${project.slug}`}
         className="group block py-7 transition-colors duration-300 ease-[var(--pf-ease-out)] hover:bg-pf-surface/60 md:py-9 lg:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)_clamp(11rem,16vw,15rem)] lg:items-center lg:gap-8"
@@ -84,7 +71,7 @@ function IndexRow({ project, priority = false }: { project: Project; priority?: 
       >
         <path d="M7 17 17 7M8 7h9v9" />
       </svg>
-    </m.li>
+    </li>
   );
 }
 
@@ -92,27 +79,19 @@ export default function ProjectsIndex() {
   return (
     <div className="pf-container py-20 md:py-28">
       {/* Masthead */}
-      <m.div
-        initial={false}
-        animate="visible"
-        className="max-w-4xl"
-      >
-        <m.h1
-          variants={heroLcpSafe}
+      <div className="max-w-4xl">
+        <h1
           className="pf-display text-pf-ink-strong"
           style={{ fontSize: "clamp(2.4rem, 6vw, 4.5rem)" }}
         >
           Casos reales que ya están funcionando
-        </m.h1>
-        <m.p
-          variants={fadeUp}
-          className="pf-prose mt-6 text-lg leading-relaxed text-pf-ink-soft"
-        >
+        </h1>
+        <p className="pf-prose mt-6 text-lg leading-relaxed text-pf-ink-soft">
           Cada proyecto empezó como un problema de negocio concreto. Aquí tienes qué
           construimos y qué cambió después — para que veas de un vistazo si el tuyo se
           parece.
-        </m.p>
-      </m.div>
+        </p>
+      </div>
 
       {/* Índice */}
       <ul className="mt-14 md:mt-20">
@@ -122,20 +101,15 @@ export default function ProjectsIndex() {
       </ul>
 
       {/* Cierre */}
-      <m.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={pfViewport}
-        variants={fadeUp}
-        className="mt-16 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between"
-      >
+      <div className="mt-16 flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between">
         <p className="pf-prose text-lg text-pf-ink-soft">
           ¿No ves tu caso aquí? Seguramente ya hemos resuelto algo parecido.
         </p>
         <Button href="/#contacto" variant="primary" size="lg" withArrow>
           Cuéntanos tu proyecto
         </Button>
-      </m.div>
+      </div>
     </div>
   );
 }
+

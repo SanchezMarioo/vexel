@@ -1,42 +1,30 @@
 "use client";
 
-import { m, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { faqs } from "@/lib/portfolio/content";
-import { fadeUp, pfViewport, stagger } from "@/lib/portfolio/motion";
 
 export default function Faq() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const reducedMotion = useReducedMotion();
-  const panelTransition = reducedMotion
-    ? { duration: 0 }
-    : { duration: 0.25, ease: [0.16, 1, 0.3, 1] as const };
 
   return (
     <section
       aria-label="Preguntas frecuentes"
       className="scroll-mt-20 border-t border-pf-line py-24 md:py-32"
     >
-      <m.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={pfViewport}
-        variants={stagger(0.14)}
-        className="pf-container grid gap-10 lg:grid-cols-12"
-      >
-        <m.div variants={fadeUp} className="lg:col-span-4">
+      <div className="pf-container grid gap-10 lg:grid-cols-12">
+        <div className="lg:col-span-4">
           <h2
             className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.4rem)" }}
           >
             Preguntas frecuentes
           </h2>
-          <p className="pf-prose mt-5 text-pf-ink-soft">
+          <p className="pf-prose mt-5 text-lg text-pf-ink-soft">
             ¿No está aquí lo que buscas? Escríbenos y te respondemos sin rodeos.
           </p>
-        </m.div>
+        </div>
 
-        <m.div variants={fadeUp} className="lg:col-span-7 lg:col-start-6">
+        <div className="lg:col-span-7 lg:col-start-6">
           <ul className="border-t border-pf-line-strong">
             {faqs.map((faq, index) => {
               const isOpen = openIndex === index;
@@ -62,16 +50,16 @@ export default function Faq() {
                       >
                         {faq.question}
                       </span>
-                      <m.span
+                      <span
                         aria-hidden="true"
-                        animate={{ rotate: isOpen ? 45 : 0 }}
-                        transition={panelTransition}
-                        className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-pf-ink-strong transition-colors"
+                        className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full text-pf-ink-strong transition-transform duration-200 ease-[var(--pf-ease-out)] motion-reduce:transition-none ${
+                          isOpen ? "rotate-45" : "rotate-0"
+                        }`}
                       >
                         <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4" aria-hidden="true">
                           <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                         </svg>
-                      </m.span>
+                      </span>
                     </button>
                   </h3>
                   <div
@@ -90,8 +78,8 @@ export default function Faq() {
               );
             })}
           </ul>
-        </m.div>
-      </m.div>
+        </div>
+      </div>
     </section>
   );
 }

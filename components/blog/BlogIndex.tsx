@@ -1,10 +1,6 @@
-"use client";
-
-import { m } from "framer-motion";
 import Link from "next/link";
 import type { BlogPost } from "@/lib/content/blog";
 import { formatPostDate, getReadingTime } from "@/lib/content/blog";
-import { fadeUp, heroLcpSafe, pfViewport } from "@/lib/portfolio/motion";
 import BlogRow from "./BlogRow";
 
 /**
@@ -19,34 +15,25 @@ export default function BlogIndex({ posts }: { posts: BlogPost[] }) {
   return (
     <div className="pf-container py-20 md:py-28">
       {/* Masthead */}
-      <m.div initial={false} animate="visible" className="max-w-4xl">
-        <m.h1
-          variants={heroLcpSafe}
+      <div className="max-w-4xl">
+        <h1
           className="pf-display text-pf-ink-strong"
           style={{ fontSize: "clamp(2.4rem, 6vw, 4.5rem)" }}
         >
           SEO, rendimiento y conversión, sin humo
-        </m.h1>
-        <m.p
-          variants={heroLcpSafe}
-          className="pf-prose mt-6 text-lg leading-relaxed text-pf-ink-soft"
-        >
+        </h1>
+        <p className="pf-prose mt-6 text-lg leading-relaxed text-pf-ink-soft">
           Cada artículo responde una pregunta que nos hacen los clientes, con lo
           que hemos aprendido construyendo proyectos reales. Nada de teoría de
           manual.
-        </m.p>
-      </m.div>
+        </p>
+      </div>
 
       {featured ? (
         <>
           {/* Artículo destacado: la respuesta entera, no un teaser. Reveal sin
               gate de opacidad — es contenido citable, visible desde el inicio. */}
-          <m.article
-            initial={false}
-            animate="visible"
-            variants={heroLcpSafe}
-            className="mt-14 border-t-2 border-pf-ink pt-10 md:mt-20 md:pt-12"
-          >
+          <article className="mt-14 border-t-2 border-pf-ink pt-10 md:mt-20 md:pt-12">
             <p className="pf-mono flex flex-wrap items-center gap-x-2 text-xs text-pf-muted">
               <span>{featured.category}</span>
               <span aria-hidden="true" className="text-pf-line-strong">·</span>
@@ -78,20 +65,14 @@ export default function BlogIndex({ posts }: { posts: BlogPost[] }) {
                 <path d="M5 12h14m-6-6 6 6-6 6" />
               </svg>
             </Link>
-          </m.article>
+          </article>
 
           {/* Resto del archivo */}
           {rest.length > 0 ? (
             <div className="mt-16 md:mt-24">
-              <m.h2
-                initial="hidden"
-                whileInView="visible"
-                viewport={pfViewport}
-                variants={fadeUp}
-                className="pf-display text-2xl text-pf-ink md:text-3xl"
-              >
+              <h2 className="pf-display text-2xl text-pf-ink md:text-3xl">
                 Más artículos
-              </m.h2>
+              </h2>
               <ul className="mt-8">
                 {rest.map((post) => (
                   <BlogRow key={post.slug} post={post} />
@@ -104,3 +85,4 @@ export default function BlogIndex({ posts }: { posts: BlogPost[] }) {
     </div>
   );
 }
+

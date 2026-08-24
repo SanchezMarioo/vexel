@@ -1,10 +1,6 @@
-"use client";
-
-import { m } from "framer-motion";
 import Link from "next/link";
 import type { Project } from "@/lib/portfolio/content";
 import { isRealUrl, projects } from "@/lib/portfolio/content";
-import { fadeUp, maskReveal, pfViewport, stagger } from "@/lib/portfolio/motion";
 import ImageSlot from "./ui/ImageSlot";
 import Tag from "./ui/Tag";
 
@@ -60,13 +56,7 @@ export default function Projects() {
   return (
     <section id="proyectos" className="scroll-mt-20 border-t border-pf-line py-24 md:py-32">
       <div className="pf-container">
-        <m.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={pfViewport}
-          variants={fadeUp}
-          className="max-w-3xl"
-        >
+        <div className="max-w-3xl">
           <h2
             className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.4rem)" }}
@@ -77,17 +67,11 @@ export default function Projects() {
             Qué problema tenía cada negocio, qué construí y qué cambió después. Eso es lo
             que de verdad importa.
           </p>
-        </m.div>
+        </div>
 
         {featured ? (
-          <m.article
-            initial="hidden"
-            whileInView="visible"
-            viewport={pfViewport}
-            variants={stagger(0.12)}
-            className="mt-14 grid gap-8 lg:grid-cols-12 lg:items-center"
-          >
-            <m.div variants={maskReveal} className="lg:col-span-7">
+          <article className="mt-14 grid gap-8 lg:grid-cols-12 lg:items-center">
+            <div className="lg:col-span-7">
               <Link
                 href={`/proyectos/${featured.slug}`}
                 aria-label={`Ver el caso: ${featured.title}`}
@@ -101,9 +85,9 @@ export default function Projects() {
                 </div>
                 <span className="absolute inset-0 bg-pf-ink/0 transition-colors duration-300 group-hover:bg-pf-ink/5" />
               </Link>
-            </m.div>
+            </div>
 
-            <m.div variants={fadeUp} className="lg:col-span-5">
+            <div className="lg:col-span-5">
               <Tag variant="solid">{featured.sector}</Tag>
               <h3 className="pf-display mt-4 text-3xl leading-tight text-pf-ink md:text-4xl">
                 <Link
@@ -115,20 +99,14 @@ export default function Projects() {
               </h3>
               <Narrative project={featured} />
               <ProjectLinks project={featured} />
-            </m.div>
-          </m.article>
+            </div>
+          </article>
         ) : null}
 
         {rest.length > 0 ? (
-          <m.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={pfViewport}
-            variants={stagger(0.12)}
-            className="mt-12 grid gap-8 md:grid-cols-2"
-          >
+          <div className="mt-12 grid gap-8 md:grid-cols-2">
             {rest.map((project) => (
-              <m.article key={project.id} variants={fadeUp} className="flex flex-col">
+              <article key={project.id} className="flex flex-col">
                 <Link
                   href={`/proyectos/${project.slug}`}
                   aria-label={`Ver el caso: ${project.title}`}
@@ -155,18 +133,12 @@ export default function Projects() {
                   <Narrative project={project} dense />
                   <ProjectLinks project={project} />
                 </div>
-              </m.article>
+              </article>
             ))}
-          </m.div>
+          </div>
         ) : null}
 
-        <m.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={pfViewport}
-          variants={fadeUp}
-          className="mt-12 border-t border-pf-line pt-8"
-        >
+        <div className="mt-12 border-t border-pf-line pt-8">
           <Link
             href="/proyectos"
             className="group inline-flex items-center gap-2 text-base font-medium text-pf-ink underline-offset-4 hover:underline"
@@ -185,8 +157,9 @@ export default function Projects() {
               <path d="M5 12h14m-6-6 6 6-6 6" />
             </svg>
           </Link>
-        </m.div>
+        </div>
       </div>
     </section>
   );
 }
+

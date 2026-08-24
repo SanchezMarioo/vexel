@@ -1,10 +1,6 @@
-"use client";
-
-import { m } from "framer-motion";
 import Link from "next/link";
 import type { BlogPost } from "@/lib/content/blog";
 import { formatPostDate, getReadingTime } from "@/lib/content/blog";
-import { fadeUp, pfViewport } from "@/lib/portfolio/motion";
 
 /**
  * Fila del índice tipográfico del blog. La misma para el listado principal y
@@ -20,13 +16,7 @@ export default function BlogRow({ post }: { post: BlogPost }) {
   ];
 
   return (
-    <m.li
-      initial="hidden"
-      whileInView="visible"
-      viewport={pfViewport}
-      variants={fadeUp}
-      className="relative border-t border-pf-line last:border-b"
-    >
+    <li className="relative border-t border-pf-line last:border-b">
       <Link
         href={`/blog/${post.slug}`}
         className="group block py-7 transition-colors duration-300 ease-[var(--pf-ease-out)] hover:bg-pf-surface/60 md:py-9 lg:grid lg:grid-cols-[clamp(10rem,14vw,13rem)_minmax(0,1fr)] lg:gap-10"
@@ -76,6 +66,7 @@ export default function BlogRow({ post }: { post: BlogPost }) {
       >
         <path d="M7 17 17 7M8 7h9v9" />
       </svg>
-    </m.li>
+    </li>
   );
 }
+

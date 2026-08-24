@@ -1,19 +1,14 @@
 "use client";
 
-import { m, useReducedMotion } from "framer-motion";
 import { useId, useState } from "react";
 
 type FaqItem = { question: string; answer: string };
 
-const transition = { duration: 0.25, ease: [0.16, 1, 0.3, 1] as const };
-
 function ServiceFaqItem({ item }: { item: FaqItem }) {
   const [open, setOpen] = useState(false);
-  const reducedMotion = useReducedMotion();
   const id = useId();
   const panelId = `service-faq-panel-${id}`;
   const buttonId = `service-faq-button-${id}`;
-  const itemTransition = reducedMotion ? { duration: 0 } : transition;
 
   return (
     <div className="py-5">
@@ -27,16 +22,16 @@ function ServiceFaqItem({ item }: { item: FaqItem }) {
           className="-mx-3 flex w-[calc(100%+1.5rem)] cursor-pointer items-center justify-between gap-6 rounded-[var(--pf-radius)] px-3 py-2 text-left transition-colors duration-200 ease-[var(--pf-ease-out)] hover:bg-pf-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pf-ink focus-visible:ring-offset-2 motion-reduce:transition-none"
         >
           <span className="text-lg font-medium text-pf-ink-strong">{item.question}</span>
-          <m.span
+          <span
             aria-hidden="true"
-            animate={{ rotate: open ? 45 : 0 }}
-            transition={itemTransition}
-            className="flex h-4 w-4 shrink-0 items-center justify-center text-pf-ink-strong"
+            className={`flex h-4 w-4 shrink-0 items-center justify-center text-pf-ink-strong transition-transform duration-200 ease-[var(--pf-ease-out)] motion-reduce:transition-none ${
+              open ? "rotate-45" : "rotate-0"
+            }`}
           >
             <svg viewBox="0 0 16 16" fill="none" className="h-4 w-4">
               <path d="M8 3v10M3 8h10" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
             </svg>
-          </m.span>
+          </span>
         </button>
       </h3>
       <div
@@ -62,3 +57,4 @@ export default function ServiceFaq({ items }: { items: FaqItem[] }) {
     </div>
   );
 }
+

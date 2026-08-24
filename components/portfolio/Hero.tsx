@@ -15,26 +15,17 @@ export default function Hero() {
             {identity.headline}
           </h1>
 
-          <p
-            className="pf-prose pf-rise mt-6 text-lg leading-relaxed text-pf-ink"
-            style={{ animationDelay: "120ms" }}
-          >
+          <p className="pf-prose mt-6 text-lg leading-relaxed text-pf-ink">
             {identity.subhead}
           </p>
 
-          <p
-            className="pf-rise mt-4 text-base text-pf-ink-soft"
-            style={{ animationDelay: "200ms" }}
-          >
+          <p className="mt-4 text-base text-pf-ink-soft">
             Xync es un estudio de desarrollo y diseño web freelance en{" "}
             {identity.location}. Trabajamos para toda España y Latinoamérica en
             remoto.
           </p>
 
-          <div
-            className="pf-rise mt-8 flex flex-wrap items-center gap-3"
-            style={{ animationDelay: "280ms" }}
-          >
+          <div className="mt-8 flex flex-wrap items-center gap-3">
             <Button
               href="/empezar"
               variant="solid"
@@ -87,10 +78,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div
-            className="pf-rise absolute -bottom-4 -left-2 flex items-center gap-2.5 rounded-[var(--pf-radius)] border border-pf-line bg-pf-bg px-4 py-3 shadow-[0_12px_28px_-10px_oklch(0_0_0_/_0.25)] transition-transform duration-200 hover:-translate-y-0.5 sm:-left-5"
-            style={{ animationDelay: "420ms" }}
-          >
+          <div className="absolute -bottom-4 -left-2 flex items-center gap-2.5 rounded-[var(--pf-radius)] border border-pf-line bg-pf-bg px-4 py-3 shadow-[0_12px_28px_-10px_oklch(0_0_0_/_0.25)] transition-transform duration-200 hover:-translate-y-0.5 sm:-left-5">
             <span className="grid h-7 w-7 place-items-center rounded-full bg-pf-ink text-pf-bg">
               <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" aria-hidden="true" className="h-4 w-4" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7"/></svg>
             </span>
