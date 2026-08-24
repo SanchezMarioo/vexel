@@ -1,13 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { m } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { identity } from "@/lib/portfolio/content";
 import { type ContactInput, contactSchema } from "@/lib/portfolio/contact-schema";
-import { fadeUp, pfViewport, stagger } from "@/lib/portfolio/motion";
+import { fadeUp, pfEaseOut, pfViewport, stagger } from "@/lib/portfolio/motion";
 import Button from "./ui/Button";
 import CalButton from "./ui/CalButton";
 import Field from "./ui/Field";
@@ -113,11 +113,19 @@ export default function Contact() {
           variants={fadeUp}
           className="lg:col-span-6 lg:col-start-7"
         >
-          {status === "success" ? (
-            <div
-              role="status"
-              className="flex h-full min-h-[20rem] flex-col items-start justify-center rounded-[var(--pf-radius-lg)] border border-pf-line bg-pf-surface p-8"
-            >
+          {/* Crossfade formulario ↔ confirmación: la salida es más rápida que
+              la entrada y nunca se solapan (mode="wait"). */}
+          <AnimatePresence mode="wait" initial={false}>
+            {status === "success" ? (
+              <m.div
+                key="contact-success"
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.4, ease: pfEaseOut }}
+                role="status"
+                className="flex h-full min-h-[20rem] flex-col items-start justify-center rounded-[var(--pf-radius-lg)] border border-pf-line bg-pf-surface p-8"
+              >
               <span className="grid h-12 w-12 place-items-center rounded-full bg-pf-ink text-pf-bg shadow-[0_4px_16px_-4px_oklch(0_0_0/0.3)]">
                 <span className="t-success-check" data-state="in" aria-hidden="true">
                   <svg
@@ -144,20 +152,27 @@ export default function Contact() {
               >
                 Enviar otro mensaje
               </button>
-            </div>
+            </m.div>
           ) : (
-            <form
+            <m.form
+              key="contact-form"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { duration: 0.35, ease: pfEaseOut } }}
+              exit={{ opacity: 0, y: -8, transition: { duration: 0.22, ease: pfEaseOut } }}
               onSubmit={handleSubmit(onSubmit)}
               noValidate
               className="rounded-[var(--pf-radius-lg)] border border-pf-line bg-pf-surface p-6 md:p-8"
             >
               {serverError ? (
-                <p
+                <m.p
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.25, ease: pfEaseOut }}
                   role="alert"
                   className="mb-6 rounded-[var(--pf-radius)] border border-pf-danger bg-pf-surface px-4 py-3 text-sm text-pf-danger"
                 >
                   {serverError}
-                </p>
+                </m.p>
               ) : null}
 
               <div className="flex flex-col gap-5">
@@ -266,8 +281,9 @@ export default function Contact() {
                   {isSubmitting ? "Enviando…" : "Enviar mensaje"}
                 </Button>
               </div>
-            </form>
+            </m.form>
           )}
+          </AnimatePresence>
         </m.div>
       </div>
     </section>

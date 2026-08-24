@@ -3,6 +3,7 @@
 import { m, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 import { faqs } from "@/lib/portfolio/content";
+import { fadeUp, pfViewport, stagger } from "@/lib/portfolio/motion";
 
 export default function Faq() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -16,8 +17,14 @@ export default function Faq() {
       aria-label="Preguntas frecuentes"
       className="scroll-mt-20 border-t border-pf-line py-24 md:py-32"
     >
-      <div className="pf-container grid gap-10 lg:grid-cols-12">
-        <div className="lg:col-span-4">
+      <m.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={pfViewport}
+        variants={stagger(0.14)}
+        className="pf-container grid gap-10 lg:grid-cols-12"
+      >
+        <m.div variants={fadeUp} className="lg:col-span-4">
           <h2
             className="pf-display text-pf-ink-strong"
             style={{ fontSize: "clamp(2rem, 4.5vw, 3.4rem)" }}
@@ -27,9 +34,9 @@ export default function Faq() {
           <p className="pf-prose mt-5 text-pf-ink-soft">
             ¿No está aquí lo que buscas? Escríbenos y te respondemos sin rodeos.
           </p>
-        </div>
+        </m.div>
 
-        <div className="lg:col-span-7 lg:col-start-6">
+        <m.div variants={fadeUp} className="lg:col-span-7 lg:col-start-6">
           <ul className="border-t border-pf-line-strong">
             {faqs.map((faq, index) => {
               const isOpen = openIndex === index;
@@ -83,8 +90,8 @@ export default function Faq() {
               );
             })}
           </ul>
-        </div>
-      </div>
+        </m.div>
+      </m.div>
     </section>
   );
 }

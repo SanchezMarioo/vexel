@@ -298,6 +298,53 @@ html:has(.pf-root) body::before {
   }
 }
 
+/* ===========================================================================
+   Route & hero entrances — 100% CSS: corren sin esperar hidratación, no
+   bloquean el LCP (los elementos críticos pintan al primer frame) y el reset
+   global de prefers-reduced-motion los deja instantáneos.
+   =========================================================================== */
+
+@keyframes route-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.route-enter {
+  /* Literal curve: --pf-ease-out vive en .pf-root y esta animación también
+     cubre rutas oscuras (/admin, /studio) donde esa variable no existe. */
+  animation: route-enter 400ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+@keyframes pf-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.pf-rise {
+  animation: pf-rise 640ms var(--pf-ease-out) backwards;
+}
+
+/* El reset global reduce la duración pero no el delay: sin esta regla, con
+   reduce-motion las entradas escalonadas seguirían apareciendo en cascada. */
+@media (prefers-reduced-motion: reduce) {
+  .route-enter,
+  .pf-rise {
+    animation: none !important;
+  }
+}
+
 /* Marquee for the stack ticker; pauses under reduced-motion. */
 @keyframes pf-marquee {
   to {
