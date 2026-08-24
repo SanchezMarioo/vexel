@@ -135,6 +135,8 @@ function formatLeadTelegramMessage(input: GenericTelegramLeadInput, adminUrl: st
 
   const empresa = escapeTelegramHtml(input.empresa?.trim() || "—");
   const contacto = escapeTelegramHtml(input.nombre?.trim() || "—");
+  const email = escapeTelegramHtml(input.email?.trim() || "—");
+  const telefono = escapeTelegramHtml(input.telefono?.trim() || "—");
   const servicio = escapeTelegramHtml(input.servicio?.trim() || "—");
   const presupuesto = escapeTelegramHtml(input.presupuesto?.trim() || "—");
   const plazo = escapeTelegramHtml(input.plazo?.trim() || "—");
@@ -150,6 +152,8 @@ function formatLeadTelegramMessage(input: GenericTelegramLeadInput, adminUrl: st
     "",
     `<b>Empresa:</b> ${empresa}`,
     `<b>Contacto:</b> ${contacto}`,
+    `<b>Email:</b> ${email}`,
+    `<b>Teléfono:</b> ${telefono}`,
     "",
     `<b>Servicio:</b> ${servicio}`,
     `<b>Presupuesto:</b> ${presupuesto}`,
