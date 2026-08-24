@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@import "tailwindcss" source("../app");
+@source "../components";
+@source "../lib";
 
 :root {
   --vx-black: #050505;
