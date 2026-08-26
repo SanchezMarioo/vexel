@@ -1,6 +1,6 @@
 "use client";
 
-import { m } from "framer-motion";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import CalButton from "@/components/portfolio/ui/CalButton";
@@ -36,17 +36,17 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
   }, []);
 
   return (
-    <m.section
+    <motion.section
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.38, ease: pfEaseOut }}
       className="pf-invert flex-1"
     >
       <div className="mx-auto w-full max-w-[44rem] px-6 py-20 md:py-28">
-        <m.div initial="hidden" animate="visible" variants={stagger(0.09)}>
+        <motion.div initial="hidden" animate="visible" variants={stagger(0.09)}>
           {/* Badge de confirmación con check dibujado animado */}
-          <m.div variants={fadeUp} className="flex items-center gap-3.5">
-            <m.span
+          <motion.div variants={fadeUp} className="flex items-center gap-3.5">
+            <motion.span
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.3, ease: pfEaseOut }}
@@ -62,14 +62,14 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
                 aria-hidden="true"
                 className="h-5 w-5"
               >
-                <m.path
+                <motion.path
                   d="m5 13 4 4L19 7"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 0.45, ease: pfEaseOut, delay: 0.15 }}
                 />
               </svg>
-            </m.span>
+            </motion.span>
             <p className="text-base text-pf-inverse-ink/90 sm:text-lg">
               Hemos recibido tu proyecto. {identity.responseTime.toLowerCase()} a{" "}
               <span className="font-semibold text-pf-inverse-ink underline decoration-pf-inverse-ink/30 underline-offset-4">
@@ -77,24 +77,24 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
               </span>
               .
             </p>
-          </m.div>
+          </motion.div>
 
-          <m.h2
+          <motion.h2
             variants={fadeUp}
             className="pf-display mt-10 text-pf-inverse-ink"
             style={{ fontSize: "clamp(2rem, 4.6vw, 3.4rem)" }}
           >
             Esto es lo que nos has contado.
-          </m.h2>
+          </motion.h2>
 
-          <m.p
+          <motion.p
             variants={fadeUp}
             className="pf-mono mt-4 text-xs uppercase tracking-wide text-pf-inverse-ink/50"
           >
             Toca cualquier respuesta para cambiarla
-          </m.p>
+          </motion.p>
 
-          <m.div variants={fadeUp} className="mt-7 border-t border-pf-inverse-ink/15">
+          <motion.div variants={fadeUp} className="mt-7 border-t border-pf-inverse-ink/15">
             {stepIds
               .filter((stepId) => Boolean(answerLabel(stepId, answers).trim()))
               .map((stepId) => (
@@ -118,9 +118,9 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
                   </span>
                 </button>
               ))}
-          </m.div>
+          </motion.div>
 
-          <m.div
+          <motion.div
             variants={fadeUp}
             className="mt-14 rounded-[var(--pf-radius-lg)] border border-pf-inverse-ink/20 bg-pf-inverse-ink/[0.03] p-6 sm:p-8"
           >
@@ -182,9 +182,9 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
                 </button>
               </div>
             )}
-          </m.div>
+          </motion.div>
 
-          <m.p variants={fadeUp} className="mt-12 text-sm text-pf-inverse-ink/45">
+          <motion.p variants={fadeUp} className="mt-12 text-sm text-pf-inverse-ink/45">
             Tus datos solo se usan para responderte.{" "}
             <Link
               href="/privacidad"
@@ -195,9 +195,9 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
               Política de privacidad
             </Link>
             .
-          </m.p>
-        </m.div>
+          </motion.p>
+        </motion.div>
       </div>
-    </m.section>
+    </motion.section>
   );
 }

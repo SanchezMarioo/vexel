@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { AnimatePresence, m } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Button from "@/components/portfolio/ui/Button";
 import type { InputStep } from "@/lib/funnel/content";
 import { pfEaseOut } from "@/lib/portfolio/motion";
@@ -93,7 +93,7 @@ export default function StepInput({
 
       <AnimatePresence>
         {serverError ? (
-          <m.div
+          <motion.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
@@ -108,7 +108,7 @@ export default function StepInput({
               </a>
               .
             </p>
-          </m.div>
+          </motion.div>
         ) : null}
       </AnimatePresence>
 
@@ -153,7 +153,7 @@ export default function StepInput({
           />
         )}
         {/* Animated active focus hairline */}
-        <m.span
+        <motion.span
           aria-hidden="true"
           className="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-pf-ink"
           initial={false}
@@ -164,7 +164,7 @@ export default function StepInput({
 
       <AnimatePresence>
         {error ? (
-          <m.p
+          <motion.p
             id={errorId}
             role="alert"
             initial={{ opacity: 0, y: -6 }}
@@ -174,7 +174,7 @@ export default function StepInput({
             className="mt-3 text-sm font-medium text-pf-danger"
           >
             {error}
-          </m.p>
+          </motion.p>
         ) : null}
       </AnimatePresence>
 
@@ -194,7 +194,7 @@ export default function StepInput({
                 className="sr-only"
               />
               {consent ? (
-                <m.svg
+                <motion.svg
                   initial={{ scale: 0.5, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   viewBox="0 0 24 24"
@@ -207,7 +207,7 @@ export default function StepInput({
                   aria-hidden="true"
                 >
                   <path d="m5 13 4 4L19 7" />
-                </m.svg>
+                </motion.svg>
               ) : null}
             </span>
             <span>

@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, m } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import Button from "@/components/portfolio/ui/Button";
 import { getAttribution } from "@/lib/funnel/attribution";
@@ -297,19 +297,19 @@ function funnelReducer(state: FunnelState, action: FunnelAction): FunnelState {
 function FunnelIntro({ onStart }: { onStart: () => void }) {
   return (
     <section className="mx-auto flex w-full max-w-[44rem] flex-1 flex-col justify-center px-6 py-24 md:py-32">
-      <m.div initial="hidden" animate="visible" variants={stagger(0.12, 0.05)}>
-        <m.h1
+      <motion.div initial="hidden" animate="visible" variants={stagger(0.12, 0.05)}>
+        <motion.h1
           variants={heroLcpSafe}
           className="pf-display text-pf-ink-strong"
           style={{ fontSize: "clamp(2.4rem, 5.4vw, 4.4rem)" }}
         >
           Ya has visto lo que hacemos. Ahora cuéntanos qué necesitas.
-        </m.h1>
-        <m.p variants={fadeUp} className="mt-6 max-w-prose text-lg leading-relaxed text-pf-ink-soft">
+        </motion.h1>
+        <motion.p variants={fadeUp} className="mt-6 max-w-prose text-lg leading-relaxed text-pf-ink-soft">
           Un par de minutos, una pregunta cada vez. Sin compromiso: al terminar decides si
           reservamos una llamada.
-        </m.p>
-        <m.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
+        </motion.p>
+        <motion.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
           <Button
             type="button"
             variant="solid"
@@ -328,7 +328,7 @@ function FunnelIntro({ onStart }: { onStart: () => void }) {
               {identity.email}
             </a>
           </p>
-        </m.div>
+        </motion.div>
         <noscript>
           <div className="mt-10 border border-pf-line-strong p-6 text-pf-ink">
             <p className="leading-relaxed">
@@ -347,7 +347,7 @@ function FunnelIntro({ onStart }: { onStart: () => void }) {
             </p>
           </div>
         </noscript>
-      </m.div>
+      </motion.div>
     </section>
   );
 }
@@ -655,7 +655,7 @@ export default function Funnel() {
         aria-label={`Progreso: paso ${activeIndex + 1} de ${total}`}
         className="relative h-[2px] w-full overflow-hidden rounded-full bg-pf-line"
       >
-        <m.div
+        <motion.div
           className="h-full w-full origin-left bg-pf-ink"
           initial={false}
           animate={{ scaleX: progressRatio }}
@@ -690,7 +690,7 @@ export default function Funnel() {
       </div>
 
       <AnimatePresence mode="popLayout" initial={false} custom={direction}>
-        <m.div
+        <motion.div
           key={activeStepId}
           ref={activeRef}
           custom={direction}
@@ -750,7 +750,7 @@ export default function Funnel() {
               onSubmit={handleInputStep}
             />
           )}
-        </m.div>
+        </motion.div>
       </AnimatePresence>
     </div>
   );

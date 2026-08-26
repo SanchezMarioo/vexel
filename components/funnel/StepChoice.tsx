@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { m } from "framer-motion";
+import { motion } from "framer-motion";
 import Button from "@/components/portfolio/ui/Button";
 import type { ChoiceStep, FunnelOption } from "@/lib/funnel/content";
 import { pfEaseOut } from "@/lib/portfolio/motion";
@@ -15,7 +15,7 @@ interface StepChoiceProps {
 
 function CheckIcon() {
   return (
-    <m.span
+    <motion.span
       initial={{ scale: 0.6, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ duration: 0.2, ease: pfEaseOut }}
@@ -33,7 +33,7 @@ function CheckIcon() {
       >
         <path d="m5 13 4 4L19 7" />
       </svg>
-    </m.span>
+    </motion.span>
   );
 }
 
@@ -158,7 +158,7 @@ export default function StepChoice({ step, selected, detail, onAnswer }: StepCho
       </div>
 
       {showDetail && detailOption ? (
-        <m.div
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.28, ease: pfEaseOut }}
@@ -198,7 +198,7 @@ export default function StepChoice({ step, selected, detail, onAnswer }: StepCho
               Continuar
             </Button>
           </div>
-        </m.div>
+        </motion.div>
       ) : null}
     </div>
   );
