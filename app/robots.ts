@@ -41,11 +41,33 @@ const aiAndSearchBots = [
   "meta-externalagent",
 ];
 
+/**
+ * Directiva Content-Signal (IETF draft / Cloudflare AI Preferences).
+ * - search=yes: permitida la indexación en motores de búsqueda tradicionales y con IA.
+ * - ai-input=yes: permitido el uso como contexto / grounding / RAG para responder a usuarios y citar el sitio público.
+ * - ai-train=no: no permitido el scraping para entrenar modelos base de IA sin consentimiento explícito.
+ */
+const contentSignalsDirective = "ai-train=no, search=yes, ai-input=yes";
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
-      { userAgent: "*", allow: "/", disallow },
-      { userAgent: aiAndSearchBots, allow: "/", disallow },
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow,
+        other: {
+          "Content-Signal": contentSignalsDirective,
+        },
+      },
+      {
+        userAgent: aiAndSearchBots,
+        allow: "/",
+        disallow,
+        other: {
+          "Content-Signal": contentSignalsDirective,
+        },
+      },
     ],
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,

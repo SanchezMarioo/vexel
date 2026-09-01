@@ -123,8 +123,8 @@ robots.txt y sitemap.xml emitidos).
 - **Colisión de marca**: existen xync.co, xync.net, xync.de… Desambiguar siempre como
   "Xync, estudio de desarrollo web en Salamanca" en bios y perfiles externos.
 - **SSR 100 %**: todo el contenido y JSON-LD llegan en el HTML inicial sin JS.
-- Sugerencia menor (no aplicada — `MetadataRoute.Robots` no soporta directivas custom):
-  `Content-Signal` en robots.txt. Requeriría servir robots como texto estático; valor bajo.
+- **Content-Signal en robots.txt**: implementado vía campo `other` soportado en Next.js 16.3.0 (`Content-Signal: ai-train=no, search=yes, ai-input=yes`). Declara preferencias según el borrador IETF / Cloudflare AI Preferences.
+- **Markdown para agentes (Content Negotiation)**: implementado en `proxy.ts` y `/api/markdown`. Peticiones con `Accept: text/markdown` devuelven la representación Markdown limpia con `x-markdown-tokens`, `Vary: Accept` y `Content-Signal`, manteniendo HTML por defecto para navegadores. Cumple el estándar *Level 3 (Agent-Readable)* de `isitagentready.com` y Cloudflare *Markdown for Agents*.
 
 ---
 
