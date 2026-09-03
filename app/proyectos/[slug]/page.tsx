@@ -33,7 +33,10 @@ export async function generateMetadata({
   const project = getProjectBySlug(slug);
 
   if (!project) {
-    return { title: "Proyecto no encontrado" };
+    return {
+      title: "Proyecto no encontrado",
+      robots: { index: false, follow: false },
+    };
   }
 
   const name = projectName(project.title);
@@ -98,6 +101,7 @@ export default async function ProyectoDetallePage({
     about: project.sector,
     creator: {
       "@type": "Organization",
+      "@id": `${siteUrl}/#business`,
       name: "Xync",
       url: siteUrl,
     },

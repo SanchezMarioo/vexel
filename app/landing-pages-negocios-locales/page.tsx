@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import EyebrowTag from "@/components/ui/EyebrowTag";
 import Button from "@/components/portfolio/ui/Button";
 import PortfolioShell from "@/components/portfolio/PortfolioShell";
@@ -99,6 +100,18 @@ export default function LandingPagesNegociosLocalesPage() {
         <main className="relative z-10 bg-pf-bg px-4 pb-20 pt-36 md:px-6">
           <article className="mx-auto w-full max-w-4xl">
             <header className="text-center">
+              <nav
+                aria-label="Ruta de navegación"
+                className="pf-mono mb-8 flex flex-wrap items-center justify-center gap-2 text-xs text-pf-muted"
+              >
+                <Link href="/" className="transition-colors hover:text-pf-ink">
+                  Inicio
+                </Link>
+                <span aria-hidden="true">/</span>
+                <span aria-current="page" className="text-pf-ink-soft">
+                  Landing pages para negocios locales
+                </span>
+              </nav>
               <EyebrowTag className="border border-pf-line text-pf-muted">
                 Guía SEO para servicios locales
               </EyebrowTag>

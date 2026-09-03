@@ -38,7 +38,9 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
           Proyectos
         </Link>
         <span aria-hidden="true">/</span>
-        <span className="text-pf-ink-soft">{project.sector}</span>
+        <span aria-current="page" className="text-pf-ink-soft truncate max-w-[260px] sm:max-w-none">
+          {project.title.split(" — ")[0] ?? project.title}
+        </span>
       </nav>
 
       {/* 1 · HERO */}

@@ -13,7 +13,7 @@ export default function ServiceDetail({ service }: { service: ServicePage }) {
       <nav aria-label="Ruta de navegación" className="pf-mono flex flex-wrap items-center gap-2 text-xs text-pf-muted">
         <Link href="/" className="transition-colors hover:text-pf-ink">Inicio</Link>
         <span aria-hidden="true">/</span>
-        <span className="text-pf-ink-soft">{service.title}</span>
+        <span aria-current="page" className="text-pf-ink-soft">{service.title}</span>
       </nav>
 
       <header
