@@ -5,7 +5,7 @@ import Footer from "@/components/portfolio/Footer";
 import PortfolioShell from "@/components/portfolio/PortfolioShell";
 import SubHeader from "@/components/portfolio/SubHeader";
 import { getFeaturedPost } from "@/lib/blog/getFeaturedPost";
-import { toAbsoluteUrl } from "@/lib/site-url";
+import { siteUrl, toAbsoluteUrl } from "@/lib/site-url";
 import { getOgImageMetadata } from "@/lib/seo/getOgImage";
 
 const pagePath = "/blog";
@@ -48,8 +48,8 @@ const blogJsonLd = {
   description: pageDescription,
   url: toAbsoluteUrl(pagePath),
   inLanguage: "es",
-  isPartOf: { "@id": `${toAbsoluteUrl("/")}#website` },
-  publisher: { "@id": `${toAbsoluteUrl("/")}#business` },
+  isPartOf: { "@id": `${siteUrl}/#website` },
+  publisher: { "@id": `${siteUrl}/#business` },
 };
 
 const breadcrumbJsonLd = {

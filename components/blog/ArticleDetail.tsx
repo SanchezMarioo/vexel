@@ -38,7 +38,9 @@ export default function ArticleDetail({ post, related, children }: ArticleDetail
           Blog
         </Link>
         <span aria-hidden="true">/</span>
-        <span className="text-pf-ink-soft">{post.category}</span>
+        <span aria-current="page" className="text-pf-ink-soft truncate max-w-[260px] sm:max-w-none">
+          {post.title}
+        </span>
       </nav>
 
       {/* Cabecera: categoría, titular, metadatos y la respuesta citable/hero */}

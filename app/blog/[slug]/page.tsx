@@ -11,7 +11,7 @@ import { getRelatedPosts } from "@/lib/blog/getRelatedPosts";
 import { getPosts } from "@/lib/blog/getPosts";
 import { getWordCount } from "@/lib/content/blog";
 import { legalEntity } from "@/lib/portfolio/content";
-import { toAbsoluteUrl } from "@/lib/site-url";
+import { siteUrl, toAbsoluteUrl } from "@/lib/site-url";
 import { compactSeoTitle } from "@/lib/seo/metadata";
 import { getOgImageMetadata } from "@/lib/seo/getOgImage";
 
@@ -37,7 +37,10 @@ export async function generateMetadata({
   const post = await getPost(slug);
 
   if (!post) {
-    return { title: "Artículo no encontrado" };
+    return {
+      title: "Artículo no encontrado",
+      robots: { index: false, follow: false },
+    };
   }
 
   // Overrides SEO del CMS; fallback a título/extracto del artículo.
@@ -112,15 +115,19 @@ export default async function BlogPostPage({
     isPartOf: { "@id": `${toAbsoluteUrl("/blog")}#blog` },
     author: {
       "@type": "Person",
-      "@id": `${toAbsoluteUrl("/")}#person`,
+      "@id": `${siteUrl}/#person`,
       name: author,
       url: toAbsoluteUrl("/"),
     },
     publisher: {
       "@type": "Organization",
-      "@id": `${toAbsoluteUrl("/")}#business`,
+      "@id": `${siteUrl}/#business`,
       name: "Xync",
       url: toAbsoluteUrl("/"),
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/icon`,
+      },
     },
   };
 
