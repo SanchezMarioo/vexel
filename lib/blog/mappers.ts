@@ -2,6 +2,8 @@ import "server-only";
 import type { BlogPost } from "@/lib/content/blog";
 import type { SanityPostCard, SanityPostFull } from "@/sanity/types";
 import { getOgImage } from "@/lib/seo/getOgImage";
+import { urlForImage } from "@/sanity/image";
+import { isSanityConfigured } from "@/sanity/env";
 import { mapPortableTextToBlocks } from "./portable-text";
 
 /**
@@ -39,8 +41,9 @@ function mapCard(post: SanityPostCard): Omit<BlogPost, "content" | "cta"> {
 
 function mapImage(image?: { url: string; alt: string; width: number; height: number; lqip?: string }) {
   if (!image?.url || !image.width || !image.height) return undefined;
+  const isSanity = image.url.includes("cdn.sanity.io");
   return {
-    src: image.url,
+    src: isSanity && isSanityConfigured ? urlForImage(image.url, Math.min(image.width, 1200)) : image.url,
     alt: image.alt,
     width: image.width,
     height: image.height,

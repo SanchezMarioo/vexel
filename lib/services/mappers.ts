@@ -2,6 +2,8 @@ import "server-only";
 import type { BlogBlock } from "@/lib/content/blog";
 import { mapPortableTextToBlocks } from "@/lib/blog/portable-text";
 import { getOgImage } from "@/lib/seo/getOgImage";
+import { urlForImage } from "@/sanity/image";
+import { isSanityConfigured } from "@/sanity/env";
 import type { SanityServiceCard, SanityServiceFull } from "@/sanity/types";
 
 export interface ServicePage {
@@ -31,8 +33,9 @@ const DEFAULT_CTA = {
 
 function mapImage(image?: { url: string; alt: string; width: number; height: number; lqip?: string }) {
   if (!image?.url || !image.width || !image.height) return undefined;
+  const isSanity = image.url.includes("cdn.sanity.io");
   return {
-    src: image.url,
+    src: isSanity && isSanityConfigured ? urlForImage(image.url, Math.min(image.width, 1200)) : image.url,
     alt: image.alt,
     width: image.width,
     height: image.height,

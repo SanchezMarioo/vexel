@@ -1,6 +1,7 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, domAnimation, LazyMotion, m, MotionConfig } from "framer-motion";
+import dynamic from "next/dynamic";
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import Button from "@/components/portfolio/ui/Button";
 import { getAttribution } from "@/lib/funnel/attribution";
@@ -11,14 +12,14 @@ import {
   type FunnelAnswers,
   type StepId,
 } from "@/lib/funnel/content";
-import { funnelSchema } from "@/lib/funnel/schema";
 import { trackFunnelEvent } from "@/lib/funnel/tracking";
 import { identity } from "@/lib/portfolio/content";
 import { fadeUp, heroLcpSafe, pfEaseOut, stagger } from "@/lib/portfolio/motion";
 import StepChoice from "./StepChoice";
 import StepInput from "./StepInput";
-import Summary from "./Summary";
 import Transcript from "./Transcript";
+
+const Summary = dynamic(() => import("./Summary"), { ssr: false });
 
 type View = "intro" | "questions" | "summary";
 
@@ -297,19 +298,19 @@ function funnelReducer(state: FunnelState, action: FunnelAction): FunnelState {
 function FunnelIntro({ onStart }: { onStart: () => void }) {
   return (
     <section className="mx-auto flex w-full max-w-[44rem] flex-1 flex-col justify-center px-6 py-24 md:py-32">
-      <motion.div initial="hidden" animate="visible" variants={stagger(0.12, 0.05)}>
-        <motion.h1
+      <m.div initial="hidden" animate="visible" variants={stagger(0.12, 0.05)}>
+        <m.h1
           variants={heroLcpSafe}
           className="pf-display text-pf-ink-strong"
           style={{ fontSize: "clamp(2.4rem, 5.4vw, 4.4rem)" }}
         >
           Ya has visto lo que hacemos. Ahora cuéntanos qué necesitas.
-        </motion.h1>
-        <motion.p variants={fadeUp} className="mt-6 max-w-prose text-lg leading-relaxed text-pf-ink-soft">
+        </m.h1>
+        <m.p variants={fadeUp} className="mt-6 max-w-prose text-lg leading-relaxed text-pf-ink-soft">
           Un par de minutos, una pregunta cada vez. Sin compromiso: al terminar decides si
           reservamos una llamada.
-        </motion.p>
-        <motion.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
+        </m.p>
+        <m.div variants={fadeUp} className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
           <Button
             type="button"
             variant="solid"
@@ -328,7 +329,7 @@ function FunnelIntro({ onStart }: { onStart: () => void }) {
               {identity.email}
             </a>
           </p>
-        </motion.div>
+        </m.div>
         <noscript>
           <div className="mt-10 border border-pf-line-strong p-6 text-pf-ink">
             <p className="leading-relaxed">
@@ -347,7 +348,7 @@ function FunnelIntro({ onStart }: { onStart: () => void }) {
             </p>
           </div>
         </noscript>
-      </motion.div>
+      </m.div>
     </section>
   );
 }
@@ -508,6 +509,7 @@ export default function Funnel() {
       ...getAttribution(),
     };
 
+    const { funnelSchema } = await import("@/lib/funnel/schema");
     const parsed = funnelSchema.safeParse(payload);
     if (!parsed.success) {
       const issue = parsed.error.issues[0];
@@ -626,12 +628,12 @@ export default function Funnel() {
     }
   }
 
-  if (view === "summary") {
-    return <Summary answers={answers} stepIds={sequence} onEdit={editStep} />;
-  }
+  let content: React.ReactNode = null;
 
-  if (view === "intro") {
-    return (
+  if (view === "summary") {
+    content = <Summary answers={answers} stepIds={sequence} onEdit={editStep} />;
+  } else if (view === "intro") {
+    content = (
       <FunnelIntro
         onStart={() => {
           trackFunnelEvent("lead_form_start");
@@ -640,118 +642,126 @@ export default function Funnel() {
         }}
       />
     );
+  } else {
+    const progressRatio = Math.min(1, Math.max(0, (activeIndex + 1) / total));
+
+    content = (
+      <div className="mx-auto w-full max-w-[44rem] flex-1 px-6 pb-32 pt-8 md:pt-12">
+        {/* Barra de progreso sutil y fluida */}
+        <div
+          role="progressbar"
+          aria-valuenow={activeIndex + 1}
+          aria-valuemin={1}
+          aria-valuemax={total}
+          aria-label={`Progreso: paso ${activeIndex + 1} de ${total}`}
+          className="relative h-[2px] w-full overflow-hidden rounded-full bg-pf-line"
+        >
+          <m.div
+            className="h-full w-full origin-left bg-pf-ink"
+            initial={false}
+            animate={{ scaleX: progressRatio }}
+            transition={{ duration: 0.35, ease: pfEaseOut }}
+          />
+        </div>
+
+        <div className="pf-mono mt-4 flex items-center justify-between text-xs text-pf-muted">
+          {activeIndex > 0 ? (
+            <button
+              type="button"
+              onClick={goBack}
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--pf-radius-sm)] py-1 pr-2 transition-colors duration-150 hover:text-pf-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-pf-ink"
+            >
+              <ArrowLeftIcon />
+              Anterior
+            </button>
+          ) : (
+            <span aria-hidden="true" />
+          )}
+          <span className="font-medium tabular-nums">
+            {String(activeIndex + 1).padStart(2, "0")}/{String(total).padStart(2, "0")} · {phaseFor(activeIndex, total)}
+          </span>
+        </div>
+
+        <div className="mt-8">
+          <Transcript
+            stepIds={sequence.slice(0, activeIndex)}
+            answers={answers}
+            onEdit={editStep}
+          />
+        </div>
+
+        <AnimatePresence mode="popLayout" initial={false} custom={direction}>
+          <m.div
+            key={activeStepId}
+            ref={activeRef}
+            custom={direction}
+            variants={{
+              enter: (dir: number) => ({
+                opacity: 0,
+                x: dir > 0 ? 18 : -18,
+              }),
+              center: {
+                opacity: 1,
+                x: 0,
+                transition: { duration: 0.32, ease: pfEaseOut },
+              },
+              exit: (dir: number) => ({
+                opacity: 0,
+                x: dir > 0 ? -18 : 18,
+                transition: { duration: 0.2, ease: pfEaseOut },
+              }),
+            }}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            className="mt-10 scroll-mt-10"
+          >
+            {step.kind === "choice" ? (
+              <StepChoice
+                step={step}
+                selected={choiceValue(answers, activeStepId)}
+                detail={answers.situacionDetalle}
+                onAnswer={(optionId, detail) =>
+                  answerStep(activeStepId, choicePatch(activeStepId, optionId, detail))
+                }
+              />
+            ) : (
+              <StepInput
+                step={step}
+                initialValue={
+                  (answers[FIELD_BY_STEP[activeStepId]] as string | undefined) ?? ""
+                }
+                error={fieldError}
+                consent={consent}
+                consentError={consentError}
+                serverError={serverError}
+                submitting={submitting}
+                isLastStep={activeIndex === sequence.length - 1}
+                honeypot={honeypot}
+                turnstileSiteKey={turnstileSiteKey}
+                turnstileResetKey={turnstileResetKey}
+                onClearError={() => dispatch({ type: "SET_FIELD_ERROR", payload: null })}
+                onConsentChange={(value) => {
+                  dispatch({ type: "SET_CONSENT", payload: value });
+                }}
+                onHoneypotChange={(val) => dispatch({ type: "SET_HONEYPOT", payload: val })}
+                onTurnstileVerify={handleTurnstileVerify}
+                onTurnstileExpire={handleTurnstileExpire}
+                onTurnstileError={handleTurnstileError}
+                onSubmit={handleInputStep}
+              />
+            )}
+          </m.div>
+        </AnimatePresence>
+      </div>
+    );
   }
 
-  const progressRatio = Math.min(1, Math.max(0, (activeIndex + 1) / total));
-
   return (
-    <div className="mx-auto w-full max-w-[44rem] flex-1 px-6 pb-32 pt-8 md:pt-12">
-      {/* Barra de progreso sutil y fluida */}
-      <div
-        role="progressbar"
-        aria-valuenow={activeIndex + 1}
-        aria-valuemin={1}
-        aria-valuemax={total}
-        aria-label={`Progreso: paso ${activeIndex + 1} de ${total}`}
-        className="relative h-[2px] w-full overflow-hidden rounded-full bg-pf-line"
-      >
-        <motion.div
-          className="h-full w-full origin-left bg-pf-ink"
-          initial={false}
-          animate={{ scaleX: progressRatio }}
-          transition={{ duration: 0.35, ease: pfEaseOut }}
-        />
-      </div>
-
-      <div className="pf-mono mt-4 flex items-center justify-between text-xs text-pf-muted">
-        {activeIndex > 0 ? (
-          <button
-            type="button"
-            onClick={goBack}
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--pf-radius-sm)] py-1 pr-2 transition-colors duration-150 hover:text-pf-ink focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-pf-ink"
-          >
-            <ArrowLeftIcon />
-            Anterior
-          </button>
-        ) : (
-          <span aria-hidden="true" />
-        )}
-        <span className="font-medium tabular-nums">
-          {String(activeIndex + 1).padStart(2, "0")}/{String(total).padStart(2, "0")} · {phaseFor(activeIndex, total)}
-        </span>
-      </div>
-
-      <div className="mt-8">
-        <Transcript
-          stepIds={sequence.slice(0, activeIndex)}
-          answers={answers}
-          onEdit={editStep}
-        />
-      </div>
-
-      <AnimatePresence mode="popLayout" initial={false} custom={direction}>
-        <motion.div
-          key={activeStepId}
-          ref={activeRef}
-          custom={direction}
-          variants={{
-            enter: (dir: number) => ({
-              opacity: 0,
-              x: dir > 0 ? 18 : -18,
-            }),
-            center: {
-              opacity: 1,
-              x: 0,
-              transition: { duration: 0.32, ease: pfEaseOut },
-            },
-            exit: (dir: number) => ({
-              opacity: 0,
-              x: dir > 0 ? -18 : 18,
-              transition: { duration: 0.2, ease: pfEaseOut },
-            }),
-          }}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          className="mt-10 scroll-mt-10"
-        >
-          {step.kind === "choice" ? (
-            <StepChoice
-              step={step}
-              selected={choiceValue(answers, activeStepId)}
-              detail={answers.situacionDetalle}
-              onAnswer={(optionId, detail) =>
-                answerStep(activeStepId, choicePatch(activeStepId, optionId, detail))
-              }
-            />
-          ) : (
-            <StepInput
-              step={step}
-              initialValue={
-                (answers[FIELD_BY_STEP[activeStepId]] as string | undefined) ?? ""
-              }
-              error={fieldError}
-              consent={consent}
-              consentError={consentError}
-              serverError={serverError}
-              submitting={submitting}
-              isLastStep={activeIndex === sequence.length - 1}
-              honeypot={honeypot}
-              turnstileSiteKey={turnstileSiteKey}
-              turnstileResetKey={turnstileResetKey}
-              onClearError={() => dispatch({ type: "SET_FIELD_ERROR", payload: null })}
-              onConsentChange={(value) => {
-                dispatch({ type: "SET_CONSENT", payload: value });
-              }}
-              onHoneypotChange={(val) => dispatch({ type: "SET_HONEYPOT", payload: val })}
-              onTurnstileVerify={handleTurnstileVerify}
-              onTurnstileExpire={handleTurnstileExpire}
-              onTurnstileError={handleTurnstileError}
-              onSubmit={handleInputStep}
-            />
-          )}
-        </motion.div>
-      </AnimatePresence>
-    </div>
+    <LazyMotion features={domAnimation} strict>
+      <MotionConfig reducedMotion="user">
+        {content}
+      </MotionConfig>
+    </LazyMotion>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { answerLabel, steps, type FunnelAnswers, type StepId } from "@/lib/funnel/content";
 import { pfEaseOut } from "@/lib/portfolio/motion";
 
@@ -24,9 +24,8 @@ export default function Transcript({ stepIds, answers, onEdit }: TranscriptProps
   return (
     <div className="border-t border-pf-line">
       {visibleStepIds.map((stepId) => (
-        <motion.div
+        <m.div
           key={stepId}
-          layout
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: pfEaseOut }}
@@ -49,7 +48,7 @@ export default function Transcript({ stepIds, answers, onEdit }: TranscriptProps
               Editar →
             </span>
           </button>
-        </motion.div>
+        </m.div>
       ))}
     </div>
   );

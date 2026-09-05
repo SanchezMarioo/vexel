@@ -58,9 +58,8 @@ export default function ServiceDetail({ service }: { service: ServicePage }) {
                 alt={service.hero.image.alt || service.title}
                 width={service.hero.image.width}
                 height={service.hero.image.height}
-                fetchPriority="high"
-                loading="eager"
-                sizes="(min-width: 768px) 40vw, 100vw"
+                priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 44vw, 510px"
                 className="h-auto w-full object-cover transition-transform duration-700 ease-[var(--pf-ease-out)] group-hover:scale-[1.025]"
                 {...(service.hero.image.blurDataURL ? { placeholder: "blur" as const, blurDataURL: service.hero.image.blurDataURL } : {})}
               />

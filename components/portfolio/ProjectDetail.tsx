@@ -75,7 +75,7 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
           <ImageSlot
             image={project.image}
             priority
-            sizes="(min-width: 1280px) 1152px, (min-width: 1024px) 960px, 100vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 92vw, 1152px"
           />
         </div>
       </header>
@@ -119,7 +119,7 @@ export default function ProjectDetail({ project, prev, next }: ProjectDetailProp
               >
                 <ImageSlot
                   image={captureImage(project, src, index)}
-                  sizes="(min-width: 640px) 50vw, 100vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 580px"
                 />
               </div>
             ))}

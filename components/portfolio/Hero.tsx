@@ -66,7 +66,7 @@ export default function Hero() {
               <div className="h-full transition-transform duration-500 ease-[var(--pf-ease-out)] group-hover:scale-[1.02] motion-reduce:group-hover:scale-100">
                 <ImageSlot
                   priority
-                  sizes="(min-width: 1024px) 580px, 100vw"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 580px"
                   image={{
                     src: "/portfolio/hero-images.webp",
                     alt: "Tienda online de muebles Lumen, desarrollada por Xync, estudio de desarrollo web en Salamanca",

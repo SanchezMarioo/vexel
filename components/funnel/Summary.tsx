@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CalButton from "@/components/portfolio/ui/CalButton";
 import { answerLabel, steps, type FunnelAnswers, type StepId } from "@/lib/funnel/content";
 import { trackFunnelEvent } from "@/lib/funnel/tracking";
@@ -24,6 +24,11 @@ interface SummaryProps {
 export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
   const [deferred, setDeferred] = useState(false);
   const [booked, setBooked] = useState(false);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    headingRef.current?.focus({ preventScroll: true });
+  }, []);
 
   // Reserva REAL confirmada en Cal.com (evento del embed, no un simple clic).
   useEffect(() => {
@@ -36,17 +41,17 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
   }, []);
 
   return (
-    <motion.section
+    <m.section
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.38, ease: pfEaseOut }}
       className="pf-invert flex-1"
     >
       <div className="mx-auto w-full max-w-[44rem] px-6 py-20 md:py-28">
-        <motion.div initial="hidden" animate="visible" variants={stagger(0.09)}>
+        <m.div initial="hidden" animate="visible" variants={stagger(0.09)}>
           {/* Badge de confirmación con check dibujado animado */}
-          <motion.div variants={fadeUp} className="flex items-center gap-3.5">
-            <motion.span
+          <m.div variants={fadeUp} className="flex items-center gap-3.5">
+            <m.span
               initial={{ scale: 0.7, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.3, ease: pfEaseOut }}
@@ -62,14 +67,14 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
                 aria-hidden="true"
                 className="h-5 w-5"
               >
-                <motion.path
+                <m.path
                   d="m5 13 4 4L19 7"
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 0.45, ease: pfEaseOut, delay: 0.15 }}
                 />
               </svg>
-            </motion.span>
+            </m.span>
             <p className="text-base text-pf-inverse-ink/90 sm:text-lg">
               Hemos recibido tu proyecto. {identity.responseTime.toLowerCase()} a{" "}
               <span className="font-semibold text-pf-inverse-ink underline decoration-pf-inverse-ink/30 underline-offset-4">
@@ -77,24 +82,26 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
               </span>
               .
             </p>
-          </motion.div>
+          </m.div>
 
-          <motion.h2
+          <m.h2
+            ref={headingRef}
+            tabIndex={-1}
             variants={fadeUp}
-            className="pf-display mt-10 text-pf-inverse-ink"
+            className="pf-display mt-10 text-pf-inverse-ink outline-none"
             style={{ fontSize: "clamp(2rem, 4.6vw, 3.4rem)" }}
           >
             Esto es lo que nos has contado.
-          </motion.h2>
+          </m.h2>
 
-          <motion.p
+          <m.p
             variants={fadeUp}
             className="pf-mono mt-4 text-xs uppercase tracking-wide text-pf-inverse-ink/50"
           >
             Toca cualquier respuesta para cambiarla
-          </motion.p>
+          </m.p>
 
-          <motion.div variants={fadeUp} className="mt-7 border-t border-pf-inverse-ink/15">
+          <m.div variants={fadeUp} className="mt-7 border-t border-pf-inverse-ink/15">
             {stepIds
               .filter((stepId) => Boolean(answerLabel(stepId, answers).trim()))
               .map((stepId) => (
@@ -118,9 +125,9 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
                   </span>
                 </button>
               ))}
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             variants={fadeUp}
             className="mt-14 rounded-[var(--pf-radius-lg)] border border-pf-inverse-ink/20 bg-pf-inverse-ink/[0.03] p-6 sm:p-8"
           >
@@ -182,9 +189,9 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
                 </button>
               </div>
             )}
-          </motion.div>
+          </m.div>
 
-          <motion.p variants={fadeUp} className="mt-12 text-sm text-pf-inverse-ink/45">
+          <m.p variants={fadeUp} className="mt-12 text-sm text-pf-inverse-ink/45">
             Tus datos solo se usan para responderte.{" "}
             <Link
               href="/privacidad"
@@ -195,9 +202,9 @@ export default function Summary({ answers, stepIds, onEdit }: SummaryProps) {
               Política de privacidad
             </Link>
             .
-          </motion.p>
-        </motion.div>
+          </m.p>
+        </m.div>
       </div>
-    </motion.section>
+    </m.section>
   );
 }

@@ -1,13 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import Button from "@/components/portfolio/ui/Button";
 import type { InputStep } from "@/lib/funnel/content";
 import { pfEaseOut } from "@/lib/portfolio/motion";
 import { identity } from "@/lib/portfolio/content";
-import Turnstile from "./Turnstile";
+
+const Turnstile = dynamic(() => import("./Turnstile"), { ssr: false });
 
 interface StepInputProps {
   step: InputStep;
@@ -93,7 +95,7 @@ export default function StepInput({
 
       <AnimatePresence>
         {serverError ? (
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
@@ -108,7 +110,7 @@ export default function StepInput({
               </a>
               .
             </p>
-          </motion.div>
+          </m.div>
         ) : null}
       </AnimatePresence>
 
@@ -153,7 +155,7 @@ export default function StepInput({
           />
         )}
         {/* Animated active focus hairline */}
-        <motion.span
+        <m.span
           aria-hidden="true"
           className="absolute bottom-0 left-0 h-[2px] w-full origin-left bg-pf-ink"
           initial={false}
@@ -164,9 +166,10 @@ export default function StepInput({
 
       <AnimatePresence>
         {error ? (
-          <motion.p
+          <m.p
             id={errorId}
             role="alert"
+            aria-live="assertive"
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
@@ -174,7 +177,7 @@ export default function StepInput({
             className="mt-3 text-sm font-medium text-pf-danger"
           >
             {error}
-          </motion.p>
+          </m.p>
         ) : null}
       </AnimatePresence>
 
@@ -184,17 +187,18 @@ export default function StepInput({
             htmlFor="funnel-consent"
             className="group flex cursor-pointer items-start gap-3 text-sm text-pf-ink-soft select-none"
           >
-            <span className="relative mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-[2px] border border-pf-line-strong bg-pf-bg transition-colors group-hover:border-pf-ink">
+            <span className="relative mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-[2px] border border-pf-line-strong bg-pf-bg transition-colors group-hover:border-pf-ink has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-pf-ink has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-pf-bg">
               <input
                 id="funnel-consent"
                 type="checkbox"
                 checked={consent}
                 onChange={(event) => onConsentChange(event.target.checked)}
                 aria-invalid={consentError ? true : undefined}
+                aria-describedby={consentError ? "funnel-consent-error" : undefined}
                 className="sr-only"
               />
               {consent ? (
-                <motion.svg
+                <m.svg
                   initial={{ scale: 0.5, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   viewBox="0 0 24 24"
@@ -207,7 +211,7 @@ export default function StepInput({
                   aria-hidden="true"
                 >
                   <path d="m5 13 4 4L19 7" />
-                </motion.svg>
+                </m.svg>
               ) : null}
             </span>
             <span>
@@ -225,7 +229,9 @@ export default function StepInput({
           </label>
           {consentError ? (
             <p
+              id="funnel-consent-error"
               role="alert"
+              aria-live="assertive"
               className="mt-2 text-sm font-medium text-pf-danger"
             >
               {consentError}

@@ -1,5 +1,9 @@
 import { z } from "zod";
 
+// Desactiva la compilación JIT y el probe `new Function("")` de Zod v4,
+// evitando violaciones de CSP en páginas con políticas estrictas de script-src.
+z.config({ jitless: true });
+
 /**
  * Shared between the client form (zodResolver) and the /api/contact route,
  * so validation rules live in exactly one place. No "server-only" here.

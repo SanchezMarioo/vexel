@@ -124,7 +124,7 @@ function Block({ block }: { block: BlogBlock }) {
               alt={block.alt}
               width={block.width}
               height={block.height}
-              sizes="(min-width: 896px) 56rem, 100vw"
+              sizes="(max-width: 896px) 100vw, 896px"
               className="h-auto w-full object-cover"
               {...(block.blurDataURL
                 ? { placeholder: "blur" as const, blurDataURL: block.blurDataURL }

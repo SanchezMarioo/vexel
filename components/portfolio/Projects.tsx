@@ -41,7 +41,7 @@ function ProjectLinks({ project }: { project: Project }) {
           href={project.liveUrl}
           target="_blank"
           rel="noreferrer noopener"
-          aria-label={`Visitar el sitio web en vivo de ${project.title}`}
+          aria-label={`Ver en vivo el sitio web de ${project.title}`}
           className="group/live inline-flex items-center gap-1.5 text-sm text-pf-ink-soft underline-offset-4 transition-colors hover:text-pf-ink hover:underline"
         >
           Ver en vivo
@@ -80,7 +80,7 @@ export default function Projects() {
                 <div className="overflow-hidden transition-transform duration-500 ease-[var(--pf-ease-out)] group-hover:scale-[1.02] motion-reduce:group-hover:scale-100">
                   <ImageSlot
                     image={featured.image}
-                    sizes="(min-width: 1024px) 60vw, 100vw"
+                    sizes="(max-width: 1024px) 100vw, (max-width: 1280px) 58vw, 740px"
                   />
                 </div>
                 <span className="absolute inset-0 bg-pf-ink/0 transition-colors duration-300 group-hover:bg-pf-ink/5" />
@@ -115,7 +115,7 @@ export default function Projects() {
                   <div className="overflow-hidden transition-transform duration-500 ease-[var(--pf-ease-out)] group-hover:scale-[1.02] motion-reduce:group-hover:scale-100">
                     <ImageSlot
                       image={project.image}
-                      sizes="(min-width: 768px) 50vw, 100vw"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
                     />
                   </div>
                   <span className="absolute inset-0 bg-pf-ink/0 transition-colors duration-300 group-hover:bg-pf-ink/5" />

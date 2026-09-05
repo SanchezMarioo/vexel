@@ -61,7 +61,14 @@ if (!isDev) {
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   experimental: {
-    optimizePackageImports: ["@clerk/nextjs", "framer-motion", "lenis"],
+    optimizePackageImports: [
+      "@clerk/nextjs",
+      "framer-motion",
+      "lenis",
+      "lucide-react",
+      "@calcom/embed-react",
+      "react-hook-form",
+    ],
   },
   images: {
     formats: ["image/avif", "image/webp"],

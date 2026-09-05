@@ -22,7 +22,7 @@ export default function ImageSlot({
   image,
   className = "",
   priority = false,
-  sizes = "(min-width: 1024px) 50vw, (min-width: 768px) 70vw, 100vw",
+  sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw",
 }: ImageSlotProps) {
   const [hasError, setHasError] = useState(false);
   const showPlaceholder = hasError || !image.src;
@@ -37,8 +37,7 @@ export default function ImageSlot({
           src={image.src}
           alt={image.alt}
           fill
-          fetchPriority={priority ? "high" : undefined}
-          loading={priority ? "eager" : undefined}
+          priority={priority}
           sizes={sizes}
           className="object-cover"
           onError={() => setHasError(true)}

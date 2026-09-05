@@ -1,4 +1,9 @@
 import { z } from "zod";
+
+// Desactiva la compilación JIT y el probe `new Function("")` de Zod v4,
+// evitando violaciones de CSP en páginas con políticas estrictas de script-src.
+z.config({ jitless: true });
+
 import {
   CATALOGO_IDS,
   OBJETIVO_IDS,

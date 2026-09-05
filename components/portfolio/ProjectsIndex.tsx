@@ -44,7 +44,7 @@ function IndexRow({ project, priority = false }: { project: Project; priority?: 
             <ImageSlot
               image={project.image}
               priority={priority}
-              sizes="(min-width: 1024px) 240px, (min-width: 640px) 50vw, 100vw"
+              sizes="(max-width: 1024px) 100vw, 240px"
             />
           </div>
         </div>

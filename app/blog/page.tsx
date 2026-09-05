@@ -64,8 +64,6 @@ const breadcrumbJsonLd = {
 export default async function BlogPage() {
   const { isEnabled: preview } = await draftMode();
   const { featured, rest } = await getFeaturedPost(preview);
-  // BlogIndex espera el destacado primero; el orden llega resuelto de la capa
-  // de datos (featured del CMS o, en su defecto, el más reciente).
   const posts = featured ? [featured, ...rest] : rest;
 
   return (
