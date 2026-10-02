@@ -124,10 +124,20 @@ export async function checkRateLimitUpstash(identifier: string): Promise<RateLim
     });
   }
 
-  const { success, reset, remaining } = await ratelimit.limit(identifier);
-  return {
-    ok: success,
-    remaining,
-    resetAt: reset,
-  };
+  try {
+    const { success, reset, remaining } = await ratelimit.limit(identifier);
+    return {
+      ok: success,
+      remaining,
+      resetAt: reset,
+    };
+  } catch (error) {
+    console.warn("[rate-limit] Error conectando a Upstash Redis, recurriendo a in-memory:", error);
+    return checkRateLimit({
+      bucket: "fallback",
+      key: identifier,
+      limit: 3,
+      windowMs: 60 * 60 * 1000,
+    });
+  }
 }
