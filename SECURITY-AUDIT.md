@@ -72,7 +72,7 @@
 
 ### Estado: implementado y verificado ✅ (trade-off documentado)
 
-- **Ambas rutas** (`/api/contact`, `/api/funnel`) usan `checkRateLimitUpstash()` (`lib/security/rate-limit.ts`): ventana deslizante **3 peticiones / 60 min por IP** vía Upstash Redis (`@upstash/ratelimit`).
+- `/api/contact` usa `checkRateLimitUpstash()` (`lib/security/rate-limit.ts`): ventana deslizante **3 peticiones / 60 min por IP** vía Upstash Redis (`@upstash/ratelimit`). `/api/funnel` utiliza Cloudflare Turnstile como protección anti-abuso/bot en servidor.
 - **`UPSTASH_REDIS_REST_URL` y `UPSTASH_REDIS_REST_TOKEN` están definidas en `.env.local`** → el path distribuido es el primario. ⚠️ Verifica que también estén en **Vercel Production** (no puedo verlo desde el repo).
 - **Trade-off (ya resuelto, solo documentar):** el fallback en memoria (`Map` por proceso) es efímero en serverless — cada instancia Lambda tiene su propia memoria y las invocaciones frías la pierden. **No sirve como límite real**, solo como red de desarrollo. Con Upstash configurado el límite es global y persistente. Si algún día se elimina Upstash, el rate limiting efectivo desaparecería silenciosamente (solo un `console.warn` lo delata) — considera alertar sobre ese warning en logs.
 - La IP del cliente se toma de `x-real-ip` → `x-vercel-forwarded-for` → `x-forwarded-for` (`lib/security/request.ts`). En Vercel estas cabeceras las fija la plataforma (no son spoofeables por el cliente), por lo que el bucketing por IP es fiable en este hosting.

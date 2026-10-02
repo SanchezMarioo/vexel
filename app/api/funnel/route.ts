@@ -5,7 +5,6 @@ import { buildLead } from "@/lib/funnel/lead";
 import { funnelSchema } from "@/lib/funnel/schema";
 import { scoreLead } from "@/lib/funnel/score";
 import { sendTelegramLeadNotification } from "@/lib/notifications/telegram";
-import { checkRateLimitUpstash } from "@/lib/security/rate-limit";
 import { getClientIp, hasTrustedOrigin, isJsonContentType } from "@/lib/security/request";
 import { secureJson } from "@/lib/security/response";
 import { verifyTurnstileToken } from "@/lib/security/turnstile";
@@ -52,7 +51,7 @@ export async function POST(request: Request) {
 
   const clientIp = getClientIp(request);
 
-  // 1. Verificación en servidor de Cloudflare Turnstile (Anti-bot)
+  // Verificación en servidor de Cloudflare Turnstile (Anti-bot)
   const tokenCandidate =
     payload && typeof payload === "object" && "turnstileToken" in payload
       ? (payload as { turnstileToken?: unknown }).turnstileToken
@@ -63,13 +62,6 @@ export async function POST(request: Request) {
 
   if (!turnstileResult.ok) {
     return errorResponse("No hemos podido verificar el envío. Inténtalo de nuevo.", 403);
-  }
-
-  // 2. Rate limiting distribuido con Upstash (fallback a in-memory en desarrollo)
-  const rateLimit = await checkRateLimitUpstash(`funnel:ip:${clientIp}`);
-
-  if (!rateLimit.ok) {
-    return errorResponse("Demasiados envíos en poco tiempo. Inténtalo más tarde.", 429);
   }
 
   try {
