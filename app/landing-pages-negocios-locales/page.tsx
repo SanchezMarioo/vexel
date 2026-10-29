@@ -4,7 +4,7 @@ import EyebrowTag from "@/components/ui/EyebrowTag";
 import Button from "@/components/portfolio/ui/Button";
 import PortfolioShell from "@/components/portfolio/PortfolioShell";
 import { faqs } from "@/lib/content/faqs";
-import { toAbsoluteUrl } from "@/lib/site-url";
+import { siteUrl, toAbsoluteUrl } from "@/lib/site-url";
 import { getOgImageMetadata } from "@/lib/seo/getOgImage";
 
 const pagePath = "/landing-pages-negocios-locales";
@@ -61,6 +61,23 @@ const faqJsonLd = {
   })),
 };
 
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${toAbsoluteUrl(pagePath)}#service`,
+  name: pageTitle,
+  description: pageDescription,
+  url: toAbsoluteUrl(pagePath),
+  provider: { "@id": `${siteUrl}/#business` },
+  mainEntityOfPage: toAbsoluteUrl(pagePath),
+  serviceType: "Diseño y desarrollo de landing pages de conversión",
+  areaServed: [
+    { "@type": "City", name: "Salamanca" },
+    { "@type": "AdministrativeArea", name: "Castilla y León" },
+    { "@type": "Country", name: "España" },
+  ],
+};
+
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -83,6 +100,12 @@ const breadcrumbJsonLd = {
 export default function LandingPagesNegociosLocalesPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(serviceJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

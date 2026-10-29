@@ -25,9 +25,29 @@ export const metadata: Metadata = {
   },
 };
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: `${siteUrl}/` },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: title,
+      item: `${siteUrl}/empezar`,
+    },
+  ],
+};
+
 export default function EmpezarPage() {
   return (
     <PortfolioShell>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <div className="flex min-h-dvh flex-col">
         {/*
           DIRECTION CONTRACT — /empezar funnel (seed 60f4d22f)
