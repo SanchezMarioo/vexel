@@ -147,7 +147,7 @@ export default function LandingPagesNegociosLocalesPage() {
               </p>
 
               <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <Button href="/#contacto" variant="primary" size="lg" withArrow>
+                <Button href="/empezar" variant="primary" size="lg" withArrow>
                   Quiero una landing que convierta
                 </Button>
                 <Button href="/#proyectos" variant="outline" size="lg">
@@ -225,7 +225,7 @@ export default function LandingPagesNegociosLocalesPage() {
                 accionable en menos de 24h.
               </p>
               <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <Button href="/#contacto" variant="primary" size="lg" withArrow>
+                <Button href="/empezar" variant="primary" size="lg" withArrow>
                   Hablar con Xync
                 </Button>
                 <Button href="/" variant="ghost" size="lg">

@@ -41,6 +41,14 @@ export default function Footer() {
                   </a>
                 </li>
               ))}
+              <li>
+                <Link
+                  href="/landing-pages-negocios-locales"
+                  className="text-pf-bg/80 transition-colors hover:text-pf-bg"
+                >
+                  Landing pages locales
+                </Link>
+              </li>
             </ul>
           </nav>
 
@@ -60,7 +68,7 @@ export default function Footer() {
                     </a>
                   </li>
                 ))}
-              </ul>
+            </ul>
             </div>
           ) : null}
         </div>

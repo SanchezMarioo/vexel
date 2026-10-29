@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { services } from "@/lib/portfolio/content";
 
 export default function Services() {
@@ -50,6 +51,30 @@ export default function Services() {
             </li>
           ))}
         </ul>
+
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-pf-line pt-8">
+          <p className="text-sm text-pf-ink-soft">
+            ¿Buscas una página de captación para tu negocio en Salamanca o provincia?
+          </p>
+          <Link
+            href="/landing-pages-negocios-locales"
+            className="group inline-flex items-center gap-2 text-sm font-medium text-pf-ink underline-offset-4 hover:underline"
+          >
+            Ver landing pages para negocios locales
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="h-4 w-4 transition-transform duration-300 ease-[var(--pf-ease-out)] group-hover:translate-x-1"
+            >
+              <path d="M5 12h14m-6-6 6 6-6 6" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </section>
   );
