@@ -87,8 +87,16 @@ export async function getLeadsFromSupabase(options?: {
     }
 
     if (options?.search && options.search.trim()) {
-      const term = `%${options.search.trim()}%`;
-      query = query.or(`nombre.ilike.${term},email.ilike.${term},empresa.ilike.${term}`);
+      // Sanitizar el término de búsqueda para neutralizar caracteres con significado
+      // estructural en el DSL de filtros de PostgREST (, . ( ) " ' \ : ;) y wildcards no deseados.
+      const sanitized = options.search
+        .replace(/[\u0000-\u001F(),."'\\;:*?]/g, "")
+        .trim();
+
+      if (sanitized.length > 0) {
+        const term = `%${sanitized}%`;
+        query = query.or(`nombre.ilike.${term},email.ilike.${term},empresa.ilike.${term}`);
+      }
     }
 
     const { data, error, count } = await query;

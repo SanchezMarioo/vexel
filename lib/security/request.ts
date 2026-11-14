@@ -1,18 +1,23 @@
 export function getClientIp(request: Request) {
-  const realIp = request.headers.get("x-real-ip");
-
-  if (realIp) {
-    return realIp.trim();
-  }
-
+  // 1. Cabecera inyectada y garantizada por la infraestructura de Vercel (no modificable por el cliente)
   const vercelIp = request.headers.get("x-vercel-forwarded-for");
-
   if (vercelIp) {
     return vercelIp.split(",")[0]?.trim() || "unknown";
   }
 
-  const forwardedFor = request.headers.get("x-forwarded-for");
+  // 2. Cabecera inyectada y garantizada por Cloudflare Edge
+  const cfIp = request.headers.get("cf-connecting-ip");
+  if (cfIp) {
+    return cfIp.trim();
+  }
 
+  // 3. Fallbacks para entornos locales, VPS o proxies donde no exista cabecera de plataforma
+  const realIp = request.headers.get("x-real-ip");
+  if (realIp) {
+    return realIp.trim();
+  }
+
+  const forwardedFor = request.headers.get("x-forwarded-for");
   if (forwardedFor) {
     return forwardedFor.split(",")[0]?.trim() || "unknown";
   }

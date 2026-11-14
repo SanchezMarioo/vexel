@@ -52,12 +52,25 @@ export async function requireAdmin(): Promise<AdminUser> {
     notFound();
   }
 
-  const userEmail = user.emailAddresses?.[0]?.emailAddress?.toLowerCase() ?? "";
+  // Validar que el usuario tenga al menos un correo verificado en Clerk que pertenezca a ADMIN_EMAILS.
+  // Esto previene que un atacante añada un email no verificado (verification.status !== "verified")
+  // o que un orden arbitrario en user.emailAddresses otorgue acceso indebido o bloquee al admin legítimo.
+  const verifiedAdminEmail = user.emailAddresses?.find(
+    (e) => e.verification?.status === "verified" && checkIsAdmin(e.emailAddress),
+  );
 
-  if (!checkIsAdmin(userEmail)) {
-    console.warn(`[admin/auth] Acceso denegado: el correo '${userEmail}' no está en ADMIN_EMAILS.`);
+  if (!verifiedAdminEmail) {
+    const attemptedEmails =
+      user.emailAddresses
+        ?.map((e) => `${e.emailAddress} (${e.verification?.status ?? "no-status"})`)
+        .join(", ") ?? "ninguno";
+    console.warn(
+      `[admin/auth] Acceso denegado: ningún email verificado del usuario coincide con ADMIN_EMAILS. Correos asociados: [${attemptedEmails}].`,
+    );
     notFound();
   }
+
+  const userEmail = verifiedAdminEmail.emailAddress.trim().toLowerCase();
 
   return {
     userId: user.id,

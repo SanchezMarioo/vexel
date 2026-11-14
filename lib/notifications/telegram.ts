@@ -119,7 +119,11 @@ function formatLandingUrl(landingPath?: string | null): string {
   if (!landingPath || !landingPath.trim()) {
     return toAbsoluteUrl("/");
   }
-  return toAbsoluteUrl(landingPath.trim());
+  const trimmed = landingPath.trim();
+  // Neutralizar cualquier inyección de protocolo o dominio externo (phishing en alertas)
+  // garantizando que la URL resultante pertenezca siempre al dominio canónico del sitio.
+  const pathnameOnly = trimmed.replace(/^https?:\/\/[^/]+/i, "").replace(/^[/\\]+/, "/");
+  return toAbsoluteUrl(pathnameOnly.startsWith("/") ? pathnameOnly : `/${pathnameOnly}`);
 }
 
 // ── Construcción del Mensaje HTML ────────────────────────────────────

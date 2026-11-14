@@ -28,8 +28,10 @@ export async function GET(request: NextRequest) {
     return new Response("Secreto inválido", { status: 401 });
   }
 
-  // Solo rutas internas del blog: nada de open redirects.
-  const target = slug.startsWith("/blog") ? slug : "/blog";
+  // Validación estricta de rutas internas del blog:
+  // Previene open redirects, traversal (/blog/../../admin), dobles barras (/blog//...) o dominios externos (/blog.evil.com)
+  const isSafeBlogSlug = slug === "/blog" || /^\/blog\/[a-zA-Z0-9_-]+$/.test(slug);
+  const target = isSafeBlogSlug ? slug : "/blog";
 
   const draft = await draftMode();
   draft.enable();
